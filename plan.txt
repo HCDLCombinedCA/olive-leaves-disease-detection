@@ -30,17 +30,22 @@ Phase 1: Confirm scope and project setup
 Phase 2: Literature review
 --------------------------
 
-5. Read and summarise the five downloaded papers in ref/:
+5. Read and summarise the foundational papers in ref/:
    - Mohanty et al. 2016: plant disease image classification.
    - Selvaraju et al. 2017: Grad-CAM.
    - Sandler et al. 2018: MobileNetV2.
    - Tan and Le 2019: EfficientNet.
    - Han et al. 2016: deep compression.
 
-5a. Add extra references before report writing for claims not covered by the current five papers:
+5a. Read and summarise the newer 2023-2024 papers in ref/:
+   - Sagar et al. 2023: recent leaf disease detection and XAI survey.
+   - Amara et al. 2024: concept-based explainability for plant disease classifiers.
+   - Silva and Almeida 2024: edge computing for real-time leaf disease classification.
+   - Kuzmin et al. 2023: pruning versus quantization trade-offs.
+   - Foysal et al. 2024: CNN plant disease detection with mobile app integration.
+
+5b. Add extra references before report writing for remaining claims not fully covered by the current downloaded papers:
    - Olive-specific leaf disease deep learning, especially VGG16/VGG19 or similar transfer-learning studies.
-   - CNN + Vision Transformer or ViT-based plant disease classification.
-   - Edge deployment of plant disease CNNs on Raspberry Pi, Jetson Nano, mobile, or similar low-cost hardware.
    - Agronomic sources for climate-warming and yield-loss figures, or remove/soften those claims.
 
 6. Organise literature review under five headings:
