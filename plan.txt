@@ -1,0 +1,289 @@
+Step-by-step execution plan
+===========================
+
+Project: Explainable, Edge-Efficient Deep Learning for Olive Leaf Disease Detection
+Primary dataset: olive-leaf-image-dataset.zip
+
+Phase 1: Confirm scope and project setup
+----------------------------------------
+
+1. Confirm final research questions:
+   RQ1: How do ImageNet-pretrained CNNs compare with training from scratch and a glass-box baseline for olive leaf disease classification?
+   RQ2: How do pruning and quantization affect model size, latency, classification performance, and explanation quality?
+
+2. Confirm CA mapping:
+   - HCDL: dataset exploration, preprocessing, model development, evaluation, XAI, discussion.
+   - ETech: transfer learning and model compression implementations, two classical-model comparisons, literature review, ethics, emerging-technique discussion.
+   - Declared ETech techniques: (1) transfer learning, (2) model compression.
+
+3. Create project structure:
+   - data/
+   - notebooks/
+   - outputs/figures/
+   - outputs/models/
+   - outputs/xai/
+   - ref/
+   - report/
+
+4. Unzip the dataset into data/olive-leaf-image-dataset/ while keeping the original zip in the current directory.
+
+Phase 2: Literature review
+--------------------------
+
+5. Read and summarise the five downloaded papers in ref/:
+   - Mohanty et al. 2016: plant disease image classification.
+   - Selvaraju et al. 2017: Grad-CAM.
+   - Sandler et al. 2018: MobileNetV2.
+   - Tan and Le 2019: EfficientNet.
+   - Han et al. 2016: deep compression.
+
+5a. Add extra references before report writing for claims not covered by the current five papers:
+   - Olive-specific leaf disease deep learning, especially VGG16/VGG19 or similar transfer-learning studies.
+   - CNN + Vision Transformer or ViT-based plant disease classification.
+   - Edge deployment of plant disease CNNs on Raspberry Pi, Jetson Nano, mobile, or similar low-cost hardware.
+   - Agronomic sources for climate-warming and yield-loss figures, or remove/soften those claims.
+
+6. Organise literature review under five headings:
+   - Plant disease detection with deep learning.
+   - Olive leaf disease classification and dataset limitations.
+   - XAI for image classifiers.
+   - Edge-efficient CNN architectures.
+   - Compression methods: pruning and quantization.
+
+7. Keep a reference table:
+   columns = paper, task, dataset, method, XAI used, edge/compression relevance, limitations.
+
+Phase 3: Dataset audit
+----------------------
+
+8. Count samples per split and class:
+   Current downloaded dataset contains:
+   - train/aculus_olearius: 690
+   - train/Healthy: 830
+   - train/olive_peacock_spot: 1200
+   - test/aculus_olearius: 200
+   - test/Healthy: 220
+   - test/olive_peacock_spot: 260
+
+9. Create a validation split from the training set only:
+   - Suggested split: 80% train, 20% validation, stratified by class.
+   - Keep the provided test set untouched until final evaluation.
+
+10. Run data quality checks:
+   - Broken/corrupt images.
+   - Image dimensions and file formats.
+   - Class imbalance.
+   - Duplicates or near-duplicates using image hashes.
+   - Possible background/camera/lighting bias.
+
+11. Create visual EDA:
+   - Class distribution bar chart.
+   - Example image grid per class.
+   - Image size distribution.
+   - Colour/intensity distribution per class.
+
+Phase 4: Preprocessing
+----------------------
+
+12. Define common image preprocessing:
+   - Resize to 224x224.
+   - Normalize using ImageNet statistics for pretrained models.
+   - Use training-only augmentation: random crop/resize, horizontal flip, brightness/contrast jitter, small rotation.
+
+13. Avoid leakage:
+   - Do not augment validation/test sets.
+   - Do not tune hyperparameters on the test set.
+
+14. Address imbalance:
+   - Use class weights or weighted sampler.
+   - Report macro F1 and balanced accuracy, not only accuracy.
+
+Phase 5: Baseline and model development
+---------------------------------------
+
+15. Build glass-box baseline:
+   - Extract HOG, LBP, and colour histogram features.
+   - Train at least two classical models from the ETech fixed list: Logistic Regression and Decision Tree are the recommended pair.
+   - Optional third model if time allows: SVM or KNN.
+   - Report feature weights for Logistic Regression and feature importance/tree paths for Decision Tree.
+
+16. Build black-box baseline from scratch:
+   - Small CNN trained from random initialization.
+   - Use early stopping and validation monitoring.
+
+17. Build transfer-learning models:
+   - MobileNetV2 pretrained on ImageNet.
+   - EfficientNetB0 pretrained on ImageNet.
+   - Freeze backbone first, train classifier head.
+   - Fine-tune top layers after initial convergence.
+
+18. Save every trained model and training history.
+
+Phase 6: Evaluation
+-------------------
+
+19. Evaluate all models on validation data during development:
+   - Accuracy.
+   - Macro F1.
+   - Balanced accuracy.
+   - Per-class precision, recall, F1.
+   - Confusion matrix.
+
+20. Select final model using validation macro F1 and robustness, not test performance.
+
+21. Run one final test-set evaluation:
+   - Compare Logistic Regression, Decision Tree, scratch CNN, MobileNetV2, EfficientNetB0.
+   - Include confidence intervals or repeated-run means if time allows.
+
+Phase 7: XAI implementation
+---------------------------
+
+22. Define the XAI scope and dimensions before applying methods:
+   - Local explanations: individual correct and incorrect predictions.
+   - Global explanations: class-level patterns and repeated attention behaviour.
+   - Model-specific explanations: Grad-CAM/Grad-CAM++ for CNNs.
+   - Model-agnostic or secondary explanations: occlusion sensitivity or Integrated Gradients.
+   - Intrinsic/ante-hoc explanations: classical models such as Logistic Regression or Decision Tree.
+   - Post-hoc explanations: saliency maps and drift/robustness monitoring after training.
+   - Intended audience: technical markers, agronomists/farmers, and model developers.
+
+23. Apply XAI to the selected black-box model:
+   - Grad-CAM or Grad-CAM++.
+   - Integrated Gradients or occlusion sensitivity as a second check.
+
+24. Select explanation examples:
+   - For each class: at least 2 correct predictions and 2 incorrect predictions.
+   - Include original image, heatmap, predicted label, true label, and confidence score.
+
+25. Interpret explanations:
+   - Does the model focus on disease lesions?
+   - Does it focus on leaf edges, background, lighting, or irrelevant artefacts?
+   - Are errors explainable by image quality, ambiguous symptoms, or background bias?
+   - Are attention patterns stable across model variants and compression settings?
+
+26. Explain glass-box/classical models:
+   - Feature weights for Logistic Regression.
+   - Feature importance or tree paths for Decision Tree.
+
+27. Discuss model drift as a post-hoc XAI/monitoring concern:
+   - Describe likely drift sources: season, cultivar, geography, lighting, camera type, background, and new disease symptoms.
+   - Monitor class distribution, confidence, macro F1, per-class recall, and Grad-CAM attention patterns over time.
+   - Explain how drift could cause false negatives or background-based predictions.
+
+Phase 8: Model compression
+--------------------------
+
+28. Apply pruning:
+   - Start with moderate structured pruning.
+   - Fine-tune after pruning.
+   - Compare model size, latency, macro F1, and per-class recall.
+
+29. Apply quantization:
+   - Try post-training dynamic or static quantization depending on framework support.
+   - Optionally export to ONNX or TFLite if feasible.
+
+30. Measure edge-efficiency:
+   - Parameter count.
+   - File size on disk.
+   - CPU inference latency per image.
+   - Throughput images/second.
+   - Accuracy and macro F1 drop.
+
+31. Compare XAI before and after compression:
+   - Generate Grad-CAM maps for the same images.
+   - Discuss whether compressed models still attend to the same leaf regions.
+
+Phase 9: Alternative dataset check
+----------------------------------
+
+32. Keep the primary dataset unless a replacement is clearly better.
+
+33. If time and storage allow, inspect the 2026 CC0 "Olive Leaf Disease - Clean Unified Dataset":
+   - Kaggle ref: abeersaleh987654321/olive-leaf-disease-clean
+   - Check class labels, duplicates, quality, and overlap with the primary dataset.
+   - Use it only as external validation unless it is clearly cleaner and better documented.
+
+34. Do not switch to an unknown-licence dataset unless the licence is clarified.
+
+Phase 10: Report and notebook
+-----------------------------
+
+35. Notebook structure:
+   - Introduction and dataset rationale.
+   - Data loading and EDA.
+   - Bias and leakage checks.
+   - Preprocessing.
+   - Classical models: Logistic Regression and Decision Tree.
+   - Deep learning models.
+   - Evaluation.
+   - XAI.
+   - XAI scope/dimensions and model drift.
+   - Compression.
+   - Discussion and ethics.
+   - Every section should include markdown rationale, interpretation, and findings; code alone is not sufficient.
+
+36. Report structure following the CA guidance:
+   - Abstract/executive summary, 250-300 words.
+   - Introduction, background, dataset rationale.
+   - Literature review, about 1.5 pages.
+   - Data exploration and preprocessing, about 0.5 page.
+   - Model development and evaluation, about 1 page.
+   - XAI and explainability discussion, about 1.5 pages.
+   - Emerging trends/techniques implementation.
+   - Ethical considerations, about 1 page.
+   - Summary and conclusion, about 0.5 page.
+   - References, contributions, appendices.
+
+37. Keep the report within 6 pages excluding references, contribution text, and appendices.
+   - Penalty: 5 percentage points for every additional half-page or part thereof.
+   - Submissions exceeding 8 pages may have pages beyond the limit excluded from assessment.
+
+38. Include required AI usage declaration after the abstract and before the introduction.
+   - Level 2 AI use means AI can support brainstorming/structure only.
+   - No AI-generated content should be included in the final submission.
+
+39. Use the required filename pattern with student names and student IDs.
+
+40. Keep individual contribution text unique and within the 500-word maximum per student.
+
+41. Treat Turnitin/originality review as a final quality gate for the notebook HTML/PDF and report prose.
+
+42. Map report effort to rubric weights:
+   - Prioritise HCDL XAI and XAI discussion because they carry 45 marks combined.
+   - Prioritise ETech emerging-technique implementation and discussion because they carry 55 marks combined.
+   - Do not over-expand low-mark sections at the expense of XAI, implementation, and discussion.
+
+Phase 11: Project management and deadlines
+------------------------------------------
+
+43. Maintain meeting minutes:
+   - Date, attendees, decisions, assigned tasks, blockers, next actions.
+
+44. Submit individual bi-weekly forms:
+   - 2026-07-09
+   - 2026-07-24
+
+45. Prepare final deliverables:
+   - Combined report PDF: due 2026-08-06 by 22:00.
+   - Notebook plus HTML or PDF export: due 2026-08-06 by 22:00.
+   - Poster or slide deck: due 2026-08-07 by 22:00.
+   - Presentation: first week of September.
+
+Phase 12: Final validation checklist
+------------------------------------
+
+46. Before submission, verify:
+   - Notebook runs top-to-bottom.
+   - No unhandled cell errors.
+   - All figures referenced in the report exist.
+   - Dataset source and licence are cited.
+   - XAI examples include correct and incorrect predictions.
+   - XAI scope/dimensions and model drift are discussed explicitly.
+   - Logistic Regression and Decision Tree are compared with the deep model.
+   - Glass-box/classical and black-box/deep models are compared.
+   - Two ETech implementations are clearly labelled.
+   - Rubric-heavy sections have enough depth.
+   - Ethical considerations are included.
+   - Individual contributions are added, unique, and within 500 words.
+   - AI declaration is included.
+   - Final prose follows Level 2 AI rules and is suitable for Turnitin.

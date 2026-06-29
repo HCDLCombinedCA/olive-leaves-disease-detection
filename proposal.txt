@@ -1,0 +1,16 @@
+Topic: 1. Explainable, Edge-Efficient Deep Learning for Olive Leaf Disease Detection
+
+Dataset: http://kaggle.com/datasets/habibulbasher01644/olive-leaf-image-dataset?select=dataset
+
+Introduction:
+
+The olive tree (Olea europaea L.) is a fundamental crop in the Mediterranean region, where climate warming is already progressing 20% faster than the global average, intensifying the threat of plant pathogens to this economically vital species. Among the most damaging threats are Olive Peacock Spot (Venturia oleaginea) and the mite infestation Aculus olearius, which can cause severe yield losses of approximately 20% or higher depending on climatic conditions.
+
+Early detection of such diseases allows farmers to take appropriate countermeasures, yet traditional diagnosis remains slow, costly, and reliant on scarce expert knowledge. Deep learning has emerged as a powerful alternative. Transfer learning using VGG16 and VGG19 architectures has demonstrated strong performance on olive leaf disease datasets, with data augmentation studies confirming its importance for classification accuracy. Subsequent work scaled these efforts, with pretrained CNN architectures employed as feature extractors combined with classical machine learning classifiers, offering shorter training times and efficient data processing. More recently, hybrid models combining CNNs with Vision Transformers have been investigated, finding that deep learning is the best tool for leaf disease detection, though the lack of labelled data continues to affect quality.
+
+Despite these advances, critical gaps persist. Explainable AI (XAI) techniques remain underutilised in many CNN models, making it difficult for users to understand the decision making process. This is a significant barrier to farmer trust and regulatory adoption. Simultaneously, the use of CNN architectures such as MobileNet and EfficientNet, combined with pruning and quantization, has made effective disease detection possible on hardware such as Raspberry Pi and Jetson Nano, yet no study has applied such compression pipelines specifically to olive disease models while simultaneously auditing explanation fidelity. Solving these problems would enable trustworthy, real time olive disease diagnosis on affordable field hardware, ultimately supporting food security and sustainable agriculture across the Mediterranean and beyond.
+
+Research Questions:
+
+a. How effectively do ImageNet-pretrained CNN architectures transfer to olive leaf disease classification compared with training from scratch and with an interpretable glass-box baseline, and what do XAI techniques reveal about them?
+b. To what extent can post-training quantization and pruning reduce model size and inference latency for olive disease classification while preserving accuracy and explanation fidelity, enabling deployment on low-cost edge hardware?

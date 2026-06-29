@@ -1,0 +1,390 @@
+Proposal review against "Combined Project 2 Summer 2026 - HCAIM"
+=================================================================
+
+Reviewed proposal: Explainable, Edge-Efficient Deep Learning for Olive Leaf Disease Detection
+Primary dataset downloaded: olive-leaf-image-dataset.zip
+Dataset URL: https://www.kaggle.com/datasets/habibulbasher01644/olive-leaf-image-dataset
+Review date: 2026-06-29
+
+1. Overall assessment
+---------------------
+
+The proposal is suitable for the CA theme because it combines a public image dataset, deep learning, XAI, and an emerging-technique angle around edge-efficient deployment. The two research questions are relevant and can be evaluated experimentally.
+
+However, the proposal is currently still too high-level for the full CA specification. It needs a clearer experimental design, an explicit mapping to the mandatory HCDL and ETech requirements, stronger dataset justification, defined baseline models, an XAI evaluation plan, and a concrete plan for two emerging-technique implementations.
+
+2. Strengths
+------------
+
+1. Clear application area:
+   The topic is concrete and human-centred: early olive leaf disease detection for farmers and agronomists.
+
+2. Suitable public dataset:
+   The selected Kaggle dataset is public, downloadable, CC0/Public Domain, and directly aligned with olive leaf disease classification.
+
+3. Good fit for deep learning:
+   Leaf image classification naturally supports CNN transfer learning and comparison with simpler baselines.
+
+4. Good fit for XAI:
+   The model can be explained visually using Grad-CAM, Score-CAM, Integrated Gradients, occlusion sensitivity, or similar saliency methods.
+
+5. Good fit for ETech:
+   Edge efficiency can be addressed through transfer learning, pruning, quantization, or knowledge distillation.
+
+3. Main gaps and improvements needed
+------------------------------------
+
+3.1 Missing explicit alignment with the CA rubric
+
+The CA requires more than a topic and RQs. The proposal should explicitly state how the project will satisfy:
+
+- Dataset rationale and structure.
+- Data exploration, including bias investigation.
+- Pre-processing.
+- Two networks: one glass-box/interpretable model and one black-box/deep model.
+- At least two classical models from the ETech list: Logistic Regression, Naive Bayes, KNN, Decision Tree, SVM, PCA.
+- Model performance evaluation and comparison.
+- XAI for correct and incorrect predictions.
+- XAI scope/dimensions and model drift as a post-hoc XAI/monitoring concern.
+- Discussion of explainability and model performance.
+- Two emerging-technique implementations with code.
+- Ethical considerations.
+- Individual contribution and project management evidence.
+- Submission rules: page limit, filename, contribution cap, Turnitin/originality, and AI-use declaration.
+
+Suggested fix:
+Add a "CA requirement mapping" section to the proposal, listing each mandatory CA heading and the planned output.
+
+3.2 Research questions need measurable success criteria
+
+Current RQs are relevant but need measurable outcomes.
+
+RQ a should define:
+- Which pretrained CNNs will be tested, e.g. MobileNetV2, EfficientNetB0, ResNet50.
+- What "training from scratch" means, e.g. same architecture with random initialization.
+- What the glass-box baseline is, e.g. HOG/LBP colour-texture features plus Logistic Regression or Decision Tree.
+- Which metrics decide effectiveness, e.g. macro F1, balanced accuracy, per-class recall, confusion matrix, calibration, inference time.
+
+RQ b should define:
+- Which compression methods will be used, e.g. post-training quantization and structured pruning.
+- Which deployment target will be simulated, e.g. CPU inference or optional Raspberry Pi/Jetson Nano.
+- How "preserving accuracy" is measured, e.g. macro F1 drop <= 2-5 percentage points.
+- How "explanation fidelity" is measured, e.g. visual comparison of Grad-CAM maps before/after compression plus deletion/insertion or pointing-game style metrics if feasible.
+
+3.3 Need two emerging-technique implementations
+
+The CA asks for implementation of any two focus areas:
+- Semi-supervised/self-supervised learning.
+- Transfer learning.
+- Federated learning.
+- Model compression.
+- Collaborative AI.
+- RAG.
+
+The proposal currently implies transfer learning and model compression, but it should explicitly declare them as the two ETech implementations:
+
+1. Transfer learning:
+   Fine-tune ImageNet-pretrained MobileNetV2/EfficientNetB0 and compare against training from scratch.
+
+2. Model compression:
+   Apply pruning and quantization, then compare model size, inference latency, macro F1, and XAI stability.
+
+State this unambiguously in the report: the assessed ETech implementations are (1) transfer learning and (2) model compression. Pruning and quantization can be treated as two compression variants inside the model-compression implementation, but they should not make the report unclear about which two focus areas are being claimed.
+
+3.4 Glass-box versus black-box model is not fully specified
+
+The HCDL rubric expects comparison between glass-box and black-box models. CNNs are black-box models. The ETech rubric also explicitly requires any two models from the following fixed list to be compared with the deep learning model: Logistic Regression, Naive Bayes, K-Nearest Neighbour, Decision Tree, Support Vector Machines, PCA. The proposal should therefore commit to two classical models, not just "one or more" baselines.
+
+Recommended glass-box options:
+- Logistic Regression using engineered features such as colour histograms, LBP, HOG, and lesion-area features.
+- Decision Tree using the same engineered features.
+- Optional third model if time allows: SVM or KNN.
+
+Recommended black-box options:
+- MobileNetV2 or EfficientNetB0 fine-tuned on the olive dataset.
+- Optionally ResNet50 as a heavier comparison model.
+
+3.5 XAI scope is underdeveloped
+
+The CA requires strong XAI, including explanations for correct and incorrect predictions. The proposal only says XAI is underused.
+
+Suggested XAI plan:
+- Use Grad-CAM or Grad-CAM++ for CNN visual explanations.
+- Use Integrated Gradients or occlusion sensitivity as a second explanation check.
+- Define the scope and dimensions of XAI before presenting methods:
+  - local versus global explanations.
+  - model-specific versus model-agnostic explanations.
+  - intrinsic/ante-hoc versus post-hoc explanations.
+  - target audience: technical reviewers, farmers/agronomists, and project assessors.
+  - purpose: debugging, trust calibration, bias detection, and post-deployment monitoring.
+- For each class, show at least:
+  - 2 correct predictions.
+  - 2 incorrect predictions.
+  - confidence score and predicted/true label.
+  - explanation heatmap.
+  - short interpretation of whether the model attends to disease lesions or background artefacts.
+- Compare XAI before and after quantization/pruning.
+- Include model drift as a post-hoc XAI/monitoring topic: explain how performance, confidence, class distribution, and Grad-CAM attention patterns could change when the model is used on new cultivars, lighting conditions, cameras, seasons, or geographic regions.
+- For the glass-box baseline, explain top features or decision paths.
+
+3.6 Dataset risks need to be discussed
+
+The downloaded dataset contains:
+
+- train/aculus_olearius: 690 images
+- train/Healthy: 830 images
+- train/olive_peacock_spot: 1200 images
+- test/aculus_olearius: 200 images
+- test/Healthy: 220 images
+- test/olive_peacock_spot: 260 images
+- Total: 3400 images
+
+Important risks:
+
+1. Class imbalance:
+   Peacock spot has more examples than Aculus olearius. Use macro F1, balanced accuracy, class weights, stratified validation, and per-class recall.
+
+2. Possible data leakage:
+   Check whether near-duplicate images appear across train/test splits. Use image hashing or embedding similarity.
+
+3. Background bias:
+   If disease classes were photographed under different backgrounds, the CNN may learn background, lighting, or camera artefacts. XAI should explicitly check this.
+
+4. Limited disease scope:
+   Only two disease/pest conditions plus healthy leaves are represented. The proposal should not overclaim general olive disease diagnosis.
+
+5. Train/test split already provided:
+   Keep the official test split untouched. Create a validation split only from training data.
+
+3.7 Ethical considerations are missing
+
+The final report requires ethical discussion. The proposal should include:
+
+- Risk of false negatives causing untreated disease spread.
+- Risk of false positives causing unnecessary pesticide use.
+- Limits of deploying a model outside the dataset's geography, cultivar, lighting, and camera conditions.
+- Need for human expert confirmation before high-stakes agricultural decisions.
+- Privacy is low risk because leaf images do not contain personal data, but dataset licensing and attribution still matter.
+- AI declaration: final submission must follow TU Dublin Level 2 AI use rules.
+
+3.8 Literature review needs clearer structure
+
+The proposal cites prior work in general terms but does not provide references. The five downloaded references are useful foundations, but they do not fully support all specific claims in the proposal introduction. In particular, additional evidence is needed for:
+
+- the climate-warming and yield-loss figures.
+- olive-specific VGG16/VGG19 transfer-learning claims.
+- CNN + Vision Transformer claims for plant or olive disease detection.
+- Raspberry Pi/Jetson Nano deployment claims for plant-disease CNNs.
+
+Either add references for those claims or soften/remove the unsupported specifics from the proposal. The literature review should be structured around:
+
+1. Plant disease image classification with deep learning.
+2. Olive leaf disease detection and transfer learning.
+3. Explainability for CNN image classifiers.
+4. Efficient edge models such as MobileNet/EfficientNet.
+5. Compression methods such as pruning and quantization.
+
+3.9 Rubric weights and submission rules need to be explicit
+
+The project plan should reflect the mark weights, because the highest-value items need the most effort:
+
+- ETech: XAI and performance comparison = 20 marks, emerging-tools implementation = 30 marks, literature review = 10 marks, discussion = 25 marks, project management = 5 marks, presentation = 10 marks.
+- HCDL: dataset/rationale = 5 marks, data exploration/preprocessing/bias = 10 marks, two networks = 10 marks, model evaluation/comparison = 5 marks, XAI = 25 marks, XAI discussion = 20 marks, summary = 5 marks, presentation = 20 marks.
+
+The plan should also include the administrative rules:
+
+- Report limit: 6 pages excluding references, contribution text, and appendices.
+- Penalty: 5 percentage points for every additional half-page or part thereof.
+- Submissions over 8 pages may have pages beyond the limit excluded from assessment.
+- Filename should include student name(s) and student ID(s), following the supplied template.
+- Individual contribution text must be unique and maximum 500 words per student.
+- Notebook HTML/PDF will be checked through Turnitin.
+- TU Dublin Level 2 AI use allows brainstorming/structure only; no AI-generated content should be included in the final submission.
+- Code alone is not enough: each notebook section needs markdown rationale, interpretation, and findings.
+
+4. Downloaded reference papers
+------------------------------
+
+The following five PDF references were downloaded into the ref directory:
+
+1. ref/mohanty-plant-disease-detection.pdf
+   Mohanty, Hughes, and Salathe. "Using Deep Learning for Image-Based Plant Disease Detection." Frontiers in Plant Science, 2016.
+   URL: https://www.frontiersin.org/articles/10.3389/fpls.2016.01419
+
+2. ref/grad-cam.pdf
+   Selvaraju et al. "Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization." ICCV, 2017.
+   URL: https://arxiv.org/abs/1610.02391
+
+3. ref/mobilenetv2.pdf
+   Sandler et al. "MobileNetV2: Inverted Residuals and Linear Bottlenecks." CVPR, 2018.
+   URL: https://arxiv.org/abs/1801.04381
+
+4. ref/efficientnet.pdf
+   Tan and Le. "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks." ICML, 2019.
+   URL: https://arxiv.org/abs/1905.11946
+
+5. ref/deep-compression.pdf
+   Han, Mao, and Dally. "Deep Compression: Compressing Deep Neural Networks with Pruning, Trained Quantization and Huffman Coding." ICLR, 2016.
+   URL: https://arxiv.org/abs/1510.00149
+
+4.1 Recommended use of each reference in this project
+-----------------------------------------------------
+
+1. Mohanty, Hughes, and Salathe 2016
+   Use this paper in the introduction and literature review as the main foundation for image-based plant disease detection with CNNs. It supports the claim that deep learning can classify plant diseases from leaf images and helps justify choosing an image classification pipeline for olive leaves. It can also be used to discuss limitations of controlled image datasets, such as weaker generalisation when models are moved from curated images to field conditions.
+
+   Suggested report sections:
+   - Introduction/background.
+   - Literature review: plant disease image classification.
+   - Dataset rationale and limitations.
+
+2. Selvaraju et al. 2017, Grad-CAM
+   Use this paper as the methodological basis for the XAI part of the project. It justifies using class activation heatmaps to inspect whether the CNN focuses on diseased leaf regions or irrelevant background areas. This reference should be cited when presenting Grad-CAM/Grad-CAM++ heatmaps for correct and incorrect predictions.
+
+   Suggested report sections:
+   - XAI implementation.
+   - Discussion on model performance and explainability.
+   - Error analysis of false positives and false negatives.
+
+3. Sandler et al. 2018, MobileNetV2
+   Use this paper to justify MobileNetV2 as an edge-friendly CNN architecture. It is directly relevant to the proposal's "edge-efficient" claim because MobileNetV2 was designed for efficient inference on resource-constrained devices. It can support the selection of MobileNetV2 as the main black-box model or as one of the transfer-learning models.
+
+   Suggested report sections:
+   - Model development.
+   - Emerging technique: transfer learning.
+   - Edge-efficiency evaluation.
+
+4. Tan and Le 2019, EfficientNet
+   Use this paper to justify EfficientNetB0 as a strong compact transfer-learning baseline. EfficientNet is useful as a comparison against MobileNetV2 because it provides a different efficiency strategy through compound scaling. In this project, EfficientNetB0 can test whether a compact but high-performing architecture improves accuracy or macro F1 without becoming too expensive for edge deployment.
+
+   Suggested report sections:
+   - Model development.
+   - Transfer-learning comparison.
+   - Performance versus efficiency discussion.
+
+5. Han, Mao, and Dally 2016, Deep Compression
+   Use this paper as the theoretical and methodological foundation for model compression. It supports the proposal's second research question about reducing model size and inference cost through pruning and quantization. It should be cited when explaining why pruning/quantization are selected as one of the two required ETech implementations.
+
+   Suggested report sections:
+   - Emerging technique: model compression.
+   - Compression experiment design.
+   - Discussion of accuracy, model size, latency, and XAI stability after compression.
+
+4.2 How the references map to the CA requirements
+-------------------------------------------------
+
+- Literature review:
+  Mohanty et al. 2016, Grad-CAM, MobileNetV2, EfficientNet, and Deep Compression together cover the required scholarly background across plant disease detection, XAI, transfer learning, efficient architectures, and compression.
+
+- HCDL model development:
+  MobileNetV2 and EfficientNet justify the selected CNN architectures; Mohanty et al. supports the broader use of CNNs for plant disease classification.
+
+- HCDL/ETech XAI:
+  Grad-CAM provides the main citation for visual explanations and for analysing correct and incorrect predictions.
+
+- ETech implementation 1, transfer learning:
+  MobileNetV2 and EfficientNet support pretrained CNN fine-tuning.
+
+- ETech implementation 2, model compression:
+  Deep Compression supports pruning and quantization experiments.
+
+- Discussion and limitations:
+  Mohanty et al. can be used to discuss dataset generalisation risks; Grad-CAM can be used to discuss whether explanations reveal background bias or lesion-focused reasoning.
+
+5. Dataset search and suitability
+---------------------------------
+
+Primary dataset used:
+
+- Olive Leaf Image Dataset
+- Kaggle ref: habibulbasher01644/olive-leaf-image-dataset
+- Size: about 100 MB on Kaggle, downloaded locally as olive-leaf-image-dataset.zip
+- Licence: CC0/Public Domain
+- Updated: 2025-02-10
+- Classes: Healthy, Aculus olearius, olive peacock spot
+- Suitability: good for the proposed classification task because it is public, small enough for fast experimentation, labelled clearly, and directly about olive leaves.
+
+Alternative datasets found:
+
+1. serhathoca/zeytin
+   Title: Olive Leaf Disease
+   Size: about 737 MB
+   Licence: Unknown
+   Updated: 2023-06-04
+   Assessment: potentially useful if it contains more images, but unknown licence and weak metadata make it less suitable for a student CA unless verified.
+
+2. abeer saleh / olive-leaf-disease-clean
+   Title: Olive Leaf Disease - Clean Unified Dataset
+   Size: about 1.82 GB
+   Licence: CC0/Public Domain
+   Updated: 2026-04-29
+   Assessment: potentially more suitable for external validation or a larger final model because it is newer, larger, and CC0. Risk: low Kaggle usability rating and fewer downloads/views, so it needs inspection before replacing the primary dataset.
+
+3. ademhadhraoui/olive-leaf-disease-yolo-aug-rare
+   Title: Olive Leaf Disease YOLO Dataset Aug Rare
+   Size: about 3.08 GB
+   Licence: CC0/Public Domain
+   Updated: 2026-06-20
+   Assessment: may be useful for object detection or lesion localisation, but it is not the best direct fit for a simple classification pipeline unless the project changes scope.
+
+4. techplusmentor/olive-leaf-disease-datasets
+   Size: about 88 MB
+   Licence: Unknown
+   Updated: 2022-05-22
+   Assessment: similar size but weaker metadata/licensing than the selected dataset.
+
+Recommendation:
+Use habibulbasher01644/olive-leaf-image-dataset as the primary dataset. Optionally use abeer saleh / olive-leaf-disease-clean as an external validation dataset if time and storage allow, after checking its class labels, duplicates, licence page, and whether it overlaps with the primary dataset.
+
+6. Concrete proposal revisions
+------------------------------
+
+Add the following to the proposal:
+
+1. Dataset paragraph:
+   State the dataset size, classes, licence, train/test split, and known risks such as imbalance and background bias.
+
+2. Model plan:
+   Compare:
+   - Classical/glass-box models: Logistic Regression and Decision Tree using HOG/LBP/colour features; optionally add SVM or KNN.
+   - Black-box: MobileNetV2 and/or EfficientNetB0 transfer learning.
+   - Training-from-scratch CNN as a control.
+
+3. Evaluation plan:
+   Use accuracy, macro F1, balanced accuracy, per-class precision/recall, confusion matrix, model size, inference latency, and statistical comparison across repeated runs if time allows.
+
+4. XAI plan:
+   Define XAI scope/dimensions, use Grad-CAM/Grad-CAM++ and Integrated Gradients or occlusion sensitivity, analyse correct and incorrect predictions for every class, and discuss model drift as a post-hoc monitoring issue.
+
+5. Emerging-technique plan:
+   Declare transfer learning and model compression as the two required ETech implementations.
+
+6. Edge-efficiency plan:
+   Measure model size, parameter count, CPU latency, and accuracy/F1 drop after quantization and pruning.
+
+7. Ethical plan:
+   Discuss false positives/negatives, deployment limitations, human oversight, dataset bias, and responsible AI declaration.
+
+8. Project management plan:
+   Include meeting minutes, task allocation, individual contribution records, and the required bi-weekly forms due 2026-07-09 and 2026-07-24.
+
+9. Report-admin plan:
+   Add the 6-page limit, 5 percentage-point overlength penalty, 8-page exclusion risk, filename/student-ID rule, 500-word individual contribution cap, Turnitin/originality warning, and "no AI content in final submission" Level 2 rule.
+
+10. Reference plan:
+   Add extra citations for olive-specific deep learning, CNN+ViT/ViT plant disease work, edge deployment on Raspberry Pi/Jetson-type hardware, and the climate/yield figures; otherwise soften those claims.
+
+7. Bottom line
+--------------
+
+The idea is viable and well aligned with the CA, but the proposal should be strengthened before implementation. The highest-priority fixes are:
+
+1. Explicitly map the work to the CA rubric.
+2. Select two classical models from the ETech fixed list and compare both with the deep model.
+3. Define the glass-box and black-box models.
+4. Define two emerging-technique implementations.
+5. Add a concrete XAI protocol, including XAI dimensions and model drift.
+6. Add rubric mark-weight mapping and submission-admin rules.
+7. Add dataset bias/leakage checks.
+8. Add metrics for edge efficiency and explanation fidelity.
+9. Add ethical and project-management components.
