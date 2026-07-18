@@ -21,7 +21,6 @@ weights/
 *.png.out
 
 # data (keep the README + generator, ignore the actual images/clouds)
-data/samples/*
 !data/samples/.gitkeep
 *.ply
 *.las
