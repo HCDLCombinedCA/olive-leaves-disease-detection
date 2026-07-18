@@ -1,0 +1,7 @@
+# Mask2Former through Hugging Face transformers.
+torch>=2.0
+torchvision>=0.15
+transformers>=4.40
+huggingface_hub>=0.24
+numpy>=1.24
+Pillow>=9.5

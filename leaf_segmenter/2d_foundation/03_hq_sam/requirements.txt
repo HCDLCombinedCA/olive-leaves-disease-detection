@@ -1,0 +1,8 @@
+# HQ-SAM (SysCV). The pip package mirrors the SAM v1 API.
+torch>=2.0
+torchvision>=0.15
+segment-anything-hq>=0.3
+timm>=0.9         # required by the vit_tiny (Light HQ-SAM) backbone
+huggingface_hub>=0.24
+numpy>=1.24
+Pillow>=9.5

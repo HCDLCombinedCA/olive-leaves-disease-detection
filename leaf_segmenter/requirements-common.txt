@@ -1,0 +1,7 @@
+# Lightweight deps shared by the helper module (shared/leafviz.py).
+# Each model folder has its OWN requirements.txt with the heavy libraries,
+# because the model stacks (sam2, detectron2, ultralytics, transformers,
+# torch-geometric ...) have conflicting dependencies and must live in
+# separate virtual environments. Do NOT try to install everything at once.
+numpy>=1.24
+Pillow>=9.5

@@ -1,0 +1,10 @@
+# SAM 2 (Meta). Needs Python >= 3.10, PyTorch >= 2.5.1.
+# torch/torchvision: the default PyPI wheels are CUDA builds and work on WSL2.
+# If you need a specific CUDA version, install torch first from
+#   https://pytorch.org/get-started/locally/  then the rest of this file.
+torch>=2.5.1
+torchvision>=0.20.1
+sam2>=1.1
+huggingface_hub>=0.24
+numpy>=1.24
+Pillow>=9.5

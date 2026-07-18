@@ -1,0 +1,4 @@
+# Ultralytics pulls in a compatible torch/torchvision automatically.
+ultralytics>=8.3.0
+numpy>=1.24
+Pillow>=9.5

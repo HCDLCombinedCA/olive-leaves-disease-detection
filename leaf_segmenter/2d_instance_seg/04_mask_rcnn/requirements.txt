@@ -1,0 +1,5 @@
+# Mask R-CNN via torchvision (no Detectron2 build required).
+torch>=2.0
+torchvision>=0.15
+numpy>=1.24
+Pillow>=9.5

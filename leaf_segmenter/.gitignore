@@ -1,0 +1,28 @@
+# virtual envs (one per model folder)
+.venv/
+**/.venv/
+venv/
+__pycache__/
+*.pyc
+
+# downloaded model weights / checkpoints
+*.pth
+*.pt
+*.pkl
+*.onnx
+checkpoints/
+weights/
+
+# cloned upstream repos (see per-folder setup scripts)
+**/upstream/
+
+# outputs
+**/outputs/
+*.png.out
+
+# data (keep the README + generator, ignore the actual images/clouds)
+data/samples/*
+!data/samples/.gitkeep
+*.ply
+*.las
+*.laz
