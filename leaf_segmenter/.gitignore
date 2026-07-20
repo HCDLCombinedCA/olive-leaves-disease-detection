@@ -17,8 +17,8 @@ weights/
 **/upstream/
 
 # outputs
-**/outputs/
-*.png.out
+#**/outputs/
+#*.png.out
 
 # data (keep the README + generator, ignore the actual images/clouds)
 !data/samples/.gitkeep
