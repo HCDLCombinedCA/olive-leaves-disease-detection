@@ -7,6 +7,8 @@ COCO-instance weights (auto-download).
 **Status:** ✅ Runs out of the box. ⚠️ COCO weights have no "leaf" class —
 fine-tune for real leaf results, or pass a fine-tuned checkpoint with `--model`.
 
+**Reference paper:** [Masked-attention Mask Transformer for Universal Image Segmentation (Cheng et al., CVPR 2022)](https://arxiv.org/abs/2112.01527). Leaf-specific SOTA built on this line: [GMT — Guided Mask Transformer (Chen et al., WACV 2025)](https://arxiv.org/abs/2406.17109).
+
 ## Install & run
 
 ```bash
@@ -14,8 +16,8 @@ cd 2d_instance_seg/06_mask2former
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-python run_mask2former.py --image ../../data/samples/synthetic_leaf.png --output outputs/
-python run_mask2former.py --input-dir ../../data/samples
+python run_mask2former.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
+python run_mask2former.py --input-dir ../../data/cvppp/images/A1
 ```
 
 ## Model choice on 6 GB VRAM

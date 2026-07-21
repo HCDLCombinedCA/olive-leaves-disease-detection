@@ -8,6 +8,8 @@ accuracy-for-effort choice once you have labels.
 **Status:** ✅ Runs out of the box (COCO weights auto-download). ⚠️ COCO has no
 "leaf" class — fine-tune for real results (`train_yolo_seg.py`).
 
+**Reference:** [Ultralytics YOLO (segmentation docs)](https://docs.ultralytics.com/tasks/segment/) — YOLOv8 and YOLO11 are released by Ultralytics without a formal peer-reviewed paper; cite the Ultralytics software/docs. Leaf/orchard application: [YOLOv8-seg orchard study (2023)](https://arxiv.org/abs/2312.07571).
+
 ## Install
 
 ```bash
@@ -20,9 +22,9 @@ pip install -r requirements.txt
 
 ```bash
 # COCO baseline (sanity check)
-python run_yolo_seg.py --image ../../data/samples/synthetic_leaf.png --output outputs/
+python run_yolo_seg.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
 # your fine-tuned model
-python run_yolo_seg.py --input-dir ../../data/samples --weights runs/segment/train/weights/best.pt
+python run_yolo_seg.py --input-dir ../../data/cvppp/images/A1 --weights runs/segment/train/weights/best.pt
 ```
 
 Model sizes: `yolo11n-seg.pt` (nano, fastest) → `s` → `m` → `l` → `x`. On a 6 GB

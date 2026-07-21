@@ -9,6 +9,8 @@ trying if your subject is rosette/top-down foliage.
 Keras 2.2**, which will *not* run on your Python 3.12. It needs an isolated
 Python 3.7 environment (conda/pyenv). Weights are a separate download.
 
+**Reference papers:** [Deep Leaf Segmentation Using Synthetic Data (Ward, Moghadam & Hudson, BMVC-W 2018)](https://arxiv.org/abs/1807.10931) — the synthetic-Arabidopsis leaf Mask R-CNN this folder uses; generalized in [UPGen — Scalable learning for bridging the species gap in image-based plant phenotyping (Ward & Moghadam, CVIU 2020)](https://arxiv.org/abs/2003.10757).
+
 ## Setup
 
 ```bash

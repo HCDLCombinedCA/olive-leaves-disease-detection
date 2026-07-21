@@ -6,10 +6,11 @@ No training or annotation required. Weights auto-download from Hugging Face on
 first run.
 
 Examples:
-    python run_sam2.py --image ../../data/samples/synthetic_leaf.png --output outputs/
-    python run_sam2.py --input-dir ../../data/samples --model-size tiny --output outputs/
+    python run_sam2.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
+    python run_sam2.py --input-dir ../../data/cvppp/images/A1 --model-size tiny --output outputs/
     python run_sam2.py --image branch.jpg --no-green-filter   # keep every mask
     python run_sam2.py --image branch.jpg --crops             # cut out each leaf
+    python run_sam2.py --image branch.jpg --masks             # binary masks, for SBD/AP eval
 """
 import argparse
 import glob
@@ -23,7 +24,7 @@ import torch
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, REPO_ROOT)
 from shared.leafviz import (green_fraction, load_image, overlay_masks,
-                            save_counts_csv, save_image, write_crops)
+                            save_counts_csv, save_image, write_crops, write_masks)
 
 MODEL_IDS = {
     "tiny": "facebook/sam2.1-hiera-tiny",
@@ -34,6 +35,7 @@ MODEL_IDS = {
 
 
 def build_mask_generator(model_id: str, device: str, points_per_side: int):
+    """Load pretrained SAM 2 weights and wrap them in an automatic mask generator."""
     from sam2.automatic_mask_generator import SAM2AutomaticMaskGenerator
 
     # Newer sam2 exposes .from_pretrained on the generator; fall back to build_sam2_hf.
@@ -49,6 +51,8 @@ def build_mask_generator(model_id: str, device: str, points_per_side: int):
 
 
 def filter_leaf_masks(image, anns, min_green, min_area_frac, max_area_frac):
+    """Keep only mid-sized, mostly-green masks -- SAM 2 is class-agnostic, so this
+    is how we pick the leaves out of its "segment everything" output."""
     h, w = image.shape[:2]
     total = h * w
     keep = []
@@ -64,6 +68,8 @@ def filter_leaf_masks(image, anns, min_green, min_area_frac, max_area_frac):
 
 
 def process(path, generator, args, out_dir):
+    """Segment one image, filter to leaves, save the overlay (+ optional crops /
+    binary masks), and return the leaf count."""
     image = load_image(path)
     t0 = time.time()
     with torch.inference_mode():
@@ -87,11 +93,17 @@ def process(path, generator, args, out_dir):
         n = write_crops(image, masks, crop_dir, stem, all_masks=all_masks)
         msg += f"  ->  {n} leaf crops + full overlay in {crop_dir}/"
 
+    if args.masks:
+        mask_dir = os.path.join(out_dir, f"{stem}_masks")
+        n_m = write_masks(masks, mask_dir, stem)
+        msg += f"  ->  {n_m} binary masks in {mask_dir}/"
+
     print(msg)
     return len(masks)
 
 
 def gather_inputs(args):
+    """List the input images: a single --image, or every image in --input-dir."""
     if args.image:
         return [args.image]
     exts = ("*.jpg", "*.jpeg", "*.png", "*.bmp", "*.tif", "*.tiff")
@@ -122,6 +134,10 @@ def main():
     ap.add_argument("--count-csv",
                     help="write predicted leaf counts (image,n_leaves) here, "
                          "for eval/evaluate_leaf_count.py")
+    ap.add_argument("--masks", action="store_true",
+                    help="also write one full-size binary PNG per leaf mask "
+                         "(white=leaf, black=background) into "
+                         "outputs/<image>_masks/, for SBD/AP-style evaluation")
     ap.add_argument("--min-green", type=float, default=0.5,
                     help="min fraction of green pixels for a mask to count as a leaf")
     ap.add_argument("--min-area", type=float, default=0.0005,

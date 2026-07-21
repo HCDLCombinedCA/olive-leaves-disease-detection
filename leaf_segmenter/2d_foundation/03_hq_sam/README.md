@@ -7,6 +7,8 @@ looks blobby. Still zero-shot. `vit_tiny` is **Light HQ-SAM** (TinyViT backbone,
 
 **Status:** ✅ Runs out of the box. Checkpoints auto-download from the HF hub.
 
+**Reference paper:** [Segment Anything in High Quality (Ke et al., NeurIPS 2023)](https://arxiv.org/abs/2306.01567)
+
 ## Install
 
 ```bash
@@ -19,8 +21,8 @@ pip install -r requirements.txt
 ## Run
 
 ```bash
-python run_hq_sam.py --image ../../data/samples/synthetic_leaf.png --model-type vit_tiny
-python run_hq_sam.py --input-dir ../../data/samples --model-type vit_b --output outputs/
+python run_hq_sam.py --image ../../data/cvppp/images/A1/plant001_rgb.png --model-type vit_tiny
+python run_hq_sam.py --input-dir ../../data/cvppp/images/A1 --model-type vit_b --output outputs/
 ```
 
 Same output convention and green/size filter flags as folder 01

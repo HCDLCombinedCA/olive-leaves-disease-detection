@@ -7,9 +7,10 @@ higher-quality decoder. `vit_tiny` = "Light HQ-SAM" (fast, fits 6 GB easily).
 Checkpoints auto-download from the Hugging Face hub (`lkeab/hq-sam`).
 
 Examples:
-    python run_hq_sam.py --image ../../data/samples/synthetic_leaf.png --model-type vit_tiny
-    python run_hq_sam.py --input-dir ../../data/samples --model-type vit_b --output outputs/
+    python run_hq_sam.py --image ../../data/cvppp/images/A1/plant001_rgb.png --model-type vit_tiny
+    python run_hq_sam.py --input-dir ../../data/cvppp/images/A1 --model-type vit_b --output outputs/
     python run_hq_sam.py --image branch.jpg --crops   # cut out each leaf
+    python run_hq_sam.py --image branch.jpg --masks   # binary masks, for SBD/AP eval
 """
 import argparse
 import glob
@@ -23,7 +24,7 @@ import torch
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, REPO_ROOT)
 from shared.leafviz import (green_fraction, load_image, overlay_masks,
-                            save_counts_csv, save_image, write_crops)
+                            save_counts_csv, save_image, write_crops, write_masks)
 
 HF_REPO = "lkeab/hq-sam"
 CKPT_FILES = {
@@ -92,6 +93,11 @@ def process(path, generator, args, out_dir):
         n = write_crops(image, masks, crop_dir, stem, all_masks=all_masks)
         msg += f"  ->  {n} leaf crops + full overlay in {crop_dir}/"
 
+    if args.masks:
+        mask_dir = os.path.join(out_dir, f"{stem}_masks")
+        n_m = write_masks(masks, mask_dir, stem)
+        msg += f"  ->  {n_m} binary masks in {mask_dir}/"
+
     print(msg)
     return len(masks)
 
@@ -125,6 +131,10 @@ def main():
     ap.add_argument("--count-csv",
                     help="write predicted leaf counts (image,n_leaves) here, "
                          "for eval/evaluate_leaf_count.py")
+    ap.add_argument("--masks", action="store_true",
+                    help="also write one full-size binary PNG per leaf mask "
+                         "(white=leaf, black=background) into "
+                         "outputs/<image>_masks/, for SBD/AP-style evaluation")
     ap.add_argument("--min-green", type=float, default=0.5)
     ap.add_argument("--min-area", type=float, default=0.0005)
     ap.add_argument("--max-area", type=float, default=0.25)

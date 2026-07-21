@@ -8,6 +8,8 @@ with COCO weights because it installs cleanly (no Detectron2 compilation).
 the box it detects generic objects and usually finds nothing on a bare branch.
 Use it as a runnable baseline and as the backbone you **fine-tune** on leaves.
 
+**Reference paper:** [Mask R-CNN (He, Gkioxari, Dollár & Girshick, ICCV 2017)](https://arxiv.org/abs/1703.06870)
+
 ## Install & run (COCO baseline / sanity check)
 
 ```bash
@@ -15,7 +17,7 @@ cd 2d_instance_seg/04_mask_rcnn
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-python run_mask_rcnn.py --image ../../data/samples/synthetic_leaf.png --score-thresh 0.3
+python run_mask_rcnn.py --image ../../data/cvppp/images/A1/plant001_rgb.png --score-thresh 0.3
 ```
 
 ## Fine-tune on leaves (where the accuracy comes from)

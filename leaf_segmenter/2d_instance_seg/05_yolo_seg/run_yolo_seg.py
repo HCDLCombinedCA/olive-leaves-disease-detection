@@ -8,10 +8,11 @@ COCO has no "leaf" class — use `--weights` to point at a model you fine-tuned
 with train_yolo_seg.py for real leaf results.
 
 Examples:
-    python run_yolo_seg.py --image ../../data/samples/synthetic_leaf.png --output outputs/
-    python run_yolo_seg.py --input-dir ../../data/samples --weights yolo11s-seg.pt
+    python run_yolo_seg.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
+    python run_yolo_seg.py --input-dir ../../data/cvppp/images/A1 --weights yolo11s-seg.pt
     python run_yolo_seg.py --image branch.jpg --weights runs/segment/train/weights/best.pt
     python run_yolo_seg.py --image branch.jpg --crops   # cut out each instance
+    python run_yolo_seg.py --image branch.jpg --masks   # binary masks, for SBD/AP eval
 """
 import argparse
 import glob
@@ -24,7 +25,7 @@ import numpy as np
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, REPO_ROOT)
 from shared.leafviz import (load_image, overlay_masks, save_counts_csv,
-                            save_image, write_crops)
+                            save_image, write_crops, write_masks)
 
 
 def gather_inputs(args):
@@ -70,6 +71,11 @@ def process(path, model, args, out_dir):
         n = write_crops(image, masks, crop_dir, stem)
         msg += f"  ->  {n} instance crops + full overlay in {crop_dir}/"
 
+    if args.masks:
+        mask_dir = os.path.join(out_dir, f"{stem}_masks")
+        n_m = write_masks(masks, mask_dir, stem)
+        msg += f"  ->  {n_m} binary masks in {mask_dir}/"
+
     print(msg)
     return len(masks)
 
@@ -92,6 +98,10 @@ def main():
     ap.add_argument("--count-csv",
                     help="write predicted instance counts (image,n_leaves) here, "
                          "for eval/evaluate_leaf_count.py")
+    ap.add_argument("--masks", action="store_true",
+                    help="also write one full-size binary PNG per instance mask "
+                         "(white=leaf, black=background) into "
+                         "outputs/<image>_masks/, for SBD/AP-style evaluation")
     args = ap.parse_args()
 
     inputs = gather_inputs(args)

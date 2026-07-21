@@ -4,3 +4,6 @@ torchvision>=0.15
 git+https://github.com/facebookresearch/segment-anything.git
 numpy>=1.24
 Pillow>=9.5
+# cv2: required by SAM's min_mask_region_area cleanup and the paper's
+# contour / HSV-colour / enclosing-circle post-processing filters.
+opencv-python-headless>=4.8

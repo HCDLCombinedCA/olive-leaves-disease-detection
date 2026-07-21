@@ -1,17 +1,16 @@
 # Leaf segmentation model zoo — runnable tests
 
 A folder-per-model test harness for the leaf-segmentation models from the
-literature review, so you can try each one on your own tree/branch imagery (or
-point clouds) and compare. Every model has its own README with exact install +
-run commands.
+literature review, so you can try each one on your own tree/branch imagery and
+compare. Every model has its own README with exact install + run commands.
 
 ## First: which models actually apply to you?
 
 ```
                         ┌─ 2D RGB photos ─────────────────────────────────────┐
                         │                                                      │
-   What data do you     │   Want it working NOW, no labels?                    │
-   have?  ──────────────┤     → SAM 2 (01) · Leaf Only SAM (02) · HQ-SAM (03)  │
+   What do you          │   Want it working NOW, no labels?                    │
+   need?  ──────────────┤     → SAM 2 (01) · Leaf Only SAM (02) · HQ-SAM (03)  │
                         │                                                      │
                         │   Have (or will make) labels, want best accuracy?    │
                         │     → YOLO11-seg (05) · Mask R-CNN (04) · M2Former(06)│
@@ -19,17 +18,12 @@ run commands.
                         │   Subject is trees/branches outdoors?                │
                         │     → Poplar-leaf + LeafInst (08); CSIRO leaf MRCNN(07)│
                         └──────────────────────────────────────────────────────┘
-                        ┌─ 3D LiDAR / TLS point clouds ───────────────────────┐
-                        │   Separate foliage from wood?                        │
-                        │     → PointsToWood (09, ready) · LWSNet (10) ·        │
-                        │       RandLA-Net tropical (11)                       │
-                        └──────────────────────────────────────────────────────┘
 ```
 
-Two questions decide everything:
-1. **2D images or 3D point clouds?** Completely different model families.
-2. **Individual leaf instances, or just leaf-vs-wood separation?** (3D is
-   almost always the latter.)
+This repo covers **2D RGB individual-leaf instance segmentation** only. (An
+earlier `3d_leaf_wood/` folder tried LiDAR/TLS leaf-vs-wood separation models —
+removed since that's a different task, foliage-vs-wood point classification
+rather than segmenting individual leaves, and out of scope here.)
 
 ## Folder map & status
 
@@ -43,9 +37,6 @@ Two questions decide everything:
 | 06 | `2d_instance_seg/06_mask2former` | **Mask2Former** | ✅ baseline | SOTA on CVPPP; fine-tune for leaves |
 | 07 | `2d_forestry/07_csiro_leaf_segmenter` | **CSIRO leaf MRCNN** | ⚠️ legacy TF1 | pretrained on synth Arabidopsis; Py3.7 env |
 | 08 | `2d_forestry/08_leafinst_poplar` | **LeafInst + Poplar-leaf** | ⏳ no code yet | most on-point for trees; use YOLO fallback |
-| 09 | `3d_leaf_wood/09_pointstowood` | **PointsToWood** | ✅ pretrained | ready 3D leaf–wood separation |
-| 10 | `3d_leaf_wood/10_lwsnet` | **LWSNet** | ⚠️ train-your-own | F1≈97% reported |
-| 11 | `3d_leaf_wood/11_randlanet_tropical` | **RandLA-Net (tropical)** | ⚠️ train-your-own | mIoU 86.8% on 148 trees |
 
 ✅ = pip install + run · ⚠️ = extra setup / training · ⏳ = code not released yet
 
@@ -61,20 +52,15 @@ Standard pattern (from inside any `✅` folder):
 python3 -m venv .venv && source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
-python run_*.py --image ../../data/samples/synthetic_leaf.png --output outputs/
+python run_*.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
 ```
 
-## Try it in 3 minutes (no photos, no GPU-heavy download yet)
+## Try it in 3 minutes
 
-```bash
-# 1) make a throwaway synthetic branch+leaves image (needs only numpy + Pillow)
-python3 -m venv .venv-data && source .venv-data/bin/activate
-pip install -r requirements-common.txt
-python3 data/make_synthetic_sample.py     # -> data/samples/synthetic_leaf.png
-deactivate
-
-# 2) then pick a model folder (start with 01_sam2) and follow its README
-```
+`data/cvppp/` already ships real CVPPP sample images (see [Evaluate leaf
+segmentation](#evaluate-leaf-segmentation-cvppp-lsc--lcc) below) — just pick a
+model folder (start with `01_sam2`) and follow its README against
+`data/cvppp/images/A1/plant001_rgb.png` or the whole `A1` folder.
 
 ## Your hardware (detected: RTX 4050 Laptop, 6 GB VRAM)
 
@@ -85,7 +71,6 @@ per-folder READMEs call out which. Rules of thumb:
 - Mask2Former → `swin-tiny`/`swin-small`; YOLO → `n`/`s` (train `--batch 4`).
 - If you hit CUDA out-of-memory: shrink the model, add `--points-per-side 16`
   (SAM family), lower image size, or run `--device cpu` (slower but works).
-- 3D point-cloud nets tile the cloud; use smaller batches for big plots.
 
 ## Recommended path
 
@@ -94,41 +79,38 @@ per-folder READMEs call out which. Rules of thumb:
 2. **Need accuracy?** Annotate a small set (or get **Poplar-leaf**, folder 08)
    and **fine-tune YOLO11-seg** (05) — best effort/accuracy trade-off. Mask R-CNN
    (04) / Mask2Former (06) are alternatives.
-3. **3D LiDAR/TLS?** Go straight to **PointsToWood** (09) — pretrained, runnable.
 
 ## Layout
 
 ```
 leaf_segmenter/
 ├── README.md                 ← you are here
-├── requirements-common.txt   ← numpy+Pillow for the shared helper & sample maker
+├── requirements-common.txt   ← numpy+Pillow for the shared helper
 ├── shared/leafviz.py         ← mask overlay / IO used by all 2D scripts
-├── data/                     ← put your images / point clouds here (+ sample maker)
+├── data/cvppp/                ← CVPPP sample images + ground truth (see eval/README.md)
 ├── 2d_foundation/            ← 01 SAM2 · 02 Leaf Only SAM · 03 HQ-SAM
 ├── 2d_instance_seg/          ← 04 Mask R-CNN · 05 YOLO-seg · 06 Mask2Former
 ├── 2d_forestry/              ← 07 CSIRO · 08 LeafInst/Poplar
-├── 3d_leaf_wood/             ← 09 PointsToWood · 10 LWSNet · 11 RandLA-Net
-└── eval/                     ← leaf-count evaluation vs CVPPP ground truth
+└── eval/                     ← leaf count + leaf mask evaluation vs CVPPP ground truth
 ```
 
-## Evaluate leaf counts (CVPPP LCC)
+## Evaluate leaf segmentation (CVPPP LSC + LCC)
 
-The CVPPP LCC set (`data/samples/A1` … `A4`) has a ground-truth leaf count per
-image. To score a model's segmented-leaf count against it:
+`data/cvppp/` has real CVPPP ground truth: leaf **counts** (`images/A?/A?.csv`),
+binary **foreground** masks (`mask/A?/plantNNN_fg.png`), and per-leaf **instance**
+label maps (`per_leaf_mask/A?/plantNNN_label.png`). Two evaluators, scoring
+different things:
 
 ```bash
-# 1) run a model with --count-csv (inside its venv) to record predicted counts
-python run_*.py --input-dir ../../data/samples/A1 \
-    --output outputs/A1 --count-csv outputs/A1/counts.csv
-
-# 2) compare to ground truth (stdlib only; runs anywhere)
+# counts: run with --count-csv, then
 python eval/evaluate_leaf_count.py --pred outputs/A1/counts.csv \
-    --gt data/samples/A1/A1.csv
+    --gt data/cvppp/images/A1/A1.csv
+
+# mask quality (FBD / SBD / AP): run with --masks, then
+python eval/evaluate_leaf_segmentation.py --pred-masks outputs/A1 \
+    --gt-fg data/cvppp/mask/A1 --gt-label data/cvppp/per_leaf_mask/A1
 ```
 
-Already ran with `--crops` but not `--count-csv`? Skip step 1 and evaluate the
-crop folders directly: `--from-crops outputs/A1` instead of `--pred`.
-
-Reports the CVPPP metrics — DiC, |DiC|, MSE, % agreement. See `eval/README.md`.
 Best suited to the zero-shot foliage models (01–03); the COCO baselines (04–06)
-need fine-tuning first. Evaluate one subset (A1…A4) at a time.
+need fine-tuning first. Evaluate one subset (A1…A4) at a time. Full details,
+caveats, and metric definitions in `eval/README.md`.

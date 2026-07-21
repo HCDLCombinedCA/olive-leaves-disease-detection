@@ -28,12 +28,12 @@ Examples:
     # from a --count-csv predictions file
     python eval/evaluate_leaf_count.py \
         --pred outputs/A1/counts.csv \
-        --gt data/samples/A1/A1.csv
+        --gt data/cvppp/images/A1/A1.csv
 
     # straight from a --crops run's output folder, with a full table
     python eval/evaluate_leaf_count.py \
         --from-crops 2d_foundation/01_sam2/outputs/A1 \
-        --gt data/samples/A1/A1.csv \
+        --gt data/cvppp/images/A1/A1.csv \
         --per-image --out results.csv
 """
 import argparse

@@ -8,3 +8,7 @@ sam2>=1.1
 huggingface_hub>=0.24
 numpy>=1.24
 Pillow>=9.5
+# matplotlib is only needed to display results inline in run_sam2.ipynb;
+# the run_sam2.py CLI does not use it.
+matplotlib>=3.7
+notebook==7.5.5

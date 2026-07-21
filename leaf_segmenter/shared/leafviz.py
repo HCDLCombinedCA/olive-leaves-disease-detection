@@ -110,6 +110,27 @@ def write_crops(image, masks, crop_dir, stem, all_masks=None):
     return count
 
 
+def write_masks(masks, mask_dir, stem):
+    """Write one full-size binary PNG per instance mask into `mask_dir`.
+
+    Each `mask_NNN.png` is single-channel: 255 (white) for masked pixels, 0
+    (black) for background, at the original image resolution (unlike
+    `write_crops`, which crops to the bounding box). This full-frame,
+    per-instance format is what mask-overlap evaluators (SBD, AP) need to
+    match predicted leaves against ground-truth leaf masks. Returns the
+    number of masks written.
+    """
+    os.makedirs(mask_dir, exist_ok=True)
+    count = 0
+    for m in masks:
+        m = np.asarray(m).astype(bool)
+        out = (m.astype(np.uint8)) * 255
+        Image.fromarray(out, mode="L").save(
+            os.path.join(mask_dir, f"mask_{count:03d}.png"))
+        count += 1
+    return count
+
+
 def save_counts_csv(path, rows):
     """Write predicted leaf counts to `path` as CSV with header `image,n_leaves`.
 

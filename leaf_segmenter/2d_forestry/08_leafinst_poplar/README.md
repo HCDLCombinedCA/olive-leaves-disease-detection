@@ -9,7 +9,7 @@
   (AFPN + DASP + DARH modules). Reports **68.4 mAP on Poplar-leaf**, beating
   YOLOv11 by 7.1 and MaskDINO by 6.5.
 
-Paper (March 2026): <https://arxiv.org/abs/2603.03616>
+**Reference paper:** [LeafInst + Poplar-leaf dataset (March 2026)](https://arxiv.org/abs/2603.03616)
 
 **Status:** ⏳ **No public code or weights released yet** (as of this writing —
 the arXiv paper links neither a repo nor a dataset mirror). So there is nothing
