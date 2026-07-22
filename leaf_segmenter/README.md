@@ -52,7 +52,7 @@ Standard pattern (from inside any `✅` folder):
 python3 -m venv .venv && source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
-python run_*.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
+python run_*.py --input-dir ../../data/cvppp/images/A1 --output-dir output/A1
 ```
 
 ## Try it in 3 minutes
@@ -86,7 +86,7 @@ per-folder READMEs call out which. Rules of thumb:
 leaf_segmenter/
 ├── README.md                 ← you are here
 ├── requirements-common.txt   ← numpy+Pillow for the shared helper
-├── shared/leafviz.py         ← mask overlay / IO used by all 2D scripts
+├── shared/helper.py         ← mask overlay / IO used by all 2D scripts
 ├── data/cvppp/                ← CVPPP sample images + ground truth (see eval/README.md)
 ├── 2d_foundation/            ← 01 SAM2 · 02 Leaf Only SAM · 03 HQ-SAM
 ├── 2d_instance_seg/          ← 04 Mask R-CNN · 05 YOLO-seg · 06 Mask2Former
@@ -96,21 +96,27 @@ leaf_segmenter/
 
 ## Evaluate leaf segmentation (CVPPP LSC + LCC)
 
-`data/cvppp/` has real CVPPP ground truth: leaf **counts** (`images/A?/A?.csv`),
-binary **foreground** masks (`mask/A?/plantNNN_fg.png`), and per-leaf **instance**
-label maps (`per_leaf_mask/A?/plantNNN_label.png`). Two evaluators, scoring
-different things:
+`data/cvppp/` has real CVPPP ground truth: leaf **counts** (`images/A?/A?.csv`)
+and per-leaf **instance** label maps (`per_leaf_mask/A?/plantNNN_label.png`).
+First run a model with `--output-dir` (it writes `counts.csv` and per-image
+`<image>/mask_*.png` folders), then point either evaluator at that dir. Both take
+the same `--input-dir` / `--gt-dir` / optional `--output-dir`:
 
 ```bash
-# counts: run with --count-csv, then
-python eval/evaluate_leaf_count.py --pred outputs/A1/counts.csv \
-    --gt data/cvppp/images/A1/A1.csv
+# run a model, writing predictions to output/A1
+python 2d_foundation/01_sam2/run_sam2.py \
+    --input-dir data/cvppp/images/A1 --output-dir output/A1
 
-# mask quality (FBD / SBD / AP): run with --masks, then
-python eval/evaluate_leaf_segmentation.py --pred-masks outputs/A1 \
-    --gt-fg data/cvppp/mask/A1 --gt-label data/cvppp/per_leaf_mask/A1
+# counts (LCC)
+python eval/evaluate_leaf_count.py \
+    --input-dir output/A1 --gt-dir data/cvppp/images/A1
+
+# mask quality — FBD / SBD / AP (LSC)
+python eval/evaluate_leaf_segmentation.py \
+    --input-dir output/A1 --gt-dir data/cvppp/per_leaf_mask/A1
 ```
 
-Best suited to the zero-shot foliage models (01–03); the COCO baselines (04–06)
-need fine-tuning first. Evaluate one subset (A1…A4) at a time. Full details,
-caveats, and metric definitions in `eval/README.md`.
+Add `--output-dir DIR` to either for the full per-image table. Best suited to the
+zero-shot foliage models (01–03); the COCO baselines (04–06) need fine-tuning
+first. Evaluate one subset (A1…A4) at a time. Full details, caveats, and metric
+definitions in `eval/README.md`.

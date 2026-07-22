@@ -1,4 +1,4 @@
-# Lightweight deps shared by the helper module (shared/leafviz.py).
+# Lightweight deps shared by the helper module (shared/helper.py).
 # Each model folder has its OWN requirements.txt with the heavy libraries,
 # because the model stacks (sam2, detectron2, ultralytics, transformers,
 # torch-geometric ...) have conflicting dependencies and must live in

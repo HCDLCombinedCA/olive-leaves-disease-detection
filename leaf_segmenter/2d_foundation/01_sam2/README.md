@@ -23,15 +23,19 @@ pip install -r requirements.txt
 ## Run
 
 ```bash
-python run_sam2.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
-# whole folder, smaller/faster model:
-python run_sam2.py --input-dir ../../data/cvppp/images/A1 --model-size tiny --output outputs/
-# keep every mask SAM finds (no foliage filter):
-python run_sam2.py --image ../../data/cvppp/images/A1/plant001_rgb.png --no-green-filter
+python run_sam2.py --input-dir ../../data/cvppp/images/A1
+# smaller/faster model, and write outputs to disk:
+python run_sam2.py --input-dir ../../data/cvppp/images/A1 --model-size tiny --output-dir output/tiny/A1
 ```
 
-Output: an overlay PNG per image in `outputs/` with each kept mask in a distinct
-color, plus a console line `N raw masks -> M kept`.
+Only three flags: `--input-dir` (required), `--model-size`
+(`tiny`/`small`/`base-plus`/`large`, default `small`), and an optional
+`--output-dir`. With `--output-dir`, each input image gets its **own folder**
+holding the colour overlay (`<stem>_sam2.png`) and one binary PNG per leaf
+(`mask_NNN.png`), plus a shared `counts.csv` (`image,n_leaves`) at the output
+root. The `run()` function always returns, per input image, the list of
+transparent-background leaf cutouts. Console shows `N raw masks -> M kept` per
+image.
 
 Prefer to explore step by step? `run_sam2.ipynb` is a linear notebook version of
 the same pipeline (segment → filter → visualise inline), handy for tuning the
@@ -55,24 +59,23 @@ Nothing is trained locally — this is pure zero-shot inference.
 
 1. **Segment everything.** `build_mask_generator()` wraps the pretrained weights
    in `SAM2AutomaticMaskGenerator`. For each image, `generate()` lays down a
-   regular grid of `--points-per-side` × `--points-per-side` prompt points
+   regular grid of `POINTS_PER_SIDE` × `POINTS_PER_SIDE` prompt points
    (32×32 = 1024 by default), prompts SAM at each one as if you had clicked
    there, keeps the confident and stable masks, and removes near-duplicates —
    returning one class-agnostic mask per region it found (leaves, but also pot,
    soil, and background).
 
 2. **Keep the leaf-like masks.** `filter_leaf_masks()` drops masks that are too
-   small (`--min-area`, speckle/noise) or too large (`--max-area`, usually
+   small (`MIN_AREA`, speckle/noise) or too large (`MAX_AREA`, usually
    background or the whole pot), then keeps only masks whose pixels are mostly
-   green, via `green_fraction()` in `shared/leafviz.py` — a cheap RGB rule
-   (`g > r*1.05 and g > b*1.05 and g > 40`) thresholded at `--min-green`. Every
-   surviving mask is treated as one leaf instance. `--no-green-filter` skips this
-   stage and keeps all of SAM's masks.
+   green, via `green_fraction()` in `shared/helper.py` — a cheap RGB rule
+   (`g > r*1.05 and g > b*1.05 and g > 40`) thresholded at `MIN_GREEN`. Every
+   surviving mask is treated as one leaf instance.
 
-3. **Write outputs.** Always a colored overlay PNG; optionally per-leaf
-   transparent-background crops (`--crops`), one full-frame binary PNG per leaf
-   for SBD/AP evaluation (`--masks`), and a predicted leaf-count CSV
-   (`--count-csv`).
+3. **Write outputs.** With `--output-dir`, a colour overlay PNG plus one binary
+   PNG per leaf in a per-image folder, and a shared `counts.csv`. `run()` also
+   returns the per-leaf transparent-background cutouts in memory
+   (`crop_leaves()` in `shared/helper.py`).
 
 Unlike model 02 (Leaf Only SAM), this script applies **only** the area + green
 filters — there is no containment de-duplication step — so overlapping rosette
@@ -81,12 +84,15 @@ blob.
 
 ## Options that matter on a 6 GB GPU
 
-| Flag | Default | Notes |
+`--model-size` is the only tuning knob left on the CLI (`tiny`/`small` are safe on
+6 GB; `large` may OOM). The rest are constants at the top of `run_sam2.py`, edit
+there if needed:
+
+| Constant | Default | Notes |
 |---|---|---|
-| `--model-size` | `small` | `tiny`/`small` are safe on 6 GB; `large` may OOM. |
-| `--points-per-side` | `32` | Drop to `16` for less memory / faster, coarser masks. |
-| `--min-green` | `0.5` | Fraction of green pixels required to keep a mask. |
-| `--no-green-filter` | off | Keep all class-agnostic masks. |
+| `POINTS_PER_SIDE` | `32` | Drop to `16` for less memory / faster, coarser masks. |
+| `MIN_GREEN` | `0.5` | Fraction of green pixels required to keep a mask (set `0` to keep all). |
+| `MIN_AREA` / `MAX_AREA` | `0.0005` / `0.25` | Drop masks below/above this fraction of the image. |
 
 ## Notes
 

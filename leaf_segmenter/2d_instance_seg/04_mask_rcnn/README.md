@@ -17,8 +17,15 @@ cd 2d_instance_seg/04_mask_rcnn
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-python run_mask_rcnn.py --image ../../data/cvppp/images/A1/plant001_rgb.png --score-thresh 0.3
+python run_mask_rcnn.py --input-dir ../../data/cvppp/images/A1 --output-dir output/coco/A1
 ```
+
+Three flags only: `--input-dir` (required), `--weights` (a fine-tuned `.pth`;
+omit for COCO weights), and an optional `--output-dir`. With `--output-dir`, each
+image gets its own folder (colour overlay `<stem>_maskrcnn.png` + one binary PNG
+per instance) plus a shared `counts.csv`; `run()` returns the per-instance
+cutouts. Detection/mask thresholds and `NUM_CLASSES` are constants at the top of
+`run_mask_rcnn.py`.
 
 ## Fine-tune on leaves (where the accuracy comes from)
 
@@ -30,8 +37,11 @@ python run_mask_rcnn.py --image ../../data/cvppp/images/A1/plant001_rgb.png --sc
 3. Run your model here:
 
 ```bash
-python run_mask_rcnn.py --image branch.jpg --weights finetuned.pth --num-classes 2
+python run_mask_rcnn.py --input-dir ../../data/cvppp/images/A1 --weights finetuned.pth
 ```
+
+(If your fine-tuned model has a different class count, set `NUM_CLASSES` at the
+top of `run_mask_rcnn.py`; it defaults to 2 = background + leaf.)
 
 ## Alternatives
 

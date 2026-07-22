@@ -23,7 +23,7 @@ size, or `--device cpu`.
 ```
 README.md                    master guide: decision tree, status table, workflow
 requirements-common.txt      numpy+Pillow (shared helper + evaluate_leaf_segmentation.py)
-shared/leafviz.py            mask overlay / image IO used by ALL 2d scripts
+shared/helper.py            mask overlay / image IO used by ALL 2d scripts
 data/cvppp/                  CVPPP sample images + ground truth (images/mask/per_leaf_mask)
 2d_foundation/               01 SAM2 · 02 Leaf Only SAM · 03 HQ-SAM   (zero-shot)
 2d_instance_seg/             04 Mask R-CNN · 05 YOLO-seg · 06 Mask2Former
@@ -33,28 +33,31 @@ eval/                        leaf-count + leaf-mask eval vs CVPPP ground truth
 
 ## Leaf evaluation
 
-Two evaluators against `data/cvppp/` ground truth (`A1`…`A4` subsets):
+Two evaluators against `data/cvppp/` ground truth (`A1`…`A4` subsets). First run
+a model with `--output-dir DIR` (writes `DIR/counts.csv` and per-image
+`DIR/<image>/mask_*.png` folders, via `shared.helper.save_outputs`); both
+evaluators then take the same `--input-dir DIR` / `--gt-dir` / optional
+`--output-dir` (the last writes the full per-image table).
 
 - `eval/evaluate_leaf_count.py` scores a model's segmented-leaf **count**
-  against CVPPP LCC ground truth (`data/cvppp/images/A?/A?.csv`, rows
-  `image, count`). Run a 2D script with `--count-csv PATH` (writes
-  `image,n_leaves` via `shared.leafviz.save_counts_csv`, where the count is
-  `len(masks)`), then feed that to the evaluator with `--pred` + `--gt`. A prior
-  `--crops` run can be scored without re-running via `--from-crops <output-dir>`
-  (counts `leaf_*.png` per `<image>_leaves/`). Metrics: DiC, |DiC|, MSE, %
-  agreement. Pure stdlib.
+  (CVPPP LCC). Reads `<input-dir>/counts.csv` (`image,n_leaves`, count =
+  `len(masks)`) and merges the ground-truth `A?.csv` files under `--gt-dir`
+  (e.g. `data/cvppp/images/A1`). Metrics: DiC, |DiC|, MSE, % agreement. Pure
+  stdlib.
 - `eval/evaluate_leaf_segmentation.py` scores mask *overlap quality* (CVPPP LSC):
-  FBD against `data/cvppp/mask/A?/plantNNN_fg.png` (binary foreground), and
-  SBD + AP@IoU against `data/cvppp/per_leaf_mask/A?/plantNNN_label.png`
-  (per-leaf instance label maps). Run a 2D script with `--masks` (writes one
-  full-size binary PNG per instance via `shared.leafviz.write_masks` into
-  `<image>_masks/`), then feed that dir to the evaluator with `--pred-masks` +
-  `--gt-fg`/`--gt-label`. Needs numpy+Pillow (not stdlib-only). AP is a single
-  IoU-threshold precision/recall/F1, not a confidence-ranked mAP curve —
-  `--masks` output has no per-instance score.
+  FBD, SBD, and AP@IoU. Reads the predicted `<input-dir>/<image>/mask_*.png`
+  folders and the per-leaf label maps under `--gt-dir`
+  (`data/cvppp/per_leaf_mask/A?/plantNNN_label.png`); the FBD foreground is
+  derived from those maps (`label > 0`, pixel-identical to `mask/A?/*_fg.png`),
+  so no separate foreground dir is needed. Needs numpy+Pillow (not stdlib-only).
+  AP is a single IoU-threshold (`IOU_THRESH`, default 0.5) precision/recall/F1,
+  not a confidence-ranked mAP curve — the mask PNGs have no per-instance score.
 
 Both match by image basename/canonical id, ignoring extension — **evaluate one
 subset at a time**, since A1/A2/A3 reuse `plantNNN_rgb.png` names.
+`data/split_dataset.py` (run inside `data/cvppp/`) carves a random 10%
+`fine_tuning/` + 90% `testing/` split with the same layout and a filtered count
+CSV.
 
 ## Core conventions
 
@@ -62,11 +65,14 @@ subset at a time**, since A1/A2/A3 reuse `plantNNN_rgb.png` names.
   `ultralytics`, `transformers`, `torch-geometric`, TF1) have conflicting
   dependencies — never merge them into one env. Each folder has its own
   `requirements.txt`.
-- **Every 2D run script shares the same CLI shape:** `--image` OR `--input-dir`,
-  `--output` (default `outputs/`), `--device`, plus model-specific flags. They
-  write a colored mask-overlay PNG per input.
+- **Every 2D run script shares the same CLI shape:** `--input-dir` (required), a
+  single model selector (`--model-size`/`--model-type`/`--weights`/`--model`),
+  and an optional `--output-dir`; all other knobs are module-level constants.
+  Each exposes a `run()` that returns per-image leaf crops and, with
+  `--output-dir`, writes a per-image folder (overlay + `mask_*.png`) plus
+  `counts.csv` via `shared.helper.save_outputs`.
 - **Scripts import the shared helper** via `sys.path.insert(0, REPO_ROOT)` then
-  `from shared.leafviz import ...`. `shared/leafviz.py` must stay dependency-light
+  `from shared.helper import ...`. `shared/helper.py` must stay dependency-light
   (numpy + Pillow only) so it imports inside every venv.
 - **Weights auto-download where possible** (SAM2, HQ-SAM via HF hub, SAM v1 via
   URL, YOLO/Mask2Former via their libs). Checkpoints/venvs/outputs are
@@ -93,7 +99,7 @@ Fast checks that need no heavy deps:
 - `find . -name '*.py' -not -path '*/.venv*/*' | xargs -I{} python3 -m py_compile {}`
 - `bash -n <script>.sh` for setup scripts
 - Smoke-test the shared helper: make a venv with `requirements-common.txt`, run
-  `python3 -c "from shared.leafviz import load_image, overlay_masks, save_image, write_masks; ..."`
+  `python3 -c "from shared.helper import load_image, overlay_masks, save_image, write_masks; ..."`
   against a real sample under `data/cvppp/images/A1/`.
 
 Actually running a model requires installing that folder's `requirements.txt`

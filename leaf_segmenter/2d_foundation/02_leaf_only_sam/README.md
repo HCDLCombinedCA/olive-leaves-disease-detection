@@ -31,24 +31,29 @@ pip install -r requirements.txt
 ## Run
 
 ```bash
-python run_leaf_only_sam.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
-python run_leaf_only_sam.py --input-dir ../../data/cvppp/images/A1 --model-type vit_b
+python run_leaf_only_sam.py --input-dir ../../data/cvppp/images/A1
+python run_leaf_only_sam.py --input-dir ../../data/cvppp/images/A1 --model-type vit_b --output-dir output/vit_b/A1
 ```
+
+Only three flags: `--input-dir` (required), `--model-type` (`vit_b`/`vit_l`/`vit_h`,
+default `vit_b`), and an optional `--output-dir`. With `--output-dir`, each input
+image gets its **own folder** holding the colour overlay (`<stem>_leafonlysam.png`)
+and one binary PNG per leaf (`mask_NNN.png`), plus a shared `counts.csv`
+(`image,n_leaves`) at the output root. The `run()` function always returns, per
+input image, the list of transparent-background leaf cutouts.
 
 The `vit_b` checkpoint (~375 MB) downloads to `checkpoints/` on first run and
 fits a 6 GB GPU. `vit_l`/`vit_h` are more accurate but need more VRAM.
 
-## Tunable filter thresholds
+## Filter thresholds
 
-| Flag | Default | Meaning |
-|---|---|---|
-| `--min-shape` | `0.1` | `checkshape`: min contour-area / enclosing-circle area; drops thin/straggly blobs |
-| `--subset-thresh` | `0.9` | `remove_toobig`: overlap fraction for one mask to count as contained in another (composite removal) |
-| `--points-per-side` | `32` | SAM sampling grid; lower = faster / less VRAM, coarser |
-
-Defaults are the paper's. The green-colour hue/saturation bands (`checkcolour`)
-and the whole-plant IoU cutoff (`checkfullplant`) are hardcoded to match the
-notebook; edit the functions if your imagery differs (e.g. non-green foliage).
+The paper's thresholds are constants at the top of `run_leaf_only_sam.py`:
+`MIN_SHAPE` (0.1 — `checkshape` min contour-area / enclosing-circle area),
+`SUBSET_THRESH` (0.9 — `remove_toobig` containment overlap), and
+`POINTS_PER_SIDE` (32 — SAM sampling grid). The green-colour hue/saturation bands
+(`checkcolour`) and the whole-plant IoU cutoff (`checkfullplant`) are hardcoded to
+match the notebook; edit the functions if your imagery differs (e.g. non-green
+foliage).
 
 ## Original authors' code
 

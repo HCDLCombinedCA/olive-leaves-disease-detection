@@ -16,9 +16,15 @@ cd 2d_instance_seg/06_mask2former
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-python run_mask2former.py --image ../../data/cvppp/images/A1/plant001_rgb.png --output outputs/
 python run_mask2former.py --input-dir ../../data/cvppp/images/A1
+python run_mask2former.py --input-dir ../../data/cvppp/images/A1 --model facebook/mask2former-swin-base-coco-instance --output-dir output/base/A1
 ```
+
+Three flags only: `--input-dir` (required), `--model` (a HF model id, default
+swin-small), and an optional `--output-dir`. With `--output-dir`, each image gets
+its own folder (colour overlay `<stem>_mask2former.png` + one binary PNG per
+instance) plus a shared `counts.csv`; `run()` returns the per-instance cutouts.
+The confidence `THRESHOLD` and `DEVICE` are constants at the top of the script.
 
 ## Model choice on 6 GB VRAM
 
