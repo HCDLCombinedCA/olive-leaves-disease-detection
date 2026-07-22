@@ -30,8 +30,8 @@ python run_yolo_seg.py --input-dir ../../data/cvppp/images/A1 --weights runs/seg
 Three flags only: `--input-dir` (required), `--weights` (COCO `yolo11n-seg.pt` by
 default, or your fine-tuned `best.pt`), and an optional `--output-dir`. With
 `--output-dir`, each image gets its own folder (colour overlay `<stem>_yoloseg.png`
-+ one binary PNG per instance) plus a shared `counts.csv`; `run()` returns the
-per-instance cutouts. `CONF`, `IMGSZ`, and `DEVICE` are constants at the top of
++ one binary PNG per instance) plus a shared `counts.csv` and `timings.csv`;
+`run()` returns the per-instance cutouts. `CONF`, `IMGSZ`, and `DEVICE` are constants at the top of
 `run_yolo_seg.py`.
 
 Model sizes: `yolo11n-seg.pt` (nano, fastest) → `s` → `m` → `l` → `x`. On a 6 GB

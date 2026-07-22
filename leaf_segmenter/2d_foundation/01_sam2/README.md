@@ -32,8 +32,8 @@ Only three flags: `--input-dir` (required), `--model-size`
 (`tiny`/`small`/`base-plus`/`large`, default `small`), and an optional
 `--output-dir`. With `--output-dir`, each input image gets its **own folder**
 holding the colour overlay (`<stem>_sam2.png`) and one binary PNG per leaf
-(`mask_NNN.png`), plus a shared `counts.csv` (`image,n_leaves`) at the output
-root. The `run()` function always returns, per input image, the list of
+(`mask_NNN.png`), plus a shared `counts.csv` (`image,n_leaves`) and `timings.csv`
+(`image,inference_s,postprocess_s`) at the output root. The `run()` function always returns, per input image, the list of
 transparent-background leaf cutouts. Console shows `N raw masks -> M kept` per
 image.
 
@@ -73,7 +73,8 @@ Nothing is trained locally — this is pure zero-shot inference.
    surviving mask is treated as one leaf instance.
 
 3. **Write outputs.** With `--output-dir`, a colour overlay PNG plus one binary
-   PNG per leaf in a per-image folder, and a shared `counts.csv`. `run()` also
+   PNG per leaf in a per-image folder, and a shared `counts.csv` and
+   `timings.csv` (per-image inference / post-processing seconds). `run()` also
    returns the per-leaf transparent-background cutouts in memory
    (`crop_leaves()` in `shared/helper.py`).
 

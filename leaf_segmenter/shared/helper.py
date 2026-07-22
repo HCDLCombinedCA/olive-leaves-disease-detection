@@ -19,7 +19,7 @@ from PIL import Image
 
 def load_image(path: str) -> np.ndarray:
     """Load an image file as an (H, W, 3) uint8 RGB array."""
-    return np.asarray(Image.open(path).convert("RGB"))
+    return np.array(Image.open(path).convert("RGB"))
 
 
 def save_image(array: np.ndarray, path: str) -> None:
@@ -179,6 +179,21 @@ def save_counts_csv(path, rows):
         w.writerow(["image", "n_leaves"])
         for name, n in rows:
             w.writerow([name, int(n)])
+
+
+def save_timings_csv(path, rows):
+    """Write per-image stage timings to `path` as CSV with header
+    `image,inference_s,postprocess_s`.
+
+    `rows` is an iterable of (image_name, inference_seconds, postprocess_seconds).
+    """
+    parent = os.path.dirname(os.path.abspath(path))
+    os.makedirs(parent, exist_ok=True)
+    with open(path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["image", "inference_s", "postprocess_s"])
+        for name, inference, post in rows:
+            w.writerow([name, f"{inference:.3f}", f"{post:.3f}"])
 
 
 def save_outputs(output_dir, records, overlay_suffix):

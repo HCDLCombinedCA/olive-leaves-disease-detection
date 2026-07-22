@@ -1,6 +1,6 @@
 # eval/ — leaf evaluation
 
-Two evaluators, scoring different things against CVPPP 2017 ground truth:
+Three evaluators, scoring different things:
 
 - `evaluate_leaf_count.py` — Leaf **Counting** Challenge (LCC) metrics: does the
   model report the right *number* of leaves.
@@ -8,11 +8,15 @@ Two evaluators, scoring different things against CVPPP 2017 ground truth:
   metrics: how well the predicted *masks* overlap the true leaves (FBD, SBD,
   AP). A model can nail the count while merging/splitting leaves, or vice
   versa — these are complementary, not redundant.
+- `evaluate_timings.py` — **runtime**: mean / median / max seconds per image for
+  inference and post-processing, compared across models. Needs no ground truth.
 
-Both take the same three flags: `--input-dir` (a model's `--output-dir`),
-`--gt-dir` (ground truth), and an optional `--output-dir` (write the full
-per-image table). Evaluate **one CVPPP subset (A1…A4) at a time** — they reuse
-`plantNNN` ids for different plants.
+The first two score against CVPPP 2017 ground truth and take the same three
+flags: `--input-dir` (a model's `--output-dir`), `--gt-dir` (ground truth), and
+an optional `--output-dir` (write the full per-image table). Evaluate **one
+CVPPP subset (A1…A4) at a time** — they reuse `plantNNN` ids for different
+plants. The timing evaluator takes one or more `--input-dir`s and the optional
+`--output-dir` only.
 
 ## Data
 
@@ -34,7 +38,7 @@ the separate `_fg.png` blob, so `mask/` is no longer needed for evaluation.
 CSV), so you can evaluate on a held-out split by pointing `--gt-dir` at e.g.
 `testing/images/A1` (counts) or `testing/per_leaf_mask/A1` (masks).
 
-## Both evaluators read a model's `--output-dir`
+## All evaluators read a model's `--output-dir`
 
 Run any 2D model with `--output-dir` (inside that model's venv). Into that dir it
 writes:
@@ -42,6 +46,7 @@ writes:
 - `counts.csv` — `image,n_leaves` (for counting)
 - `<image>/mask_000.png`, `mask_001.png`, … — one binary mask per predicted leaf,
   in a per-image folder (for segmentation)
+- `timings.csv` — `image,inference_s,postprocess_s` (for runtime)
 
 ```bash
 cd 2d_foundation/02_leaf_only_sam
@@ -108,6 +113,28 @@ multi-threshold COCO-style mAP. SBD is far more forgiving of a merged/split leaf
 (partial Dice credit) than AP (binary hit/miss at the threshold) — expect SBD to
 look noticeably better than AP·F1 when models under-segment touching leaves. The
 threshold is the `IOU_THRESH` constant at the top of the script.
+
+## Runtime (`evaluate_timings.py`)
+
+Pure stdlib — runs in any env. Reads the `timings.csv` each run script writes
+(one row per image, timed around the model forward pass and the mask
+post-processing separately) and reports, per model, the mean, median, and max
+seconds per image for inference, post-processing, and their total. Pass several
+`--input-dir`s to compare models in one table:
+
+```bash
+python eval/evaluate_timings.py \
+    --input-dir 2d_foundation/01_sam2/output/A1 \
+                2d_foundation/03_hq_sam/output/A1
+```
+
+Add `--output-dir DIR` to also write the table to `DIR/timing_summary.csv`. Dirs
+without a `timings.csv` are skipped with a warning.
+
+**Warm-up caveat:** the first image of a run absorbs one-off cost (CUDA kernel
+loading etc.), which inflates the mean and max more than the median — on small
+image sets the median is the more honest per-image figure. Timings are only
+comparable when produced on the same machine and image set.
 
 ## Caveat: which models are worth evaluating now
 

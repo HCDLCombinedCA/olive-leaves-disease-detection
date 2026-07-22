@@ -15,13 +15,15 @@ always returns, per input image, the list of transparent-background cutouts.
 import argparse
 import os
 import sys
+import time
 
 import numpy as np
 import torch
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, REPO_ROOT)
-from shared.helper import crop_leaves, list_images, load_image, save_outputs
+from shared.helper import (crop_leaves, list_images, load_image, save_outputs,
+                            save_timings_csv)
 
 # ---- constants (previously CLI flags) --------------------------------------
 DEVICE = 0 if torch.cuda.is_available() else "cpu"   # 0 = first GPU
@@ -29,9 +31,8 @@ CONF = 0.25            # min detection confidence
 IMGSZ = 640            # inference image size
 
 
-def predict_masks(model, path, image):
-    """Run YOLO on one image and return its instance masks at original resolution."""
-    res = model.predict(path, conf=CONF, imgsz=IMGSZ, device=DEVICE, verbose=False)[0]
+def extract_masks(res, image):
+    """Return a YOLO result's instance masks at the original image resolution."""
     if res.masks is None:
         return []
     h, w = image.shape[:2]
@@ -62,12 +63,22 @@ def run(input_dir, weights="yolo11n-seg.pt", output_dir=None):
     print(f"Loading YOLO-seg ({weights}) on device {DEVICE} ...")
     model = YOLO(weights)
 
-    all_crops, all_masks = [], []
+    all_crops, all_masks, timings = [], [], []
     for path in paths:
         image = load_image(path)
-        masks = predict_masks(model, path, image)
 
+        # inference
+        t0 = time.perf_counter()
+        res = model.predict(path, conf=CONF, imgsz=IMGSZ, device=DEVICE, verbose=False)[0]
+        t1 = time.perf_counter()
+
+        # post processing
+        masks = extract_masks(res, image)
+        t2 = time.perf_counter()
+
+        # saving of data
         image_name = os.path.basename(path)
+        timings.append((image_name, t1 - t0, t2 - t1))
         all_crops.append({"image_name": image_name,
                           "cropped_images": crop_leaves(image, masks)})
         all_masks.append({"image_name": image_name, "image": image, "masks": masks})
@@ -75,6 +86,7 @@ def run(input_dir, weights="yolo11n-seg.pt", output_dir=None):
 
     if output_dir:
         save_outputs(output_dir, all_masks, "yoloseg")
+        save_timings_csv(os.path.join(output_dir, "timings.csv"), timings)
     return all_crops
 
 

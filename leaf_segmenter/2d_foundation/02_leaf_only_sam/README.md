@@ -39,7 +39,8 @@ Only three flags: `--input-dir` (required), `--model-type` (`vit_b`/`vit_l`/`vit
 default `vit_b`), and an optional `--output-dir`. With `--output-dir`, each input
 image gets its **own folder** holding the colour overlay (`<stem>_leafonlysam.png`)
 and one binary PNG per leaf (`mask_NNN.png`), plus a shared `counts.csv`
-(`image,n_leaves`) at the output root. The `run()` function always returns, per
+(`image,n_leaves`) and `timings.csv` (`image,inference_s,postprocess_s`) at the
+output root. The `run()` function always returns, per
 input image, the list of transparent-background leaf cutouts.
 
 The `vit_b` checkpoint (~375 MB) downloads to `checkpoints/` on first run and

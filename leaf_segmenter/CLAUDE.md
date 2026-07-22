@@ -33,9 +33,10 @@ eval/                        leaf-count + leaf-mask eval vs CVPPP ground truth
 
 ## Leaf evaluation
 
-Two evaluators against `data/cvppp/` ground truth (`A1`…`A4` subsets). First run
-a model with `--output-dir DIR` (writes `DIR/counts.csv` and per-image
-`DIR/<image>/mask_*.png` folders, via `shared.helper.save_outputs`); both
+Two accuracy evaluators against `data/cvppp/` ground truth (`A1`…`A4` subsets),
+plus a runtime evaluator. First run a model with `--output-dir DIR` (writes
+`DIR/counts.csv`, `DIR/timings.csv`, and per-image `DIR/<image>/mask_*.png`
+folders, via `shared.helper.save_outputs` / `save_timings_csv`); the accuracy
 evaluators then take the same `--input-dir DIR` / `--gt-dir` / optional
 `--output-dir` (the last writes the full per-image table).
 
@@ -52,6 +53,11 @@ evaluators then take the same `--input-dir DIR` / `--gt-dir` / optional
   so no separate foreground dir is needed. Needs numpy+Pillow (not stdlib-only).
   AP is a single IoU-threshold (`IOU_THRESH`, default 0.5) precision/recall/F1,
   not a confidence-ranked mAP curve — the mask PNGs have no per-instance score.
+- `eval/evaluate_timings.py` summarizes runtime: mean/median/max seconds per
+  image for inference, post-processing, and total, from `timings.csv`
+  (`image,inference_s,postprocess_s`). No `--gt-dir`; accepts several
+  `--input-dir`s to compare models. Pure stdlib. First image of a run includes
+  warm-up cost, so median < mean is expected.
 
 Both match by image basename/canonical id, ignoring extension — **evaluate one
 subset at a time**, since A1/A2/A3 reuse `plantNNN_rgb.png` names.
@@ -70,7 +76,8 @@ CSV.
   and an optional `--output-dir`; all other knobs are module-level constants.
   Each exposes a `run()` that returns per-image leaf crops and, with
   `--output-dir`, writes a per-image folder (overlay + `mask_*.png`) plus
-  `counts.csv` via `shared.helper.save_outputs`.
+  `counts.csv` via `shared.helper.save_outputs` and `timings.csv` (per-image
+  inference / post-processing seconds) via `save_timings_csv`.
 - **Scripts import the shared helper** via `sys.path.insert(0, REPO_ROOT)` then
   `from shared.helper import ...`. `shared/helper.py` must stay dependency-light
   (numpy + Pillow only) so it imports inside every venv.

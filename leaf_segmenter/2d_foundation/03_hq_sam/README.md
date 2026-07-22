@@ -28,7 +28,7 @@ python run_hq_sam.py --input-dir ../../data/cvppp/images/A1 --model-type vit_b -
 Three flags only: `--input-dir` (required), `--model-type` (default `vit_tiny`),
 and an optional `--output-dir`. Same output convention as folder 01 — a per-image
 folder with the colour overlay (`<stem>_hqsam.png`) + one binary PNG per leaf, a
-shared `counts.csv`, and per-leaf cutouts returned by `run()`. The green/size
+shared `counts.csv` and `timings.csv`, and per-leaf cutouts returned by `run()`. The green/size
 filter thresholds (`MIN_GREEN`, `MIN_AREA`, `MAX_AREA`, `POINTS_PER_SIDE`) are
 constants at the top of `run_hq_sam.py`.
 

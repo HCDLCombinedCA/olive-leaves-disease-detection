@@ -23,7 +23,8 @@ python run_mask2former.py --input-dir ../../data/cvppp/images/A1 --model faceboo
 Three flags only: `--input-dir` (required), `--model` (a HF model id, default
 swin-small), and an optional `--output-dir`. With `--output-dir`, each image gets
 its own folder (colour overlay `<stem>_mask2former.png` + one binary PNG per
-instance) plus a shared `counts.csv`; `run()` returns the per-instance cutouts.
+instance) plus a shared `counts.csv` and `timings.csv`; `run()` returns the
+per-instance cutouts.
 The confidence `THRESHOLD` and `DEVICE` are constants at the top of the script.
 
 ## Model choice on 6 GB VRAM

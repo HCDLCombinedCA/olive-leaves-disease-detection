@@ -91,16 +91,18 @@ leaf_segmenter/
 ├── 2d_foundation/            ← 01 SAM2 · 02 Leaf Only SAM · 03 HQ-SAM
 ├── 2d_instance_seg/          ← 04 Mask R-CNN · 05 YOLO-seg · 06 Mask2Former
 ├── 2d_forestry/              ← 07 CSIRO · 08 LeafInst/Poplar
-└── eval/                     ← leaf count + leaf mask evaluation vs CVPPP ground truth
+└── eval/                     ← leaf count / mask quality / runtime evaluation
 ```
 
 ## Evaluate leaf segmentation (CVPPP LSC + LCC)
 
 `data/cvppp/` has real CVPPP ground truth: leaf **counts** (`images/A?/A?.csv`)
 and per-leaf **instance** label maps (`per_leaf_mask/A?/plantNNN_label.png`).
-First run a model with `--output-dir` (it writes `counts.csv` and per-image
-`<image>/mask_*.png` folders), then point either evaluator at that dir. Both take
-the same `--input-dir` / `--gt-dir` / optional `--output-dir`:
+First run a model with `--output-dir` (it writes `counts.csv`, `timings.csv`, and
+per-image `<image>/mask_*.png` folders), then point the evaluators at that dir.
+The two accuracy evaluators take the same `--input-dir` / `--gt-dir` / optional
+`--output-dir`; the timing evaluator needs no ground truth and accepts several
+`--input-dir`s to compare models side by side:
 
 ```bash
 # run a model, writing predictions to output/A1
@@ -114,9 +116,13 @@ python eval/evaluate_leaf_count.py \
 # mask quality — FBD / SBD / AP (LSC)
 python eval/evaluate_leaf_segmentation.py \
     --input-dir output/A1 --gt-dir data/cvppp/per_leaf_mask/A1
+
+# runtime — mean / median / max seconds per image
+python eval/evaluate_timings.py \
+    --input-dir output/A1 another_model/output/A1
 ```
 
-Add `--output-dir DIR` to either for the full per-image table. Best suited to the
-zero-shot foliage models (01–03); the COCO baselines (04–06) need fine-tuning
-first. Evaluate one subset (A1…A4) at a time. Full details, caveats, and metric
-definitions in `eval/README.md`.
+Add `--output-dir DIR` to any of them for the full per-image / summary table.
+Accuracy evaluation is best suited to the zero-shot foliage models (01–03); the
+COCO baselines (04–06) need fine-tuning first. Evaluate one subset (A1…A4) at a
+time. Full details, caveats, and metric definitions in `eval/README.md`.

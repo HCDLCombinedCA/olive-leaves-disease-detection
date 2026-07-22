@@ -23,8 +23,8 @@ python run_mask_rcnn.py --input-dir ../../data/cvppp/images/A1 --output-dir outp
 Three flags only: `--input-dir` (required), `--weights` (a fine-tuned `.pth`;
 omit for COCO weights), and an optional `--output-dir`. With `--output-dir`, each
 image gets its own folder (colour overlay `<stem>_maskrcnn.png` + one binary PNG
-per instance) plus a shared `counts.csv`; `run()` returns the per-instance
-cutouts. Detection/mask thresholds and `NUM_CLASSES` are constants at the top of
+per instance) plus a shared `counts.csv` and `timings.csv`; `run()` returns the
+per-instance cutouts. Detection/mask thresholds and `NUM_CLASSES` are constants at the top of
 `run_mask_rcnn.py`.
 
 ## Fine-tune on leaves (where the accuracy comes from)

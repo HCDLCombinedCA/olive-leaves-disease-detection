@@ -15,13 +15,14 @@ returns, per input image, the list of transparent-background leaf cutouts.
 import argparse
 import os
 import sys
+import time
 
 import torch
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.insert(0, REPO_ROOT)
 from shared.helper import (crop_leaves, green_fraction, list_images,
-                            load_image, save_outputs)
+                            load_image, save_outputs, save_timings_csv)
 
 # ---- constants (previously CLI flags) --------------------------------------
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -83,14 +84,23 @@ def run(input_dir, model_size="small", output_dir=None):
     print(f"Loading SAM 2 ({MODEL_IDS[model_size]}) on {DEVICE} ...")
     gen = build_mask_generator(MODEL_IDS[model_size])
 
-    all_crops, all_masks = [], []
+    all_crops, all_masks, timings = [], [], []
     for path in paths:
         image = load_image(path)
+
+        # inference
+        t0 = time.perf_counter()
         with torch.inference_mode():
             anns = gen.generate(image)
-        masks = filter_leaf_masks(image, anns)
+        t1 = time.perf_counter()
 
+        # post processing
+        masks = filter_leaf_masks(image, anns)
+        t2 = time.perf_counter()
+
+        # saving of data
         image_name = os.path.basename(path)
+        timings.append((image_name, t1 - t0, t2 - t1))
         all_crops.append({"image_name": image_name,
                           "cropped_images": crop_leaves(image, masks)})
         all_masks.append({"image_name": image_name, "image": image, "masks": masks})
@@ -98,6 +108,7 @@ def run(input_dir, model_size="small", output_dir=None):
 
     if output_dir:
         save_outputs(output_dir, all_masks, "sam2")
+        save_timings_csv(os.path.join(output_dir, "timings.csv"), timings)
     return all_crops
 
 
