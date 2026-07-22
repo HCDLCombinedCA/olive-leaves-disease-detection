@@ -57,16 +57,6 @@ segmentation](#evaluate-leaf-segmentation-cvppp-lsc--lcc) below) — just pick a
 model folder (start with `01_sam2`) and follow its README against
 `data/cvppp/images/A1/plant001_rgb.png` or the whole `A1` folder.
 
-## Your hardware (detected: RTX 4050 Laptop, 6 GB VRAM)
-
-6 GB is enough for every 2D model **if you pick the small variants** — the
-per-folder READMEs call out which. Rules of thumb:
-
-- SAM 2 → `--model-size tiny|small`; SAM v1 / HQ-SAM → `vit_b` / `vit_tiny`.
-- Mask2Former → `swin-tiny`/`swin-small`; YOLO → `n`/`s` (train `--batch 4`).
-- If you hit CUDA out-of-memory: shrink the model, add `--points-per-side 16`
-  (SAM family), lower image size, or run `--device cpu` (slower but works).
-
 ## Recommended path
 
 1. **Prototype zero-shot** with SAM 2 (01) or Light HQ-SAM (03) — immediate,
