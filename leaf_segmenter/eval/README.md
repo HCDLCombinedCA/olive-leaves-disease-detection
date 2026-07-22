@@ -5,8 +5,8 @@ Three evaluators, scoring different things:
 - `evaluate_leaf_count.py` — Leaf **Counting** Challenge (LCC) metrics: does the
   model report the right *number* of leaves.
 - `evaluate_leaf_segmentation.py` — Leaf **Segmentation** Challenge (LSC)
-  metrics: how well the predicted *masks* overlap the true leaves (FBD, SBD,
-  AP). A model can nail the count while merging/splitting leaves, or vice
+  metrics: how well the predicted *masks* overlap the true leaves (FBD, SBD).
+  A model can nail the count while merging/splitting leaves, or vice
   versa — these are complementary, not redundant.
 - `evaluate_timings.py` — **runtime**: mean / median / max seconds per image for
   inference and post-processing, compared across models. Needs no ground truth.
@@ -26,7 +26,7 @@ Ground truth lives under `data/cvppp/`, one subfolder per CVPPP subset (`A1`…`
 data/cvppp/
 ├─ images/A?/         plantNNN_rgb.png + A?.csv (image, leaf_count) — for LCC
 ├─ mask/A?/           plantNNN_fg.png            binary foreground — (see note)
-└─ per_leaf_mask/A?/  plantNNN_label.png         0=bg, 1..N=leaf id — for FBD + SBD + AP
+└─ per_leaf_mask/A?/  plantNNN_label.png         0=bg, 1..N=leaf id — for FBD + SBD
 ```
 
 The segmentation evaluator reads only the per-leaf label maps: it derives the
@@ -49,7 +49,7 @@ writes:
 - `timings.csv` — `image,inference_s,postprocess_s` (for runtime)
 
 ```bash
-cd 2d_foundation/02_leaf_only_sam
+cd models/02_leaf_only_sam
 python run_leaf_only_sam.py --input-dir ../../data/cvppp/images/A1 --output-dir output/A1
 ```
 
@@ -59,7 +59,7 @@ Pure stdlib — runs in any env.
 
 ```bash
 python eval/evaluate_leaf_count.py \
-    --input-dir 2d_foundation/02_leaf_only_sam/output/A1 \
+    --input-dir models/02_leaf_only_sam/output/A1 \
     --gt-dir    data/cvppp/images/A1
 ```
 
@@ -88,13 +88,13 @@ stdlib.
 
 ```bash
 python eval/evaluate_leaf_segmentation.py \
-    --input-dir 2d_foundation/02_leaf_only_sam/output/A1 \
+    --input-dir models/02_leaf_only_sam/output/A1 \
     --gt-dir    data/cvppp/per_leaf_mask/A1
 ```
 
 `--input-dir` is the model's output dir (its `<image>/mask_*.png` folders are
 read). `--gt-dir` is the folder of per-leaf `plantNNN_label.png` maps. Add
-`--output-dir DIR` for the full per-image FBD/SBD/tp/fp/fn table (also written to
+`--output-dir DIR` for the full per-image FBD/SBD table (also written to
 `DIR/leaf_segmentation_per_image.csv`). Images are matched by canonical plant id
 (`_masks`/`_rgb`/`_fg`/`_label` and the extension stripped, so `plant001_rgb/` and
 `plant001_label.png` resolve to `plant001`).
@@ -105,14 +105,6 @@ read). `--gt-dir` is the folder of per-leaf `plantNNN_label.png` maps. Add
 |--------|---------|
 | **FBD** | Dice between the union of predicted masks and the GT foreground — "did it find the plant", regardless of leaf separation |
 | **SBD** | Symmetric Best Dice — mean best-match Dice per leaf, both directions, worse of the two kept. The standard CVPPP leaderboard number |
-| **AP@t** | Precision/Recall/F1 from a greedy one-to-one IoU match between predicted and GT leaf instances (t = `IOU_THRESH`, default 0.5) |
-
-**AP caveat:** the mask PNGs have no per-instance confidence score, so this is a
-single IoU-threshold operating point (P/R/F1 @ IoU≥t), not a confidence-ranked,
-multi-threshold COCO-style mAP. SBD is far more forgiving of a merged/split leaf
-(partial Dice credit) than AP (binary hit/miss at the threshold) — expect SBD to
-look noticeably better than AP·F1 when models under-segment touching leaves. The
-threshold is the `IOU_THRESH` constant at the top of the script.
 
 ## Runtime (`evaluate_timings.py`)
 
@@ -124,8 +116,8 @@ seconds per image for inference, post-processing, and their total. Pass several
 
 ```bash
 python eval/evaluate_timings.py \
-    --input-dir 2d_foundation/01_sam2/output/A1 \
-                2d_foundation/03_hq_sam/output/A1
+    --input-dir models/01_sam2/output/A1 \
+                models/03_hq_sam/output/A1
 ```
 
 Add `--output-dir DIR` to also write the table to `DIR/timing_summary.csv`. Dirs

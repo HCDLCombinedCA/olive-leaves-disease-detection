@@ -151,7 +151,7 @@ def write_masks(masks, mask_dir, stem):
     Each `mask_NNN.png` is single-channel: 255 (white) for masked pixels, 0
     (black) for background, at the original image resolution (unlike
     `write_crops`, which crops to the bounding box). This full-frame,
-    per-instance format is what mask-overlap evaluators (SBD, AP) need to
+    per-instance format is what mask-overlap evaluators (SBD) need to
     match predicted leaves against ground-truth leaf masks. Returns the
     number of masks written.
     """

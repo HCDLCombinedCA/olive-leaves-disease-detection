@@ -23,11 +23,11 @@ size, or `--device cpu`.
 ```
 README.md                    master guide: decision tree, status table, workflow
 requirements-common.txt      numpy+Pillow (shared helper + evaluate_leaf_segmentation.py)
-shared/helper.py            mask overlay / image IO used by ALL 2d scripts
+shared/helper.py            mask overlay / image IO used by ALL model scripts
 data/cvppp/                  CVPPP sample images + ground truth (images/mask/per_leaf_mask)
-2d_foundation/               01 SAM2 · 02 Leaf Only SAM · 03 HQ-SAM   (zero-shot)
-2d_instance_seg/             04 Mask R-CNN · 05 YOLO-seg · 06 Mask2Former
-2d_forestry/                 07 CSIRO (legacy TF1) · 08 LeafInst/Poplar (no code yet)
+models/                      one folder per model, each with its own .venv:
+  01_sam2 · 02_leaf_only_sam · 03_hq_sam              (zero-shot)
+  04_mask_rcnn · 05_yolo_seg · 06_mask2former         (COCO baselines, fine-tune for leaves)
 eval/                        leaf-count + leaf-mask eval vs CVPPP ground truth
 ```
 
@@ -46,13 +46,11 @@ evaluators then take the same `--input-dir DIR` / `--gt-dir` / optional
   (e.g. `data/cvppp/images/A1`). Metrics: DiC, |DiC|, MSE, % agreement. Pure
   stdlib.
 - `eval/evaluate_leaf_segmentation.py` scores mask *overlap quality* (CVPPP LSC):
-  FBD, SBD, and AP@IoU. Reads the predicted `<input-dir>/<image>/mask_*.png`
+  FBD and SBD. Reads the predicted `<input-dir>/<image>/mask_*.png`
   folders and the per-leaf label maps under `--gt-dir`
   (`data/cvppp/per_leaf_mask/A?/plantNNN_label.png`); the FBD foreground is
   derived from those maps (`label > 0`, pixel-identical to `mask/A?/*_fg.png`),
   so no separate foreground dir is needed. Needs numpy+Pillow (not stdlib-only).
-  AP is a single IoU-threshold (`IOU_THRESH`, default 0.5) precision/recall/F1,
-  not a confidence-ranked mAP curve — the mask PNGs have no per-instance score.
 - `eval/evaluate_timings.py` summarizes runtime: mean/median/max seconds per
   image for inference, post-processing, and total, from `timings.csv`
   (`image,inference_s,postprocess_s`). No `--gt-dir`; accepts several
@@ -97,8 +95,7 @@ with no training.
 ## Status quick-reference
 
 - ✅ runnable now: 01, 02, 03, 04, 05, 06 (04–06 = baselines pending fine-tune)
-- ⚠️ extra setup: 07 (needs Python 3.7 + TF1.15)
-- ⏳ no public code yet: 08 (LeafInst/Poplar — March 2026 paper; use 05 as fallback)
+- (forestry folders 07 CSIRO / 08 LeafInst-Poplar were removed — didn't work out)
 
 ## Verifying changes
 

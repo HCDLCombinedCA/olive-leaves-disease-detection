@@ -12,9 +12,9 @@ kernel loading etc.), which inflates the mean more than the median.
 With --output-dir, also writes the summary table as timing_summary.csv.
 
 Examples:
-    python eval/evaluate_timings.py --input-dir 2d_foundation/01_sam2/out/A1
+    python eval/evaluate_timings.py --input-dir models/01_sam2/out/A1
     python eval/evaluate_timings.py \
-        --input-dir 2d_foundation/01_sam2/out/A1 2d_foundation/03_hq_sam/out/A1 \
+        --input-dir models/01_sam2/out/A1 models/03_hq_sam/out/A1 \
         --output-dir eval_out/A1
 """
 import argparse

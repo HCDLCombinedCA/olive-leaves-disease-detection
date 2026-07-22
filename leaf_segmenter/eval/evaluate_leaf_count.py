@@ -16,7 +16,7 @@ stdlib — runs in any venv.
 
 Examples:
     python eval/evaluate_leaf_count.py \
-        --input-dir 2d_foundation/01_sam2/output/small/A1 \
+        --input-dir models/01_sam2/output/small/A1 \
         --gt-dir data/cvppp/images/A1
     python eval/evaluate_leaf_count.py \
         --input-dir out/A1 --gt-dir data/cvppp/images/A1 --output-dir eval_out/A1

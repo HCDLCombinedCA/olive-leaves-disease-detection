@@ -14,9 +14,6 @@ compare. Every model has its own README with exact install + run commands.
                         │                                                      │
                         │   Have (or will make) labels, want best accuracy?    │
                         │     → YOLO11-seg (05) · Mask R-CNN (04) · M2Former(06)│
-                        │                                                      │
-                        │   Subject is trees/branches outdoors?                │
-                        │     → Poplar-leaf + LeafInst (08); CSIRO leaf MRCNN(07)│
                         └──────────────────────────────────────────────────────┘
 ```
 
@@ -29,22 +26,20 @@ rather than segmenting individual leaves, and out of scope here.)
 
 | # | Folder | Model | Runs today? | Notes |
 |---|--------|-------|-------------|-------|
-| 01 | `2d_foundation/01_sam2` | **SAM 2** (Meta) | ✅ zero-shot | weights auto-download; best quick start |
-| 02 | `2d_foundation/02_leaf_only_sam` | **Leaf Only SAM** | ✅ zero-shot | SAM v1 + leaf post-processing |
-| 03 | `2d_foundation/03_hq_sam` | **HQ-SAM** | ✅ zero-shot | sharper edges; `vit_tiny` = Light HQ-SAM |
-| 04 | `2d_instance_seg/04_mask_rcnn` | **Mask R-CNN** | ✅ baseline | COCO weights; fine-tune for leaves |
-| 05 | `2d_instance_seg/05_yolo_seg` | **YOLOv8/11-seg** | ✅ baseline + train | best accuracy-for-effort once labelled |
-| 06 | `2d_instance_seg/06_mask2former` | **Mask2Former** | ✅ baseline | SOTA on CVPPP; fine-tune for leaves |
-| 07 | `2d_forestry/07_csiro_leaf_segmenter` | **CSIRO leaf MRCNN** | ⚠️ legacy TF1 | pretrained on synth Arabidopsis; Py3.7 env |
-| 08 | `2d_forestry/08_leafinst_poplar` | **LeafInst + Poplar-leaf** | ⏳ no code yet | most on-point for trees; use YOLO fallback |
+| 01 | `models/01_sam2` | **SAM 2** (Meta) | ✅ zero-shot | weights auto-download; best quick start |
+| 02 | `models/02_leaf_only_sam` | **Leaf Only SAM** | ✅ zero-shot | SAM v1 + leaf post-processing |
+| 03 | `models/03_hq_sam` | **HQ-SAM** | ✅ zero-shot | sharper edges; `vit_tiny` = Light HQ-SAM |
+| 04 | `models/04_mask_rcnn` | **Mask R-CNN** | ✅ baseline | COCO weights; fine-tune for leaves |
+| 05 | `models/05_yolo_seg` | **YOLOv8/11-seg** | ✅ baseline + train | best accuracy-for-effort once labelled |
+| 06 | `models/06_mask2former` | **Mask2Former** | ✅ baseline | SOTA on CVPPP; fine-tune for leaves |
 
-✅ = pip install + run · ⚠️ = extra setup / training · ⏳ = code not released yet
+✅ = pip install + run · ⚠️ = extra setup / training
 
 ## Setup model — one virtualenv per folder
 
-These stacks (`sam2`, `segment-anything`, `ultralytics`, `transformers`,
-`torch-geometric`, TF1…) have **conflicting dependencies**, so each folder gets
-its own `.venv`. Don't try to install everything into one environment.
+These stacks (`sam2`, `segment-anything`, `ultralytics`, `transformers`) have
+**conflicting dependencies**, so each folder gets its own `.venv`. Don't try to
+install everything into one environment.
 
 Standard pattern (from inside any `✅` folder):
 
@@ -76,9 +71,9 @@ per-folder READMEs call out which. Rules of thumb:
 
 1. **Prototype zero-shot** with SAM 2 (01) or Light HQ-SAM (03) — immediate,
    no labels. Leaf Only SAM (02) if you want the foliage post-processing.
-2. **Need accuracy?** Annotate a small set (or get **Poplar-leaf**, folder 08)
-   and **fine-tune YOLO11-seg** (05) — best effort/accuracy trade-off. Mask R-CNN
-   (04) / Mask2Former (06) are alternatives.
+2. **Need accuracy?** Annotate a small set and **fine-tune YOLO11-seg** (05) —
+   best effort/accuracy trade-off. Mask R-CNN (04) / Mask2Former (06) are
+   alternatives.
 
 ## Layout
 
@@ -86,11 +81,11 @@ per-folder READMEs call out which. Rules of thumb:
 leaf_segmenter/
 ├── README.md                 ← you are here
 ├── requirements-common.txt   ← numpy+Pillow for the shared helper
-├── shared/helper.py         ← mask overlay / IO used by all 2D scripts
+├── shared/helper.py         ← mask overlay / IO used by all model scripts
 ├── data/cvppp/                ← CVPPP sample images + ground truth (see eval/README.md)
-├── 2d_foundation/            ← 01 SAM2 · 02 Leaf Only SAM · 03 HQ-SAM
-├── 2d_instance_seg/          ← 04 Mask R-CNN · 05 YOLO-seg · 06 Mask2Former
-├── 2d_forestry/              ← 07 CSIRO · 08 LeafInst/Poplar
+├── models/                    ← one folder per model:
+│   ├── 01_sam2 · 02_leaf_only_sam · 03_hq_sam       ← zero-shot
+│   └── 04_mask_rcnn · 05_yolo_seg · 06_mask2former  ← COCO baselines, fine-tune for leaves
 └── eval/                     ← leaf count / mask quality / runtime evaluation
 ```
 
@@ -106,14 +101,14 @@ The two accuracy evaluators take the same `--input-dir` / `--gt-dir` / optional
 
 ```bash
 # run a model, writing predictions to output/A1
-python 2d_foundation/01_sam2/run_sam2.py \
+python models/01_sam2/run_sam2.py \
     --input-dir data/cvppp/images/A1 --output-dir output/A1
 
 # counts (LCC)
 python eval/evaluate_leaf_count.py \
     --input-dir output/A1 --gt-dir data/cvppp/images/A1
 
-# mask quality — FBD / SBD / AP (LSC)
+# mask quality — FBD / SBD (LSC)
 python eval/evaluate_leaf_segmentation.py \
     --input-dir output/A1 --gt-dir data/cvppp/per_leaf_mask/A1
 
