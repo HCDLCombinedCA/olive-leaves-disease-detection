@@ -1,0 +1,5 @@
+path: /home/marvin/shared/olive-leaves-disease-detection/leaf_segmenter/models/05_yolo_seg/yolo_dataset/ccvpp
+train: images/train
+val: images/val
+names:
+  0: leaf

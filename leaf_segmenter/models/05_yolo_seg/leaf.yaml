@@ -1,5 +1,0 @@
-path: /home/marvin/shared/olive-leaves-disease-detection/leaf_segmenter/2d_instance_seg/05_yolo_seg/yolo_dataset
-train: images/train
-val: images/val
-names:
-  0: leaf
