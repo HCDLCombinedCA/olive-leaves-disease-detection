@@ -1,0 +1,6 @@
+# Extracted dataset and derived artefacts -- regenerate with the two CLI scripts.
+data/
+features.csv
+outputs/
+__pycache__/
+*.pyc
