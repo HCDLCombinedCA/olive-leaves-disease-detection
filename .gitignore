@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Working notes and one-off session orchestration: analysis scratch, not deliverables.
+tmp/
