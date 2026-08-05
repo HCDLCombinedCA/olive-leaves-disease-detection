@@ -1,0 +1,176 @@
+{
+  "decision_tree": {
+    "macro_f1": 0.6207670561054025,
+    "accuracy": 0.6241206030150753,
+    "confusion_matrix": [
+      [
+        236,
+        66,
+        4
+      ],
+      [
+        81,
+        162,
+        5
+      ],
+      [
+        119,
+        99,
+        223
+      ]
+    ],
+    "report": {
+      "Healthy": {
+        "precision": 0.5412844036697247,
+        "recall": 0.7712418300653595,
+        "f1-score": 0.6361185983827493,
+        "support": 306
+      },
+      "aculus_olearius": {
+        "precision": 0.4954128440366973,
+        "recall": 0.6532258064516129,
+        "f1-score": 0.5634782608695653,
+        "support": 248
+      },
+      "olive_peacock_spot": {
+        "precision": 0.9612068965517241,
+        "recall": 0.5056689342403629,
+        "f1-score": 0.662704309063893,
+        "support": 441
+      },
+      "accuracy": 0.6241206030150753,
+      "macro avg": {
+        "precision": 0.6659680480860487,
+        "recall": 0.6433788569191118,
+        "f1-score": 0.6207670561054025,
+        "support": 995
+      },
+      "weighted avg": {
+        "precision": 0.7159674916817558,
+        "recall": 0.6241206030150753,
+        "f1-score": 0.6297964825105029,
+        "support": 995
+      }
+    }
+  },
+  "logistic_regression": {
+    "macro_f1": 0.6923691528985683,
+    "accuracy": 0.7105527638190955,
+    "confusion_matrix": [
+      [
+        222,
+        67,
+        17
+      ],
+      [
+        65,
+        149,
+        34
+      ],
+      [
+        61,
+        44,
+        336
+      ]
+    ],
+    "report": {
+      "Healthy": {
+        "precision": 0.6379310344827587,
+        "recall": 0.7254901960784313,
+        "f1-score": 0.6788990825688075,
+        "support": 306
+      },
+      "aculus_olearius": {
+        "precision": 0.573076923076923,
+        "recall": 0.6008064516129032,
+        "f1-score": 0.5866141732283464,
+        "support": 248
+      },
+      "olive_peacock_spot": {
+        "precision": 0.8682170542635659,
+        "recall": 0.7619047619047619,
+        "f1-score": 0.8115942028985507,
+        "support": 441
+      },
+      "accuracy": 0.7105527638190955,
+      "macro avg": {
+        "precision": 0.6930750039410825,
+        "recall": 0.6960671365320321,
+        "f1-score": 0.6923691528985683,
+        "support": 995
+      },
+      "weighted avg": {
+        "precision": 0.7238328586985262,
+        "recall": 0.7105527638190955,
+        "f1-score": 0.7147100278441666,
+        "support": 995
+      }
+    }
+  },
+  "logistic_regression_coefficients": {
+    "frac_green": {
+      "Healthy": -0.2,
+      "aculus_olearius": 0.129,
+      "olive_peacock_spot": 0.07
+    },
+    "frac_yellow": {
+      "Healthy": -1.811,
+      "aculus_olearius": -0.166,
+      "olive_peacock_spot": 1.976
+    },
+    "frac_brown": {
+      "Healthy": 0.303,
+      "aculus_olearius": -0.942,
+      "olive_peacock_spot": 0.64
+    },
+    "frac_dark": {
+      "Healthy": -0.063,
+      "aculus_olearius": -0.007,
+      "olive_peacock_spot": 0.07
+    },
+    "frac_gray": {
+      "Healthy": -0.677,
+      "aculus_olearius": 0.164,
+      "olive_peacock_spot": 0.513
+    },
+    "glcm_contrast": {
+      "Healthy": 0.337,
+      "aculus_olearius": 0.717,
+      "olive_peacock_spot": -1.054
+    },
+    "glcm_homogeneity": {
+      "Healthy": 1.458,
+      "aculus_olearius": -1.094,
+      "olive_peacock_spot": -0.363
+    },
+    "glcm_energy": {
+      "Healthy": -1.58,
+      "aculus_olearius": 0.858,
+      "olive_peacock_spot": 0.721
+    },
+    "glcm_correlation": {
+      "Healthy": -0.221,
+      "aculus_olearius": -0.059,
+      "olive_peacock_spot": 0.28
+    }
+  },
+  "decision_tree_rules": "|--- frac_yellow <= 0.16\n|   |--- glcm_homogeneity <= 0.94\n|   |   |--- frac_brown <= 0.00\n|   |   |   |--- class: 1\n|   |   |--- frac_brown >  0.00\n|   |   |   |--- class: 0\n|   |--- glcm_homogeneity >  0.94\n|   |   |--- frac_brown <= 0.00\n|   |   |   |--- class: 0\n|   |   |--- frac_brown >  0.00\n|   |   |   |--- class: 0\n|--- frac_yellow >  0.16\n|   |--- glcm_homogeneity <= 0.93\n|   |   |--- frac_yellow <= 0.48\n|   |   |   |--- class: 1\n|   |   |--- frac_yellow >  0.48\n|   |   |   |--- class: 2\n|   |--- glcm_homogeneity >  0.93\n|   |   |--- frac_green <= 0.68\n|   |   |   |--- class: 2\n|   |   |--- frac_green >  0.68\n|   |   |   |--- class: 2\n",
+  "split": {
+    "train": 2008,
+    "test": 995,
+    "grouped_by": "source photograph",
+    "shared_groups": 0,
+    "n_splits": 3
+  },
+  "features": [
+    "frac_green",
+    "frac_yellow",
+    "frac_brown",
+    "frac_dark",
+    "frac_gray",
+    "glcm_contrast",
+    "glcm_homogeneity",
+    "glcm_energy",
+    "glcm_correlation"
+  ]
+}

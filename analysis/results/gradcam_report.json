@@ -1,0 +1,150 @@
+{
+  "model": "../compression/artifacts/densenet121_baseline",
+  "test_accuracy": 0.9397058823529412,
+  "panels": [
+    {
+      "file": "test/Healthy/IMG_20190729_173140.jpg",
+      "true_class": "Healthy",
+      "predicted": "Healthy",
+      "correct": true,
+      "confidence": 0.9001379609107971,
+      "probabilities": {
+        "Healthy": 0.9001379609107971,
+        "aculus_olearius": 0.0014774224255234003,
+        "olive_peacock_spot": 0.09838464111089706
+      }
+    },
+    {
+      "file": "test/Healthy/IMG_20190729_172030.jpg",
+      "true_class": "Healthy",
+      "predicted": "Healthy",
+      "correct": true,
+      "confidence": 0.9778719544410706,
+      "probabilities": {
+        "Healthy": 0.9778719544410706,
+        "aculus_olearius": 0.018463093787431717,
+        "olive_peacock_spot": 0.0036649778485298157
+      }
+    },
+    {
+      "file": "test/Healthy/IMG_20190729_174435.jpg",
+      "true_class": "Healthy",
+      "predicted": "olive_peacock_spot",
+      "correct": false,
+      "confidence": 0.49136021733283997,
+      "probabilities": {
+        "Healthy": 0.4852704703807831,
+        "aculus_olearius": 0.023369241505861282,
+        "olive_peacock_spot": 0.49136021733283997
+      }
+    },
+    {
+      "file": "test/Healthy/IMG_20190729_174004.jpg",
+      "true_class": "Healthy",
+      "predicted": "aculus_olearius",
+      "correct": false,
+      "confidence": 0.9130775928497314,
+      "probabilities": {
+        "Healthy": 0.052484288811683655,
+        "aculus_olearius": 0.9130775928497314,
+        "olive_peacock_spot": 0.034438103437423706
+      }
+    },
+    {
+      "file": "test/aculus_olearius/IMG_20190807_141240.jpg",
+      "true_class": "aculus_olearius",
+      "predicted": "aculus_olearius",
+      "correct": true,
+      "confidence": 0.9982330799102783,
+      "probabilities": {
+        "Healthy": 8.32169007480843e-06,
+        "aculus_olearius": 0.9982330799102783,
+        "olive_peacock_spot": 0.0017585555324330926
+      }
+    },
+    {
+      "file": "test/aculus_olearius/DSC_0109.JPG",
+      "true_class": "aculus_olearius",
+      "predicted": "aculus_olearius",
+      "correct": true,
+      "confidence": 0.9991080164909363,
+      "probabilities": {
+        "Healthy": 5.298562699707077e-10,
+        "aculus_olearius": 0.9991080164909363,
+        "olive_peacock_spot": 0.0008920148829929531
+      }
+    },
+    {
+      "file": "test/aculus_olearius/a245.jpg",
+      "true_class": "aculus_olearius",
+      "predicted": "olive_peacock_spot",
+      "correct": false,
+      "confidence": 0.9788302779197693,
+      "probabilities": {
+        "Healthy": 2.9094706405885518e-05,
+        "aculus_olearius": 0.02114064432680607,
+        "olive_peacock_spot": 0.9788302779197693
+      }
+    },
+    {
+      "file": "test/aculus_olearius/IMG_20190729_200009.jpg",
+      "true_class": "aculus_olearius",
+      "predicted": "olive_peacock_spot",
+      "correct": false,
+      "confidence": 0.6142929792404175,
+      "probabilities": {
+        "Healthy": 0.1191667914390564,
+        "aculus_olearius": 0.2665402591228485,
+        "olive_peacock_spot": 0.6142929792404175
+      }
+    },
+    {
+      "file": "test/olive_peacock_spot/IMG_20190806_161901.jpg",
+      "true_class": "olive_peacock_spot",
+      "predicted": "olive_peacock_spot",
+      "correct": true,
+      "confidence": 0.9999210834503174,
+      "probabilities": {
+        "Healthy": 8.906206883096957e-10,
+        "aculus_olearius": 7.888217078289017e-05,
+        "olive_peacock_spot": 0.9999210834503174
+      }
+    },
+    {
+      "file": "test/olive_peacock_spot/IMG_20190729_195228.jpg",
+      "true_class": "olive_peacock_spot",
+      "predicted": "olive_peacock_spot",
+      "correct": true,
+      "confidence": 0.9975152015686035,
+      "probabilities": {
+        "Healthy": 8.325256203534082e-05,
+        "aculus_olearius": 0.0024015847593545914,
+        "olive_peacock_spot": 0.9975152015686035
+      }
+    },
+    {
+      "file": "test/olive_peacock_spot/IMG_20190729_195724.jpg",
+      "true_class": "olive_peacock_spot",
+      "predicted": "aculus_olearius",
+      "correct": false,
+      "confidence": 0.9906299710273743,
+      "probabilities": {
+        "Healthy": 0.0011834106408059597,
+        "aculus_olearius": 0.9906299710273743,
+        "olive_peacock_spot": 0.008186605758965015
+      }
+    },
+    {
+      "file": "test/olive_peacock_spot/IMG_20190729_202034.jpg",
+      "true_class": "olive_peacock_spot",
+      "predicted": "aculus_olearius",
+      "correct": false,
+      "confidence": 0.581737756729126,
+      "probabilities": {
+        "Healthy": 8.362347216461785e-06,
+        "aculus_olearius": 0.581737756729126,
+        "olive_peacock_spot": 0.4182538390159607
+      }
+    }
+  ]
+}

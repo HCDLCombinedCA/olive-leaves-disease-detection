@@ -1,0 +1,754 @@
+{
+  "part_a": {
+    "source_class_table": {
+      "test/Healthy": {
+        "B* (camera roll)": 79,
+        "DSC_ (DSLR)": 4,
+        "IMG_ (phone, timestamped)": 137
+      },
+      "test/aculus_olearius": {
+        "A* (camera roll)": 9,
+        "DSC_ (DSLR)": 37,
+        "IMG_ (phone, timestamped)": 154
+      },
+      "test/olive_peacock_spot": {
+        "DSC_ (DSLR)": 7,
+        "IMG_ (phone, timestamped)": 253
+      },
+      "train/Healthy": {
+        "A* (camera roll)": 28,
+        "B* (camera roll)": 609,
+        "DSC_ (DSLR)": 4,
+        "IMG_ (phone, timestamped)": 189
+      },
+      "train/aculus_olearius": {
+        "bare numeric": 690
+      },
+      "train/olive_peacock_spot": {
+        "A* (camera roll)": 222,
+        "B* (camera roll)": 1,
+        "DSC_ (DSLR)": 15,
+        "IMG_ (phone, timestamped)": 962
+      }
+    },
+    "source_purity": {
+      "A* (camera roll)": {
+        "n": 250,
+        "top_class": "olive_peacock_spot",
+        "purity": 0.888
+      },
+      "B* (camera roll)": {
+        "n": 610,
+        "top_class": "Healthy",
+        "purity": 0.9983606557377049
+      },
+      "DSC_ (DSLR)": {
+        "n": 19,
+        "top_class": "olive_peacock_spot",
+        "purity": 0.7894736842105263
+      },
+      "IMG_ (phone, timestamped)": {
+        "n": 1151,
+        "top_class": "olive_peacock_spot",
+        "purity": 0.8357949609035621
+      },
+      "bare numeric": {
+        "n": 690,
+        "top_class": "aculus_olearius",
+        "purity": 1.0
+      }
+    },
+    "filename_only_accuracy": {
+      "train": 0.9183823529411764,
+      "test": 0.4985294117647059,
+      "majority_baseline": 0.38235294117647056
+    }
+  },
+  "part_b": {
+    "model": "../compression/artifacts/mobilenetv2_baseline",
+    "per_image": [
+      {
+        "file": "test/Healthy/IMG_20190729_172641.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9350570440292358,
+        "leaf_area_fraction": 0.7797751913265306,
+        "attention_outside_leaf": 0.06020837904750319
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_173201.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.8969013690948486,
+        "leaf_area_fraction": 0.8237205038265306,
+        "attention_outside_leaf": 0.05941315840579598
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_170756.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9831768870353699,
+        "leaf_area_fraction": 0.8765345982142857,
+        "attention_outside_leaf": 0.02331917299506029
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_181133.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9693761467933655,
+        "leaf_area_fraction": 0.8404416454081632,
+        "attention_outside_leaf": 0.12229336467010075
+      },
+      {
+        "file": "test/Healthy/B-715.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9050496220588684,
+        "leaf_area_fraction": 0.779655612244898,
+        "attention_outside_leaf": 0.12741788522364156
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_171909.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.5973018407821655,
+        "leaf_area_fraction": 0.9189652423469388,
+        "attention_outside_leaf": 0.019307779455787957
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_175915.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9179261922836304,
+        "leaf_area_fraction": 0.8216876594387755,
+        "attention_outside_leaf": 0.14914340734075993
+      },
+      {
+        "file": "test/Healthy/IMG_20190806_152054.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.635303258895874,
+        "leaf_area_fraction": 0.9995814732142857,
+        "attention_outside_leaf": 0.00013953066794366334
+      },
+      {
+        "file": "test/Healthy/B-779.JPG",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9888401627540588,
+        "leaf_area_fraction": 0.5872528698979592,
+        "attention_outside_leaf": 0.510812435042259
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_173007.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9141055941581726,
+        "leaf_area_fraction": 0.7947823660714286,
+        "attention_outside_leaf": 0.09106845950082641
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_171132.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9768426418304443,
+        "leaf_area_fraction": 0.8038305165816326,
+        "attention_outside_leaf": 0.060887456540421395
+      },
+      {
+        "file": "test/Healthy/B-730.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.7261829376220703,
+        "leaf_area_fraction": 0.8647361288265306,
+        "attention_outside_leaf": 0.030001880227609506
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_191958.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9714838862419128,
+        "leaf_area_fraction": 0.8297791772959183,
+        "attention_outside_leaf": 0.12012722008735824
+      },
+      {
+        "file": "test/Healthy/B-709.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9938878417015076,
+        "leaf_area_fraction": 0.7970942283163265,
+        "attention_outside_leaf": 0.0834239410389073
+      },
+      {
+        "file": "test/Healthy/B-770.JPG",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9989945292472839,
+        "leaf_area_fraction": 0.7877471301020408,
+        "attention_outside_leaf": 0.31520360205043857
+      },
+      {
+        "file": "test/Healthy/IMG_20190806_164441.jpg",
+        "true_class": "Healthy",
+        "predicted": "aculus_olearius",
+        "correct": false,
+        "confidence": 0.5049683451652527,
+        "leaf_area_fraction": 0.8641183035714286,
+        "attention_outside_leaf": 0.06537126894935635
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_180055.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9830210208892822,
+        "leaf_area_fraction": 0.8806600765306123,
+        "attention_outside_leaf": 0.0806152550833276
+      },
+      {
+        "file": "test/Healthy/B-718.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.998700737953186,
+        "leaf_area_fraction": 0.8294802295918368,
+        "attention_outside_leaf": 0.06656974304530501
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_200321.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.7644411325454712,
+        "leaf_area_fraction": 0.7953005420918368,
+        "attention_outside_leaf": 0.16396739344003242
+      },
+      {
+        "file": "test/Healthy/B-769.JPG",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.993541955947876,
+        "leaf_area_fraction": 0.9987842793367347,
+        "attention_outside_leaf": 0.002269200925942452
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_191841.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.5778200030326843,
+        "leaf_area_fraction": 0.8678651147959183,
+        "attention_outside_leaf": 0.16743341034263506
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_170915.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.7130715847015381,
+        "leaf_area_fraction": 0.8888911033163265,
+        "attention_outside_leaf": 0.03231768914499663
+      },
+      {
+        "file": "test/Healthy/IMG_20190806_152057.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.8501557111740112,
+        "leaf_area_fraction": 0.9262197066326531,
+        "attention_outside_leaf": 0.018295355062362326
+      },
+      {
+        "file": "test/Healthy/B-725.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9750475287437439,
+        "leaf_area_fraction": 0.728874362244898,
+        "attention_outside_leaf": 0.17445315584833773
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_172458.jpg",
+        "true_class": "Healthy",
+        "predicted": "Healthy",
+        "correct": true,
+        "confidence": 0.9459137320518494,
+        "leaf_area_fraction": 0.8210897640306123,
+        "attention_outside_leaf": 0.053091537055429044
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_195435.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.5504167079925537,
+        "leaf_area_fraction": 0.7854153380102041,
+        "attention_outside_leaf": 0.18574774441635905
+      },
+      {
+        "file": "test/aculus_olearius/DSC_0082.JPG",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9993284940719604,
+        "leaf_area_fraction": 0.6223891900510204,
+        "attention_outside_leaf": 0.43585105829558873
+      },
+      {
+        "file": "test/aculus_olearius/DSC_0105.JPG",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9954133629798889,
+        "leaf_area_fraction": 0.8045280612244898,
+        "attention_outside_leaf": 0.22925849391918743
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190806_172845.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.784010648727417,
+        "leaf_area_fraction": 0.8764748086734694,
+        "attention_outside_leaf": 0.055787958455836964
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190806_143921.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9941979646682739,
+        "leaf_area_fraction": 0.6781130420918368,
+        "attention_outside_leaf": 0.20766560599152611
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_200549.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9994619488716125,
+        "leaf_area_fraction": 0.9000717474489796,
+        "attention_outside_leaf": 0.044659429586522234
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_193814.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9997336268424988,
+        "leaf_area_fraction": 0.9572704081632653,
+        "attention_outside_leaf": 0.013764787927279261
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190807_134749.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.950617253780365,
+        "leaf_area_fraction": 0.6565489477040817,
+        "attention_outside_leaf": 0.20801357562197542
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190807_135620.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "olive_peacock_spot",
+        "correct": false,
+        "confidence": 0.5498911738395691,
+        "leaf_area_fraction": 0.7620974170918368,
+        "attention_outside_leaf": 0.08234929799837952
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190211_192604.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9886066317558289,
+        "leaf_area_fraction": 0.9738321109693877,
+        "attention_outside_leaf": 0.04286303694648703
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_193743.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.4570884108543396,
+        "leaf_area_fraction": 0.8985570790816326,
+        "attention_outside_leaf": 0.0705946451698447
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190807_141455.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.5791256427764893,
+        "leaf_area_fraction": 0.5604870854591837,
+        "attention_outside_leaf": 0.37151546808872093
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190807_134141.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9321129322052002,
+        "leaf_area_fraction": 0.6989397321428571,
+        "attention_outside_leaf": 0.18227279498071425
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_194316.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9958668947219849,
+        "leaf_area_fraction": 0.8215680803571429,
+        "attention_outside_leaf": 0.13299249237111135
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190807_141846.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9821604490280151,
+        "leaf_area_fraction": 0.4536033163265306,
+        "attention_outside_leaf": 0.5388899434791423
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190807_140359.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "olive_peacock_spot",
+        "correct": false,
+        "confidence": 0.5718747973442078,
+        "leaf_area_fraction": 0.7941844706632653,
+        "attention_outside_leaf": 0.2411269535092445
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_193252.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9969934225082397,
+        "leaf_area_fraction": 0.8964445153061225,
+        "attention_outside_leaf": 0.03733371888840699
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190806_165113.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.7816489338874817,
+        "leaf_area_fraction": 0.8067203443877551,
+        "attention_outside_leaf": 0.14379284185194774
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_194451.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9725276231765747,
+        "leaf_area_fraction": 0.9636280293367347,
+        "attention_outside_leaf": 0.006393260044464281
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_193801.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9999161958694458,
+        "leaf_area_fraction": 0.9035594706632653,
+        "attention_outside_leaf": 0.03312029969215188
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190806_143502.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.8431282043457031,
+        "leaf_area_fraction": 0.9990234375,
+        "attention_outside_leaf": 0.0013235106867177493
+      },
+      {
+        "file": "test/aculus_olearius/DSC_0085.JPG",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9995527863502502,
+        "leaf_area_fraction": 0.5003985969387755,
+        "attention_outside_leaf": 0.5103172404624665
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190806_163022.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9406567811965942,
+        "leaf_area_fraction": 0.7984893176020408,
+        "attention_outside_leaf": 0.09245880470199683
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_195405.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.7313715219497681,
+        "leaf_area_fraction": 0.8655532525510204,
+        "attention_outside_leaf": 0.11059751916499025
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_193730.jpg",
+        "true_class": "aculus_olearius",
+        "predicted": "aculus_olearius",
+        "correct": true,
+        "confidence": 0.9694750905036926,
+        "leaf_area_fraction": 0.8444276147959183,
+        "attention_outside_leaf": 0.23132321054245347
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_192928.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9998292922973633,
+        "leaf_area_fraction": 0.9607780612244898,
+        "attention_outside_leaf": 0.007359571531298101
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_164223.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9998641014099121,
+        "leaf_area_fraction": 0.8625837053571429,
+        "attention_outside_leaf": 0.05849803925074096
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_170043.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9492596983909607,
+        "leaf_area_fraction": 0.9280133928571429,
+        "attention_outside_leaf": 0.02784410245884784
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_164456.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9999876022338867,
+        "leaf_area_fraction": 0.9546396683673469,
+        "attention_outside_leaf": 0.02870523931115354
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_165504.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9993209838867188,
+        "leaf_area_fraction": 0.8167051977040817,
+        "attention_outside_leaf": 0.10400537058214471
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_174319.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9999978542327881,
+        "leaf_area_fraction": 0.9269172512755102,
+        "attention_outside_leaf": 0.048999296204385576
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_163836.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9795255661010742,
+        "leaf_area_fraction": 0.8733657525510204,
+        "attention_outside_leaf": 0.06360217674593101
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_153210.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9070752263069153,
+        "leaf_area_fraction": 0.8591956313775511,
+        "attention_outside_leaf": 0.045361035597978085
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_182525.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9994112253189087,
+        "leaf_area_fraction": 0.8681042729591837,
+        "attention_outside_leaf": 0.07053988744308506
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_164046.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9999221563339233,
+        "leaf_area_fraction": 0.9587651466836735,
+        "attention_outside_leaf": 0.015210110917204117
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_192326.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9999979734420776,
+        "leaf_area_fraction": 0.9994220344387755,
+        "attention_outside_leaf": 0.0001507365445078112
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_165513.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9944041967391968,
+        "leaf_area_fraction": 0.9049744897959183,
+        "attention_outside_leaf": 0.027716219256896643
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_200917.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9998947381973267,
+        "leaf_area_fraction": 0.9386559311224489,
+        "attention_outside_leaf": 0.02306051569753347
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_165241.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9999279975891113,
+        "leaf_area_fraction": 0.9322983099489796,
+        "attention_outside_leaf": 0.011785842537601877
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_164814.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.998275637626648,
+        "leaf_area_fraction": 0.8857023278061225,
+        "attention_outside_leaf": 0.06488332413242642
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_165345.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9826353788375854,
+        "leaf_area_fraction": 0.8741430165816326,
+        "attention_outside_leaf": 0.0445276616976208
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_172948.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9999911785125732,
+        "leaf_area_fraction": 0.9095782844387755,
+        "attention_outside_leaf": 0.029885527252991595
+      },
+      {
+        "file": "test/olive_peacock_spot/DSC_0120.JPG",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9973865151405334,
+        "leaf_area_fraction": 0.6828563456632653,
+        "attention_outside_leaf": 0.3552017208487922
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_170020.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.990310788154602,
+        "leaf_area_fraction": 0.9999003507653061,
+        "attention_outside_leaf": 4.0930115887397785e-05
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_202418.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9530620574951172,
+        "leaf_area_fraction": 0.9760642538265306,
+        "attention_outside_leaf": 0.03922441576634594
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_152151.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9889868497848511,
+        "leaf_area_fraction": 0.9926857461734694,
+        "attention_outside_leaf": 0.003518563870039225
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_152415.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9999692440032959,
+        "leaf_area_fraction": 0.9923867984693877,
+        "attention_outside_leaf": 0.0018891751720048805
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_192119.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.999962329864502,
+        "leaf_area_fraction": 0.8148716517857143,
+        "attention_outside_leaf": 0.17189365244370278
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_165045.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9262575507164001,
+        "leaf_area_fraction": 0.8806800063775511,
+        "attention_outside_leaf": 0.05688435479719871
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_164104.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted": "olive_peacock_spot",
+        "correct": true,
+        "confidence": 0.9997945427894592,
+        "leaf_area_fraction": 0.862663424744898,
+        "attention_outside_leaf": 0.06903903820451697
+      }
+    ],
+    "mean_attention_outside_leaf": 0.10902655843155318,
+    "mean_background_area": 0.15486474277210885,
+    "background_preference_ratio": 0.7040114908013063,
+    "background_preference_ratio_correct": 0.7057511337321706,
+    "background_preference_ratio_incorrect": 0.6708896632435681,
+    "n_correct": 72,
+    "n_incorrect": 3
+  }
+}
