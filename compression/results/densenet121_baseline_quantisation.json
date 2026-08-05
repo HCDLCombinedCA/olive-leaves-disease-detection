@@ -1,0 +1,226 @@
+{
+  "float32": {
+    "path": "artifacts/densenet121_baseline_float32.tflite",
+    "bytes": 27915284,
+    "val": {
+      "accuracy": 0.9238900634249472,
+      "macro_f1": 0.9237280151397321,
+      "per_class_recall": {
+        "Healthy": 0.9310344827586207,
+        "aculus_olearius": 0.9416058394160584,
+        "olive_peacock_spot": 0.9057591623036649
+      },
+      "confusion_matrix": [
+        [
+          135,
+          7,
+          3
+        ],
+        [
+          2,
+          129,
+          6
+        ],
+        [
+          14,
+          4,
+          173
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.9397058823529412,
+      "macro_f1": 0.9387040011770216,
+      "per_class_recall": {
+        "Healthy": 0.8954545454545455,
+        "aculus_olearius": 0.97,
+        "olive_peacock_spot": 0.9538461538461539
+      },
+      "confusion_matrix": [
+        [
+          197,
+          13,
+          10
+        ],
+        [
+          3,
+          194,
+          3
+        ],
+        [
+          1,
+          11,
+          248
+        ]
+      ]
+    }
+  },
+  "dynamic_range": {
+    "path": "artifacts/densenet121_baseline_dynamic_range.tflite",
+    "bytes": 7421288,
+    "val": {
+      "accuracy": 0.919661733615222,
+      "macro_f1": 0.9195947136506271,
+      "per_class_recall": {
+        "Healthy": 0.9241379310344827,
+        "aculus_olearius": 0.9416058394160584,
+        "olive_peacock_spot": 0.900523560209424
+      },
+      "confusion_matrix": [
+        [
+          134,
+          7,
+          4
+        ],
+        [
+          2,
+          129,
+          6
+        ],
+        [
+          14,
+          5,
+          172
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.9323529411764706,
+      "macro_f1": 0.9314739612780616,
+      "per_class_recall": {
+        "Healthy": 0.8772727272727273,
+        "aculus_olearius": 0.97,
+        "olive_peacock_spot": 0.95
+      },
+      "confusion_matrix": [
+        [
+          193,
+          14,
+          13
+        ],
+        [
+          2,
+          194,
+          4
+        ],
+        [
+          2,
+          11,
+          247
+        ]
+      ]
+    }
+  },
+  "float16": {
+    "path": "artifacts/densenet121_baseline_float16.tflite",
+    "bytes": 14060648,
+    "val": {
+      "accuracy": 0.9238900634249472,
+      "macro_f1": 0.9237280151397321,
+      "per_class_recall": {
+        "Healthy": 0.9310344827586207,
+        "aculus_olearius": 0.9416058394160584,
+        "olive_peacock_spot": 0.9057591623036649
+      },
+      "confusion_matrix": [
+        [
+          135,
+          7,
+          3
+        ],
+        [
+          2,
+          129,
+          6
+        ],
+        [
+          14,
+          4,
+          173
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.9397058823529412,
+      "macro_f1": 0.9387040011770216,
+      "per_class_recall": {
+        "Healthy": 0.8954545454545455,
+        "aculus_olearius": 0.97,
+        "olive_peacock_spot": 0.9538461538461539
+      },
+      "confusion_matrix": [
+        [
+          197,
+          13,
+          10
+        ],
+        [
+          3,
+          194,
+          3
+        ],
+        [
+          1,
+          11,
+          248
+        ]
+      ]
+    }
+  },
+  "full_integer": {
+    "path": "artifacts/densenet121_baseline_full_integer.tflite",
+    "bytes": 7361520,
+    "val": {
+      "accuracy": 0.9027484143763214,
+      "macro_f1": 0.9014214450714153,
+      "per_class_recall": {
+        "Healthy": 0.8896551724137931,
+        "aculus_olearius": 0.8686131386861314,
+        "olive_peacock_spot": 0.93717277486911
+      },
+      "confusion_matrix": [
+        [
+          129,
+          9,
+          7
+        ],
+        [
+          2,
+          119,
+          16
+        ],
+        [
+          9,
+          3,
+          179
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.8676470588235294,
+      "macro_f1": 0.867557006044017,
+      "per_class_recall": {
+        "Healthy": 0.7272727272727273,
+        "aculus_olearius": 0.855,
+        "olive_peacock_spot": 0.9961538461538462
+      },
+      "confusion_matrix": [
+        [
+          160,
+          7,
+          53
+        ],
+        [
+          5,
+          171,
+          24
+        ],
+        [
+          0,
+          1,
+          259
+        ]
+      ]
+    }
+  }
+}

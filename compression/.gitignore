@@ -1,0 +1,9 @@
+# Model files and intermediate artefacts: large, and reproducible from source.
+artifacts/
+data/prepared/
+*.tflite
+*.keras
+*.h5
+
+# Results are kept: CSVs and figures are small and feed straight into the report.
+!results/

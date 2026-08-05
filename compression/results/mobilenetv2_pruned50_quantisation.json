@@ -1,0 +1,114 @@
+{
+  "dynamic_range": {
+    "path": "artifacts/mobilenetv2_pruned50_dynamic_range.tflite",
+    "bytes": 2512168,
+    "val": {
+      "accuracy": 0.7526427061310782,
+      "macro_f1": 0.7522366508943503,
+      "per_class_recall": {
+        "Healthy": 0.8620689655172413,
+        "aculus_olearius": 0.7445255474452555,
+        "olive_peacock_spot": 0.675392670157068
+      },
+      "confusion_matrix": [
+        [
+          125,
+          17,
+          3
+        ],
+        [
+          30,
+          102,
+          5
+        ],
+        [
+          42,
+          20,
+          129
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.7088235294117647,
+      "macro_f1": 0.7059364276027305,
+      "per_class_recall": {
+        "Healthy": 0.7636363636363637,
+        "aculus_olearius": 0.635,
+        "olive_peacock_spot": 0.7192307692307692
+      },
+      "confusion_matrix": [
+        [
+          168,
+          50,
+          2
+        ],
+        [
+          61,
+          127,
+          12
+        ],
+        [
+          39,
+          34,
+          187
+        ]
+      ]
+    }
+  },
+  "float16": {
+    "path": "artifacts/mobilenetv2_pruned50_float16.tflite",
+    "bytes": 4479276,
+    "val": {
+      "accuracy": 0.7547568710359408,
+      "macro_f1": 0.7535722260722261,
+      "per_class_recall": {
+        "Healthy": 0.8413793103448276,
+        "aculus_olearius": 0.7664233576642335,
+        "olive_peacock_spot": 0.680628272251309
+      },
+      "confusion_matrix": [
+        [
+          122,
+          20,
+          3
+        ],
+        [
+          23,
+          105,
+          9
+        ],
+        [
+          35,
+          26,
+          130
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.7073529411764706,
+      "macro_f1": 0.705679715170887,
+      "per_class_recall": {
+        "Healthy": 0.7090909090909091,
+        "aculus_olearius": 0.69,
+        "olive_peacock_spot": 0.7192307692307692
+      },
+      "confusion_matrix": [
+        [
+          156,
+          58,
+          6
+        ],
+        [
+          50,
+          138,
+          12
+        ],
+        [
+          36,
+          37,
+          187
+        ]
+      ]
+    }
+  }
+}

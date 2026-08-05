@@ -1,0 +1,13 @@
+variant,kind,parameters,nonzero_parameters,sparsity,size_mb,gzip_mb,latency_median_ms,throughput_img_s,val_macro_f1,test_accuracy,test_macro_f1,test_recall_healthy,test_recall_aculus,test_recall_peacock
+mobilenetv2_baseline,keras,2261827,2261827,0.0,13.211,8.738,53.55,18.7,0.9142,0.9309,0.9296,0.95,0.885,0.95
+mobilenetv2_pruned50,keras,2261827,1197139,0.4707,13.24,5.54,51.69,19.3,0.7536,0.7074,0.7057,0.7091,0.69,0.7192
+mobilenetv2_sweep20,keras,2261827,1835936,0.1883,13.24,7.619,51.98,19.2,0.9121,0.9206,0.9201,0.9455,0.86,0.9462
+mobilenetv2_sweep35,keras,2261827,1516534,0.3295,13.24,6.636,51.93,19.3,0.9021,0.8897,0.8892,0.8682,0.895,0.9038
+mobilenetv2_sweep50,keras,2261827,1197139,0.4707,13.24,5.545,52.1,19.2,0.8543,0.8353,0.8328,0.8909,0.77,0.8385
+mobilenetv2_sweep65,keras,2261827,877744,0.6119,13.24,4.397,52.75,19.0,0.7137,0.5544,0.5343,0.2636,0.725,0.6692
+mobilenetv2_baseline_dynamic_range,tflite,,,,2.512,2.159,18.63,53.7,0.9145,0.9353,0.9341,0.9682,0.89,0.9423
+mobilenetv2_baseline_float16,tflite,,,,4.479,4.113,11.16,89.6,0.9122,0.9294,0.9282,0.9455,0.885,0.95
+mobilenetv2_baseline_float32,tflite,,,,8.882,8.234,11.56,86.5,0.9142,0.9309,0.9296,0.95,0.885,0.95
+mobilenetv2_baseline_full_integer,tflite,,,,2.715,2.21,9.48,105.5,0.8832,0.925,0.9242,0.9636,0.875,0.9308
+mobilenetv2_pruned50_dynamic_range,tflite,,,,2.512,1.606,18.72,53.4,0.7522,0.7088,0.7059,0.7636,0.635,0.7192
+mobilenetv2_pruned50_float16,tflite,,,,4.479,2.809,11.52,86.8,0.7536,0.7074,0.7057,0.7091,0.69,0.7192

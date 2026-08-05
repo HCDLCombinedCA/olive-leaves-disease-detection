@@ -1,0 +1,1335 @@
+{
+  "backbone": "densenet121",
+  "target_sparsity": 0.5,
+  "epochs": 12,
+  "sparsity_before_finetune": {
+    "prunable_parameters": 6873280,
+    "prunable_zeros": 3436640,
+    "overall_sparsity": 0.5,
+    "per_layer": {
+      "conv1/conv": {
+        "parameters": 9408,
+        "zeros": 4704,
+        "sparsity": 0.5
+      },
+      "conv2_block1_1_conv": {
+        "parameters": 8192,
+        "zeros": 4096,
+        "sparsity": 0.5
+      },
+      "conv2_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block2_1_conv": {
+        "parameters": 12288,
+        "zeros": 6144,
+        "sparsity": 0.5
+      },
+      "conv2_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block3_1_conv": {
+        "parameters": 16384,
+        "zeros": 8192,
+        "sparsity": 0.5
+      },
+      "conv2_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block4_1_conv": {
+        "parameters": 20480,
+        "zeros": 10240,
+        "sparsity": 0.5
+      },
+      "conv2_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block5_1_conv": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "conv2_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block6_1_conv": {
+        "parameters": 28672,
+        "zeros": 14336,
+        "sparsity": 0.5
+      },
+      "conv2_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "pool2_conv": {
+        "parameters": 32768,
+        "zeros": 16384,
+        "sparsity": 0.5
+      },
+      "conv3_block1_1_conv": {
+        "parameters": 16384,
+        "zeros": 8192,
+        "sparsity": 0.5
+      },
+      "conv3_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block2_1_conv": {
+        "parameters": 20480,
+        "zeros": 10240,
+        "sparsity": 0.5
+      },
+      "conv3_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block3_1_conv": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "conv3_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block4_1_conv": {
+        "parameters": 28672,
+        "zeros": 14336,
+        "sparsity": 0.5
+      },
+      "conv3_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block5_1_conv": {
+        "parameters": 32768,
+        "zeros": 16384,
+        "sparsity": 0.5
+      },
+      "conv3_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block6_1_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block7_1_conv": {
+        "parameters": 40960,
+        "zeros": 20480,
+        "sparsity": 0.5
+      },
+      "conv3_block7_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block8_1_conv": {
+        "parameters": 45056,
+        "zeros": 22528,
+        "sparsity": 0.5
+      },
+      "conv3_block8_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block9_1_conv": {
+        "parameters": 49152,
+        "zeros": 24576,
+        "sparsity": 0.5
+      },
+      "conv3_block9_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block10_1_conv": {
+        "parameters": 53248,
+        "zeros": 26624,
+        "sparsity": 0.5
+      },
+      "conv3_block10_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block11_1_conv": {
+        "parameters": 57344,
+        "zeros": 28672,
+        "sparsity": 0.5
+      },
+      "conv3_block11_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block12_1_conv": {
+        "parameters": 61440,
+        "zeros": 30720,
+        "sparsity": 0.5
+      },
+      "conv3_block12_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "pool3_conv": {
+        "parameters": 131072,
+        "zeros": 65536,
+        "sparsity": 0.5
+      },
+      "conv4_block1_1_conv": {
+        "parameters": 32768,
+        "zeros": 16384,
+        "sparsity": 0.5
+      },
+      "conv4_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block2_1_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block3_1_conv": {
+        "parameters": 40960,
+        "zeros": 20480,
+        "sparsity": 0.5
+      },
+      "conv4_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block4_1_conv": {
+        "parameters": 45056,
+        "zeros": 22528,
+        "sparsity": 0.5
+      },
+      "conv4_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block5_1_conv": {
+        "parameters": 49152,
+        "zeros": 24576,
+        "sparsity": 0.5
+      },
+      "conv4_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block6_1_conv": {
+        "parameters": 53248,
+        "zeros": 26624,
+        "sparsity": 0.5
+      },
+      "conv4_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block7_1_conv": {
+        "parameters": 57344,
+        "zeros": 28672,
+        "sparsity": 0.5
+      },
+      "conv4_block7_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block8_1_conv": {
+        "parameters": 61440,
+        "zeros": 30720,
+        "sparsity": 0.5
+      },
+      "conv4_block8_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block9_1_conv": {
+        "parameters": 65536,
+        "zeros": 32768,
+        "sparsity": 0.5
+      },
+      "conv4_block9_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block10_1_conv": {
+        "parameters": 69632,
+        "zeros": 34816,
+        "sparsity": 0.5
+      },
+      "conv4_block10_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block11_1_conv": {
+        "parameters": 73728,
+        "zeros": 36864,
+        "sparsity": 0.5
+      },
+      "conv4_block11_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block12_1_conv": {
+        "parameters": 77824,
+        "zeros": 38912,
+        "sparsity": 0.5
+      },
+      "conv4_block12_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block13_1_conv": {
+        "parameters": 81920,
+        "zeros": 40960,
+        "sparsity": 0.5
+      },
+      "conv4_block13_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block14_1_conv": {
+        "parameters": 86016,
+        "zeros": 43008,
+        "sparsity": 0.5
+      },
+      "conv4_block14_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block15_1_conv": {
+        "parameters": 90112,
+        "zeros": 45056,
+        "sparsity": 0.5
+      },
+      "conv4_block15_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block16_1_conv": {
+        "parameters": 94208,
+        "zeros": 47104,
+        "sparsity": 0.5
+      },
+      "conv4_block16_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block17_1_conv": {
+        "parameters": 98304,
+        "zeros": 49152,
+        "sparsity": 0.5
+      },
+      "conv4_block17_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block18_1_conv": {
+        "parameters": 102400,
+        "zeros": 51200,
+        "sparsity": 0.5
+      },
+      "conv4_block18_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block19_1_conv": {
+        "parameters": 106496,
+        "zeros": 53248,
+        "sparsity": 0.5
+      },
+      "conv4_block19_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block20_1_conv": {
+        "parameters": 110592,
+        "zeros": 55296,
+        "sparsity": 0.5
+      },
+      "conv4_block20_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block21_1_conv": {
+        "parameters": 114688,
+        "zeros": 57344,
+        "sparsity": 0.5
+      },
+      "conv4_block21_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block22_1_conv": {
+        "parameters": 118784,
+        "zeros": 59392,
+        "sparsity": 0.5
+      },
+      "conv4_block22_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block23_1_conv": {
+        "parameters": 122880,
+        "zeros": 61440,
+        "sparsity": 0.5
+      },
+      "conv4_block23_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block24_1_conv": {
+        "parameters": 126976,
+        "zeros": 63488,
+        "sparsity": 0.5
+      },
+      "conv4_block24_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "pool4_conv": {
+        "parameters": 524288,
+        "zeros": 262144,
+        "sparsity": 0.5
+      },
+      "conv5_block1_1_conv": {
+        "parameters": 65536,
+        "zeros": 32768,
+        "sparsity": 0.5
+      },
+      "conv5_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block2_1_conv": {
+        "parameters": 69632,
+        "zeros": 34816,
+        "sparsity": 0.5
+      },
+      "conv5_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block3_1_conv": {
+        "parameters": 73728,
+        "zeros": 36864,
+        "sparsity": 0.5
+      },
+      "conv5_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block4_1_conv": {
+        "parameters": 77824,
+        "zeros": 38912,
+        "sparsity": 0.5
+      },
+      "conv5_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block5_1_conv": {
+        "parameters": 81920,
+        "zeros": 40960,
+        "sparsity": 0.5
+      },
+      "conv5_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block6_1_conv": {
+        "parameters": 86016,
+        "zeros": 43008,
+        "sparsity": 0.5
+      },
+      "conv5_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block7_1_conv": {
+        "parameters": 90112,
+        "zeros": 45056,
+        "sparsity": 0.5
+      },
+      "conv5_block7_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block8_1_conv": {
+        "parameters": 94208,
+        "zeros": 47104,
+        "sparsity": 0.5
+      },
+      "conv5_block8_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block9_1_conv": {
+        "parameters": 98304,
+        "zeros": 49152,
+        "sparsity": 0.5
+      },
+      "conv5_block9_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block10_1_conv": {
+        "parameters": 102400,
+        "zeros": 51200,
+        "sparsity": 0.5
+      },
+      "conv5_block10_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block11_1_conv": {
+        "parameters": 106496,
+        "zeros": 53248,
+        "sparsity": 0.5
+      },
+      "conv5_block11_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block12_1_conv": {
+        "parameters": 110592,
+        "zeros": 55296,
+        "sparsity": 0.5
+      },
+      "conv5_block12_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block13_1_conv": {
+        "parameters": 114688,
+        "zeros": 57344,
+        "sparsity": 0.5
+      },
+      "conv5_block13_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block14_1_conv": {
+        "parameters": 118784,
+        "zeros": 59392,
+        "sparsity": 0.5
+      },
+      "conv5_block14_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block15_1_conv": {
+        "parameters": 122880,
+        "zeros": 61440,
+        "sparsity": 0.5
+      },
+      "conv5_block15_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block16_1_conv": {
+        "parameters": 126976,
+        "zeros": 63488,
+        "sparsity": 0.5
+      },
+      "conv5_block16_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "dense": {
+        "parameters": 3072,
+        "zeros": 1536,
+        "sparsity": 0.5
+      }
+    }
+  },
+  "sparsity_after_finetune": {
+    "prunable_parameters": 6873280,
+    "prunable_zeros": 3436640,
+    "overall_sparsity": 0.5,
+    "per_layer": {
+      "conv1/conv": {
+        "parameters": 9408,
+        "zeros": 4704,
+        "sparsity": 0.5
+      },
+      "conv2_block1_1_conv": {
+        "parameters": 8192,
+        "zeros": 4096,
+        "sparsity": 0.5
+      },
+      "conv2_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block2_1_conv": {
+        "parameters": 12288,
+        "zeros": 6144,
+        "sparsity": 0.5
+      },
+      "conv2_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block3_1_conv": {
+        "parameters": 16384,
+        "zeros": 8192,
+        "sparsity": 0.5
+      },
+      "conv2_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block4_1_conv": {
+        "parameters": 20480,
+        "zeros": 10240,
+        "sparsity": 0.5
+      },
+      "conv2_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block5_1_conv": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "conv2_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv2_block6_1_conv": {
+        "parameters": 28672,
+        "zeros": 14336,
+        "sparsity": 0.5
+      },
+      "conv2_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "pool2_conv": {
+        "parameters": 32768,
+        "zeros": 16384,
+        "sparsity": 0.5
+      },
+      "conv3_block1_1_conv": {
+        "parameters": 16384,
+        "zeros": 8192,
+        "sparsity": 0.5
+      },
+      "conv3_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block2_1_conv": {
+        "parameters": 20480,
+        "zeros": 10240,
+        "sparsity": 0.5
+      },
+      "conv3_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block3_1_conv": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "conv3_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block4_1_conv": {
+        "parameters": 28672,
+        "zeros": 14336,
+        "sparsity": 0.5
+      },
+      "conv3_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block5_1_conv": {
+        "parameters": 32768,
+        "zeros": 16384,
+        "sparsity": 0.5
+      },
+      "conv3_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block6_1_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block7_1_conv": {
+        "parameters": 40960,
+        "zeros": 20480,
+        "sparsity": 0.5
+      },
+      "conv3_block7_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block8_1_conv": {
+        "parameters": 45056,
+        "zeros": 22528,
+        "sparsity": 0.5
+      },
+      "conv3_block8_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block9_1_conv": {
+        "parameters": 49152,
+        "zeros": 24576,
+        "sparsity": 0.5
+      },
+      "conv3_block9_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block10_1_conv": {
+        "parameters": 53248,
+        "zeros": 26624,
+        "sparsity": 0.5
+      },
+      "conv3_block10_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block11_1_conv": {
+        "parameters": 57344,
+        "zeros": 28672,
+        "sparsity": 0.5
+      },
+      "conv3_block11_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv3_block12_1_conv": {
+        "parameters": 61440,
+        "zeros": 30720,
+        "sparsity": 0.5
+      },
+      "conv3_block12_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "pool3_conv": {
+        "parameters": 131072,
+        "zeros": 65536,
+        "sparsity": 0.5
+      },
+      "conv4_block1_1_conv": {
+        "parameters": 32768,
+        "zeros": 16384,
+        "sparsity": 0.5
+      },
+      "conv4_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block2_1_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block3_1_conv": {
+        "parameters": 40960,
+        "zeros": 20480,
+        "sparsity": 0.5
+      },
+      "conv4_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block4_1_conv": {
+        "parameters": 45056,
+        "zeros": 22528,
+        "sparsity": 0.5
+      },
+      "conv4_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block5_1_conv": {
+        "parameters": 49152,
+        "zeros": 24576,
+        "sparsity": 0.5
+      },
+      "conv4_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block6_1_conv": {
+        "parameters": 53248,
+        "zeros": 26624,
+        "sparsity": 0.5
+      },
+      "conv4_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block7_1_conv": {
+        "parameters": 57344,
+        "zeros": 28672,
+        "sparsity": 0.5
+      },
+      "conv4_block7_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block8_1_conv": {
+        "parameters": 61440,
+        "zeros": 30720,
+        "sparsity": 0.5
+      },
+      "conv4_block8_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block9_1_conv": {
+        "parameters": 65536,
+        "zeros": 32768,
+        "sparsity": 0.5
+      },
+      "conv4_block9_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block10_1_conv": {
+        "parameters": 69632,
+        "zeros": 34816,
+        "sparsity": 0.5
+      },
+      "conv4_block10_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block11_1_conv": {
+        "parameters": 73728,
+        "zeros": 36864,
+        "sparsity": 0.5
+      },
+      "conv4_block11_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block12_1_conv": {
+        "parameters": 77824,
+        "zeros": 38912,
+        "sparsity": 0.5
+      },
+      "conv4_block12_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block13_1_conv": {
+        "parameters": 81920,
+        "zeros": 40960,
+        "sparsity": 0.5
+      },
+      "conv4_block13_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block14_1_conv": {
+        "parameters": 86016,
+        "zeros": 43008,
+        "sparsity": 0.5
+      },
+      "conv4_block14_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block15_1_conv": {
+        "parameters": 90112,
+        "zeros": 45056,
+        "sparsity": 0.5
+      },
+      "conv4_block15_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block16_1_conv": {
+        "parameters": 94208,
+        "zeros": 47104,
+        "sparsity": 0.5
+      },
+      "conv4_block16_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block17_1_conv": {
+        "parameters": 98304,
+        "zeros": 49152,
+        "sparsity": 0.5
+      },
+      "conv4_block17_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block18_1_conv": {
+        "parameters": 102400,
+        "zeros": 51200,
+        "sparsity": 0.5
+      },
+      "conv4_block18_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block19_1_conv": {
+        "parameters": 106496,
+        "zeros": 53248,
+        "sparsity": 0.5
+      },
+      "conv4_block19_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block20_1_conv": {
+        "parameters": 110592,
+        "zeros": 55296,
+        "sparsity": 0.5
+      },
+      "conv4_block20_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block21_1_conv": {
+        "parameters": 114688,
+        "zeros": 57344,
+        "sparsity": 0.5
+      },
+      "conv4_block21_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block22_1_conv": {
+        "parameters": 118784,
+        "zeros": 59392,
+        "sparsity": 0.5
+      },
+      "conv4_block22_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block23_1_conv": {
+        "parameters": 122880,
+        "zeros": 61440,
+        "sparsity": 0.5
+      },
+      "conv4_block23_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv4_block24_1_conv": {
+        "parameters": 126976,
+        "zeros": 63488,
+        "sparsity": 0.5
+      },
+      "conv4_block24_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "pool4_conv": {
+        "parameters": 524288,
+        "zeros": 262144,
+        "sparsity": 0.5
+      },
+      "conv5_block1_1_conv": {
+        "parameters": 65536,
+        "zeros": 32768,
+        "sparsity": 0.5
+      },
+      "conv5_block1_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block2_1_conv": {
+        "parameters": 69632,
+        "zeros": 34816,
+        "sparsity": 0.5
+      },
+      "conv5_block2_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block3_1_conv": {
+        "parameters": 73728,
+        "zeros": 36864,
+        "sparsity": 0.5
+      },
+      "conv5_block3_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block4_1_conv": {
+        "parameters": 77824,
+        "zeros": 38912,
+        "sparsity": 0.5
+      },
+      "conv5_block4_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block5_1_conv": {
+        "parameters": 81920,
+        "zeros": 40960,
+        "sparsity": 0.5
+      },
+      "conv5_block5_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block6_1_conv": {
+        "parameters": 86016,
+        "zeros": 43008,
+        "sparsity": 0.5
+      },
+      "conv5_block6_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block7_1_conv": {
+        "parameters": 90112,
+        "zeros": 45056,
+        "sparsity": 0.5
+      },
+      "conv5_block7_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block8_1_conv": {
+        "parameters": 94208,
+        "zeros": 47104,
+        "sparsity": 0.5
+      },
+      "conv5_block8_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block9_1_conv": {
+        "parameters": 98304,
+        "zeros": 49152,
+        "sparsity": 0.5
+      },
+      "conv5_block9_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block10_1_conv": {
+        "parameters": 102400,
+        "zeros": 51200,
+        "sparsity": 0.5
+      },
+      "conv5_block10_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block11_1_conv": {
+        "parameters": 106496,
+        "zeros": 53248,
+        "sparsity": 0.5
+      },
+      "conv5_block11_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block12_1_conv": {
+        "parameters": 110592,
+        "zeros": 55296,
+        "sparsity": 0.5
+      },
+      "conv5_block12_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block13_1_conv": {
+        "parameters": 114688,
+        "zeros": 57344,
+        "sparsity": 0.5
+      },
+      "conv5_block13_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block14_1_conv": {
+        "parameters": 118784,
+        "zeros": 59392,
+        "sparsity": 0.5
+      },
+      "conv5_block14_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block15_1_conv": {
+        "parameters": 122880,
+        "zeros": 61440,
+        "sparsity": 0.5
+      },
+      "conv5_block15_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "conv5_block16_1_conv": {
+        "parameters": 126976,
+        "zeros": 63488,
+        "sparsity": 0.5
+      },
+      "conv5_block16_2_conv": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "dense": {
+        "parameters": 3072,
+        "zeros": 1536,
+        "sparsity": 0.5
+      }
+    }
+  },
+  "metrics": {
+    "baseline": {
+      "accuracy": 0.9238900634249472,
+      "macro_f1": 0.9237280151397321,
+      "per_class_recall": {
+        "Healthy": 0.9310344827586207,
+        "aculus_olearius": 0.9416058394160584,
+        "olive_peacock_spot": 0.9057591623036649
+      },
+      "confusion_matrix": [
+        [
+          135,
+          7,
+          3
+        ],
+        [
+          2,
+          129,
+          6
+        ],
+        [
+          14,
+          4,
+          173
+        ]
+      ]
+    },
+    "pruned_no_finetune": {
+      "accuracy": 0.7864693446088795,
+      "macro_f1": 0.7755599713642726,
+      "per_class_recall": {
+        "Healthy": 0.4827586206896552,
+        "aculus_olearius": 0.8248175182481752,
+        "olive_peacock_spot": 0.9895287958115183
+      },
+      "confusion_matrix": [
+        [
+          70,
+          6,
+          69
+        ],
+        [
+          0,
+          113,
+          24
+        ],
+        [
+          1,
+          1,
+          189
+        ]
+      ]
+    },
+    "pruned_finetuned_val": {
+      "accuracy": 0.9175475687103594,
+      "macro_f1": 0.9185897353951046,
+      "per_class_recall": {
+        "Healthy": 0.9310344827586207,
+        "aculus_olearius": 0.9343065693430657,
+        "olive_peacock_spot": 0.8952879581151832
+      },
+      "confusion_matrix": [
+        [
+          135,
+          4,
+          6
+        ],
+        [
+          2,
+          128,
+          7
+        ],
+        [
+          16,
+          4,
+          171
+        ]
+      ]
+    },
+    "pruned_finetuned_test": {
+      "accuracy": 0.9470588235294117,
+      "macro_f1": 0.947416116739474,
+      "per_class_recall": {
+        "Healthy": 0.9136363636363637,
+        "aculus_olearius": 0.965,
+        "olive_peacock_spot": 0.9615384615384616
+      },
+      "confusion_matrix": [
+        [
+          201,
+          6,
+          13
+        ],
+        [
+          0,
+          193,
+          7
+        ],
+        [
+          3,
+          7,
+          250
+        ]
+      ]
+    }
+  }
+}

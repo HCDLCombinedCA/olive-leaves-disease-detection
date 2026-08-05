@@ -1,0 +1,114 @@
+{
+  "dynamic_range": {
+    "path": "artifacts/densenet121_pruned50_dynamic_range.tflite",
+    "bytes": 7421288,
+    "val": {
+      "accuracy": 0.919661733615222,
+      "macro_f1": 0.9206948701820771,
+      "per_class_recall": {
+        "Healthy": 0.9310344827586207,
+        "aculus_olearius": 0.9416058394160584,
+        "olive_peacock_spot": 0.8952879581151832
+      },
+      "confusion_matrix": [
+        [
+          135,
+          4,
+          6
+        ],
+        [
+          2,
+          129,
+          6
+        ],
+        [
+          16,
+          4,
+          171
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.9485294117647058,
+      "macro_f1": 0.9488766589409686,
+      "per_class_recall": {
+        "Healthy": 0.9136363636363637,
+        "aculus_olearius": 0.975,
+        "olive_peacock_spot": 0.9576923076923077
+      },
+      "confusion_matrix": [
+        [
+          201,
+          6,
+          13
+        ],
+        [
+          0,
+          195,
+          5
+        ],
+        [
+          3,
+          8,
+          249
+        ]
+      ]
+    }
+  },
+  "float16": {
+    "path": "artifacts/densenet121_pruned50_float16.tflite",
+    "bytes": 14060648,
+    "val": {
+      "accuracy": 0.9175475687103594,
+      "macro_f1": 0.9185897353951046,
+      "per_class_recall": {
+        "Healthy": 0.9310344827586207,
+        "aculus_olearius": 0.9343065693430657,
+        "olive_peacock_spot": 0.8952879581151832
+      },
+      "confusion_matrix": [
+        [
+          135,
+          4,
+          6
+        ],
+        [
+          2,
+          128,
+          7
+        ],
+        [
+          16,
+          4,
+          171
+        ]
+      ]
+    },
+    "test": {
+      "accuracy": 0.9470588235294117,
+      "macro_f1": 0.947416116739474,
+      "per_class_recall": {
+        "Healthy": 0.9136363636363637,
+        "aculus_olearius": 0.965,
+        "olive_peacock_spot": 0.9615384615384616
+      },
+      "confusion_matrix": [
+        [
+          201,
+          6,
+          13
+        ],
+        [
+          0,
+          193,
+          7
+        ],
+        [
+          3,
+          7,
+          250
+        ]
+      ]
+    }
+  }
+}

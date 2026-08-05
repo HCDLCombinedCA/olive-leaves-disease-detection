@@ -1,0 +1,485 @@
+{
+  "backbone": "mobilenetv2",
+  "target_sparsity": 0.5,
+  "epochs": 12,
+  "sparsity_before_finetune": {
+    "prunable_parameters": 2129376,
+    "prunable_zeros": 1064688,
+    "overall_sparsity": 0.5,
+    "per_layer": {
+      "Conv1": {
+        "parameters": 864,
+        "zeros": 432,
+        "sparsity": 0.5
+      },
+      "expanded_conv_project": {
+        "parameters": 512,
+        "zeros": 256,
+        "sparsity": 0.5
+      },
+      "block_1_expand": {
+        "parameters": 1536,
+        "zeros": 768,
+        "sparsity": 0.5
+      },
+      "block_1_project": {
+        "parameters": 2304,
+        "zeros": 1152,
+        "sparsity": 0.5
+      },
+      "block_2_expand": {
+        "parameters": 3456,
+        "zeros": 1728,
+        "sparsity": 0.5
+      },
+      "block_2_project": {
+        "parameters": 3456,
+        "zeros": 1728,
+        "sparsity": 0.5
+      },
+      "block_3_expand": {
+        "parameters": 3456,
+        "zeros": 1728,
+        "sparsity": 0.5
+      },
+      "block_3_project": {
+        "parameters": 4608,
+        "zeros": 2304,
+        "sparsity": 0.5
+      },
+      "block_4_expand": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_4_project": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_5_expand": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_5_project": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_6_expand": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_6_project": {
+        "parameters": 12288,
+        "zeros": 6144,
+        "sparsity": 0.5
+      },
+      "block_7_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_7_project": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_8_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_8_project": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_9_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_9_project": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_10_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_10_project": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "block_11_expand": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_11_project": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_12_expand": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_12_project": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_13_expand": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_13_project": {
+        "parameters": 92160,
+        "zeros": 46080,
+        "sparsity": 0.5
+      },
+      "block_14_expand": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_14_project": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_15_expand": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_15_project": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_16_expand": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_16_project": {
+        "parameters": 307200,
+        "zeros": 153600,
+        "sparsity": 0.5
+      },
+      "Conv_1": {
+        "parameters": 409600,
+        "zeros": 204800,
+        "sparsity": 0.5
+      },
+      "dense": {
+        "parameters": 3840,
+        "zeros": 1920,
+        "sparsity": 0.5
+      }
+    }
+  },
+  "sparsity_after_finetune": {
+    "prunable_parameters": 2129376,
+    "prunable_zeros": 1064688,
+    "overall_sparsity": 0.5,
+    "per_layer": {
+      "Conv1": {
+        "parameters": 864,
+        "zeros": 432,
+        "sparsity": 0.5
+      },
+      "expanded_conv_project": {
+        "parameters": 512,
+        "zeros": 256,
+        "sparsity": 0.5
+      },
+      "block_1_expand": {
+        "parameters": 1536,
+        "zeros": 768,
+        "sparsity": 0.5
+      },
+      "block_1_project": {
+        "parameters": 2304,
+        "zeros": 1152,
+        "sparsity": 0.5
+      },
+      "block_2_expand": {
+        "parameters": 3456,
+        "zeros": 1728,
+        "sparsity": 0.5
+      },
+      "block_2_project": {
+        "parameters": 3456,
+        "zeros": 1728,
+        "sparsity": 0.5
+      },
+      "block_3_expand": {
+        "parameters": 3456,
+        "zeros": 1728,
+        "sparsity": 0.5
+      },
+      "block_3_project": {
+        "parameters": 4608,
+        "zeros": 2304,
+        "sparsity": 0.5
+      },
+      "block_4_expand": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_4_project": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_5_expand": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_5_project": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_6_expand": {
+        "parameters": 6144,
+        "zeros": 3072,
+        "sparsity": 0.5
+      },
+      "block_6_project": {
+        "parameters": 12288,
+        "zeros": 6144,
+        "sparsity": 0.5
+      },
+      "block_7_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_7_project": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_8_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_8_project": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_9_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_9_project": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_10_expand": {
+        "parameters": 24576,
+        "zeros": 12288,
+        "sparsity": 0.5
+      },
+      "block_10_project": {
+        "parameters": 36864,
+        "zeros": 18432,
+        "sparsity": 0.5
+      },
+      "block_11_expand": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_11_project": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_12_expand": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_12_project": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_13_expand": {
+        "parameters": 55296,
+        "zeros": 27648,
+        "sparsity": 0.5
+      },
+      "block_13_project": {
+        "parameters": 92160,
+        "zeros": 46080,
+        "sparsity": 0.5
+      },
+      "block_14_expand": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_14_project": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_15_expand": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_15_project": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_16_expand": {
+        "parameters": 153600,
+        "zeros": 76800,
+        "sparsity": 0.5
+      },
+      "block_16_project": {
+        "parameters": 307200,
+        "zeros": 153600,
+        "sparsity": 0.5
+      },
+      "Conv_1": {
+        "parameters": 409600,
+        "zeros": 204800,
+        "sparsity": 0.5
+      },
+      "dense": {
+        "parameters": 3840,
+        "zeros": 1920,
+        "sparsity": 0.5
+      }
+    }
+  },
+  "metrics": {
+    "baseline": {
+      "accuracy": 0.9133192389006343,
+      "macro_f1": 0.9141765620256068,
+      "per_class_recall": {
+        "Healthy": 0.9172413793103448,
+        "aculus_olearius": 0.9343065693430657,
+        "olive_peacock_spot": 0.8952879581151832
+      },
+      "confusion_matrix": [
+        [
+          133,
+          5,
+          7
+        ],
+        [
+          2,
+          128,
+          7
+        ],
+        [
+          16,
+          4,
+          171
+        ]
+      ]
+    },
+    "pruned_no_finetune": {
+      "accuracy": 0.30655391120507397,
+      "macro_f1": 0.1564185544768069,
+      "per_class_recall": {
+        "Healthy": 1.0,
+        "aculus_olearius": 0.0,
+        "olive_peacock_spot": 0.0
+      },
+      "confusion_matrix": [
+        [
+          145,
+          0,
+          0
+        ],
+        [
+          137,
+          0,
+          0
+        ],
+        [
+          191,
+          0,
+          0
+        ]
+      ]
+    },
+    "pruned_finetuned_val": {
+      "accuracy": 0.7547568710359408,
+      "macro_f1": 0.7535722260722261,
+      "per_class_recall": {
+        "Healthy": 0.8413793103448276,
+        "aculus_olearius": 0.7664233576642335,
+        "olive_peacock_spot": 0.680628272251309
+      },
+      "confusion_matrix": [
+        [
+          122,
+          20,
+          3
+        ],
+        [
+          23,
+          105,
+          9
+        ],
+        [
+          35,
+          26,
+          130
+        ]
+      ]
+    },
+    "pruned_finetuned_test": {
+      "accuracy": 0.7073529411764706,
+      "macro_f1": 0.705679715170887,
+      "per_class_recall": {
+        "Healthy": 0.7090909090909091,
+        "aculus_olearius": 0.69,
+        "olive_peacock_spot": 0.7192307692307692
+      },
+      "confusion_matrix": [
+        [
+          156,
+          58,
+          6
+        ],
+        [
+          50,
+          138,
+          12
+        ],
+        [
+          36,
+          37,
+          187
+        ]
+      ]
+    }
+  }
+}
