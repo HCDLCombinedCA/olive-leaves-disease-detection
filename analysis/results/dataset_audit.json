@@ -1,0 +1,113 @@
+{
+  "counts": {
+    "train": {
+      "Healthy": 830,
+      "aculus_olearius": 690,
+      "olive_peacock_spot": 1200
+    },
+    "test": {
+      "Healthy": 220,
+      "aculus_olearius": 200,
+      "olive_peacock_spot": 260
+    },
+    "total": 3400
+  },
+  "corrupt": {
+    "count": 0,
+    "files": []
+  },
+  "dimensions": {
+    "distinct": 1,
+    "most_common": [
+      {
+        "size": "800x600",
+        "n": 3400,
+        "share": 1.0
+      }
+    ]
+  },
+  "formats": {
+    "JPEG": 3400
+  },
+  "modes": {
+    "RGB": 3400
+  },
+  "file_size_kb": {
+    "min": 14.0,
+    "median": 28.9,
+    "max": 55.5
+  },
+  "colour": {
+    "Healthy": {
+      "n_sampled": 400,
+      "mean_intensity": 0.7306,
+      "std_intensity": 0.1408,
+      "mean_saturation": 0.1135,
+      "frac_green": 0.0669,
+      "frac_yellow": 0.0057,
+      "frac_orange_brown": 0.1724
+    },
+    "aculus_olearius": {
+      "n_sampled": 400,
+      "mean_intensity": 0.7472,
+      "std_intensity": 0.1609,
+      "mean_saturation": 0.0861,
+      "frac_green": 0.0897,
+      "frac_yellow": 0.0169,
+      "frac_orange_brown": 0.0082
+    },
+    "olive_peacock_spot": {
+      "n_sampled": 400,
+      "mean_intensity": 0.7209,
+      "std_intensity": 0.1269,
+      "mean_saturation": 0.0966,
+      "frac_green": 0.0421,
+      "frac_yellow": 0.0454,
+      "frac_orange_brown": 0.0174
+    }
+  },
+  "colour_by_source": {
+    "B* / Healthy": {
+      "n_sampled": 265,
+      "mean_intensity": 0.7238,
+      "frac_orange_brown": 0.2552,
+      "frac_green": 0.0644
+    },
+    "IMG_ / Healthy": {
+      "n_sampled": 125,
+      "mean_intensity": 0.7447,
+      "frac_orange_brown": 0.0039,
+      "frac_green": 0.0716
+    },
+    "DSC_ / aculus_olearius": {
+      "n_sampled": 17,
+      "mean_intensity": 0.7549,
+      "frac_orange_brown": 0.0636,
+      "frac_green": 0.0694
+    },
+    "IMG_ / aculus_olearius": {
+      "n_sampled": 69,
+      "mean_intensity": 0.7411,
+      "frac_orange_brown": 0.0058,
+      "frac_green": 0.0659
+    },
+    "numeric / aculus_olearius": {
+      "n_sampled": 307,
+      "mean_intensity": 0.7486,
+      "frac_orange_brown": 0.0057,
+      "frac_green": 0.0949
+    },
+    "A* / olive_peacock_spot": {
+      "n_sampled": 68,
+      "mean_intensity": 0.6691,
+      "frac_orange_brown": 0.0147,
+      "frac_green": 0.0562
+    },
+    "IMG_ / olive_peacock_spot": {
+      "n_sampled": 325,
+      "mean_intensity": 0.7313,
+      "frac_orange_brown": 0.0095,
+      "frac_green": 0.0394
+    }
+  }
+}
