@@ -23,21 +23,79 @@ The official test split is left intact; removal is on the training side only, so
 
 ---
 
-## 2. Baseline models
+## 2. Leaf segmentation
 
-| backbone | parameters | train time | val macro-F1 | test macro-F1 | test recall Healthy | test recall Aculus | test recall Peacock |
-|---|---|---|---|---|---|---|---|
-| mobilenetv2 | 2,261,827 | 1175 s | 0.9142 | 0.9296 | 0.950 | 0.885 | 0.950 |
-| densenet121 | 7,040,579 | 3460 s | 0.9237 | 0.9387 | 0.895 | 0.970 | 0.954 |
+Model selection is documented in `leaf_segmenter/eval/evaluation_report.md`: eleven configurations across five families benchmarked on CVPPP A1, won by fine-tuned YOLO11-seg (SBD 0.847, FBD 0.958, 0.015 s/image). That model was then applied to the olive photographs.
 
-- **mobilenetv2**: val 0.914 vs test 0.930 (gap +0.015).
-- **densenet121**: val 0.924 vs test 0.939 (gap +0.015).
+| leaves detected | photographs | share |
+|---|---|---|
+| 0 | 326 | 12.0% |
+| 1 | 2127 | 78.2% |
+| 2 | 252 | 9.3% |
+| 3 | 14 | 0.5% |
+| 4 | 1 | 0.0% |
+| **total** | **2720** | |
 
-A small gap in this direction is what a clean split should give. The original notebook reported val 0.819 against test 0.946 -- the inversion that first suggested leakage.
+The crop set reconciles exactly: **3003 files = 2677 detected leaves + 326 whole-image fallbacks**. Where the segmenter found nothing, the pipeline writes the entire photograph as `<stem>_full.png`, so 11% of the "leaf crops" feeding the glass-box features are unsegmented photographs with their background intact -- relevant given the capture-source confound in section 8.
 
 ---
 
-## 3. Compression
+## 3. Deep models: from scratch against transfer learning
+
+| model | parameters | train time | val macro-F1 | test macro-F1 | test recall Healthy | test recall Aculus | test recall Peacock |
+|---|---|---|---|---|---|---|---|
+| scratch CNN (notebook architecture) | 5,767,139 | 2687 s | 0.7765 | 0.8095 | 0.927 | 0.735 | 0.773 |
+| scratch CNN (redesigned) | 585,059 | 2632 s | 0.9162 | 0.8712 | 0.814 | 0.830 | 0.950 |
+| MobileNetV2 (ImageNet) | 2,261,827 | 1175 s | 0.9142 | 0.9296 | 0.950 | 0.885 | 0.950 |
+| DenseNet121 (ImageNet) | 7,040,579 | 3460 s | 0.9237 | 0.9387 | 0.895 | 0.970 | 0.954 |
+
+- **scratch CNN (notebook architecture)**: val 0.777 vs test 0.810 (gap +0.033).
+- **scratch CNN (redesigned)**: val 0.916 vs test 0.871 (gap -0.045).
+- **MobileNetV2 (ImageNet)**: val 0.914 vs test 0.930 (gap +0.015).
+- **DenseNet121 (ImageNet)**: val 0.924 vs test 0.939 (gap +0.015).
+
+The original notebook reported val 0.819 against test 0.946. A validation score far *below* the test score is the inversion that first suggested leakage, and no model here reproduces it.
+
+Worth a sentence in the report: **scratch CNN (redesigned)** is the only model whose validation score *overstates* its test score. Validation is carved from the training photographs while the test split is the dataset's own, so a model that leans on whatever the training photographs share -- capture conditions included, see section 8 -- will look better on validation than it is. Transfer learning does not show this, which is consistent with its features coming from ImageNet rather than from these photographs.
+
+Every model here shares `compression/src/common.py`: the same manifests, input size, augmentation, class weights and metrics. The scratch entries differ from the transfer entries only in initialisation and architecture, and the first scratch entry reproduces the notebook's chosen architecture unchanged, so the effect of the corrected data is separated from the effect of the design.
+
+---
+
+## 4. Glass-box models
+
+| protocol | model | test images | accuracy | macro-F1 |
+|---|---|---|---|---|
+| segmented | Decision Tree (depth 3) | 995 | 0.624 | 0.621 |
+| segmented | Logistic Regression | 995 | 0.711 | 0.692 |
+| common | Decision Tree (depth 3) | 680 | 0.684 | 0.667 |
+| common | Logistic Regression | 680 | 0.621 | 0.600 |
+
+- **segmented**: 2008 train / 995 test, StratifiedGroupKFold on the source photograph, 0 shared source photographs.
+- **common**: 2361 train / 680 test, official test split from compression/data/prepared manifests, 0 shared source photographs.
+
+The two protocols do not rank the models the same way, which is worth stating rather than smoothing over: the tree gains on whole photographs while logistic regression loses. The engineered colour fractions are computed inside a leaf mask that a tight crop makes reliable and a full photograph does not, and a linear model has no way to compensate for that where a depth-3 tree's thresholds partly can.
+
+Individual predictions -- two correct and two incorrect per model, with the decision path or the exact per-feature contribution behind each -- are in `analysis/results/glassbox_*_examples.png` and in the `explanations` key of each JSON.
+
+---
+
+## 5. RQ a: like-for-like comparison
+
+All rows below are scored on the **same official 680-image test split**. The segmented-crop glass-box numbers in section 4 are measured on a different population and are deliberately not carried into this table.
+
+| model | accuracy | macro-F1 | explanation |
+|---|---|---|---|
+| scratch CNN (notebook architecture) | 0.812 | 0.810 | post-hoc (Grad-CAM / LIME) |
+| scratch CNN (redesigned) | 0.871 | 0.871 | post-hoc (Grad-CAM / LIME) |
+| MobileNetV2 (ImageNet) | 0.931 | 0.930 | post-hoc (Grad-CAM / LIME) |
+| DenseNet121 (ImageNet) | 0.940 | 0.939 | post-hoc (Grad-CAM / LIME) |
+| Decision Tree (depth 3) (engineered features) | 0.684 | 0.667 | intrinsic (exact) |
+| Logistic Regression (engineered features) | 0.621 | 0.600 | intrinsic (exact) |
+
+---
+
+## 6. Compression
 
 ### mobilenetv2
 
@@ -81,7 +139,7 @@ Unstructured pruning zeroes weights without changing tensor shapes, so the raw f
 
 ---
 
-## 4. Explanation fidelity after compression (LIME)
+## 7. Explanation fidelity after compression (LIME)
 
 | variant | images | mean Spearman | mean top-5 Jaccard | label agreement |
 |---|---|---|---|---|
@@ -93,18 +151,7 @@ LIME rather than Grad-CAM because a `.tflite` model has no gradients; a model-ag
 
 ---
 
-## 5. Glass-box models
-
-| model | accuracy | macro-F1 |
-|---|---|---|
-| Decision Tree (depth 3) | 0.624 | 0.621 |
-| Logistic Regression | 0.711 | 0.692 |
-
-Split: 2008 train / 995 test crops, grouped by source photograph (0 shared groups).
-
----
-
-## 6. Acquisition bias
+## 8. Acquisition bias
 
 ### Is capture source entangled with the label?
 

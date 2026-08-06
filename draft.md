@@ -301,27 +301,46 @@ discussion than either blanket claim.
 ## 6. Glass-box comparison
 
 Two interpretable models were fitted to nine engineered features — five colour
-fractions measured inside a leaf mask, four GLCM texture descriptors — extracted
-from segmented single-leaf crops. The split is stratified and grouped by source
-photograph, since one photograph can yield several leaf crops and siblings on
-opposite sides of the boundary would leak.
+fractions measured inside a leaf mask, four GLCM texture descriptors. They are
+evaluated under two protocols, because the protocol turns out to change the
+answer.
+
+The **common** protocol extracts the same features from exactly the images the
+CNNs use, and scores on the official 680-image test split. These are the only
+glass-box numbers that can be placed beside a CNN:
+
+| model | accuracy | macro-F1 |
+|---|---|---|
+| **Decision tree (depth 3)** | **0.684** | **0.667** |
+| Logistic regression | 0.621 | 0.600 |
+
+The **segmented** protocol is the setting the features were designed for: one
+crop per detected leaf, held out with a split stratified and grouped by source
+photograph, since one photograph can yield several crops and siblings on opposite
+sides of the boundary would leak. It is reported as a sensitivity analysis, not
+as a comparison against the CNNs:
 
 | model | accuracy | macro-F1 |
 |---|---|---|
 | Decision tree (depth 3) | 0.624 | 0.621 |
 | **Logistic regression** | **0.711** | **0.692** |
 
-Logistic regression outperforms the tree by seven points and is the stronger
-glass-box baseline. Its coefficients read directly in agronomic terms:
-`frac_yellow`, the chlorosis proxy, is the largest positive weight for
-`olive_peacock_spot` (+1.98) and the largest negative one for `Healthy` (−1.81).
+The two protocols reverse the ranking, and that is the more interesting finding
+of the pair. The colour fractions are measured inside a leaf mask that a tight
+crop makes reliable and a whole photograph does not; logistic regression has no
+way to compensate for the shift, while a depth-3 tree's thresholds partly can.
+Any claim about *which* glass-box model is better therefore has to name its
+protocol. Coefficients still read directly in agronomic terms: `frac_yellow`, the
+chlorosis proxy, is the largest positive weight for `olive_peacock_spot` and the
+largest negative one for `Healthy`.
 
-The gap to the deep models (0.69 against 0.93) is the expected cost of
-interpretability. One caveat must accompany any direct comparison: the glass-box
-models are evaluated on held-out crops drawn from the training photographs,
-because the official test images were never passed through the segmenter. The two
-numbers are not measured on the same protocol and should be compared as a trend,
-not as a like-for-like difference.
+Both models are also explained per prediction — two correct and two incorrect
+test cases each, with the decision path or the exact per-feature contribution
+behind them. Under the common protocol both of the tree's explained errors turn
+on the very first split, `frac_yellow <= 0.0134`, one of them missing the
+threshold by 0.03 standard deviations. The errors are not diffuse; they are a
+knife-edge on a single feature, which is the kind of statement only an intrinsic
+explanation supports.
 
 ---
 
@@ -359,12 +378,47 @@ concatenation topology makes it substantially harder to implement.
 
 ## 8. Where these results answer the research questions
 
-**RQ1** — pretrained CNNs against a glass-box baseline — is addressed by
-sections 2 and 6: MobileNetV2 and DenseNet121 reach 0.930 and 0.939 test macro-F1
-respectively, against 0.692 for logistic regression on engineered features, with
-the interpretability trade-off explicit and the evaluation protocols distinguished.
+**RQ a** — pretrained CNNs against training from scratch and against a glass-box
+baseline — is addressed by sections 2 and 6. Every figure below is test macro-F1
+on the same official 680-image split:
 
-**RQ2** — how far quantisation and pruning reduce size and latency while
+| | test macro-F1 | parameters |
+|---|---|---|
+| DenseNet121 (ImageNet) | 0.939 | 7,040,579 |
+| MobileNetV2 (ImageNet) | 0.930 | 2,261,827 |
+| Scratch CNN, redesigned | 0.871 | 585,059 |
+| Scratch CNN, notebook architecture | 0.810 | 5,767,139 |
+| Decision tree, engineered features | 0.667 | 9 features |
+| Logistic regression, engineered features | 0.600 | 9 features |
+
+Three things follow, and only the first is the expected one.
+
+**Transfer learning wins, but by less than the literature would suggest.** The
+margin over a competently designed scratch CNN is 6 points of macro-F1, not the
+collapse the original notebook implied. What ImageNet initialisation buys most
+clearly here is *time*: MobileNetV2 reached 0.930 in 1,175 seconds, while the
+redesigned scratch network needed 2,632 seconds to reach 0.871.
+
+**The original notebook's 0.401 was not evidence that scratch training fails on
+this task.** Reproducing that architecture unchanged on the corrected split
+yields 0.810 — double the reported figure. The remaining gap to 0.871 is
+architectural: that design spends 5.75M of its 5.77M parameters on a single
+`Flatten` into `Dense(64)`, so a tenth of the parameter budget spent on depth,
+BatchNorm and global average pooling beats it outright. Both causes have to be
+named; attributing the 0.401 to either alone would be wrong.
+
+**The glass-box gap is 27 points, not 24.** The comparison must be quoted from
+the common protocol. Note also that the ranking of the two interpretable models
+reverses between protocols (section 6), so any claim about which glass-box model
+is stronger has to name the evaluation protocol it came from.
+
+One caveat belongs with this table: the redesigned scratch CNN is the only model
+whose validation score (0.916) overstates its test score (0.871). Validation is
+carved from the training photographs and the test split is the dataset's own, so
+a model whose features are learned entirely from these photographs can lean on
+what they share. The two transfer models show the opposite, smaller gap.
+
+**RQ b** — how far quantisation and pruning reduce size and latency while
 preserving accuracy and explanation fidelity — is addressed by sections 3 and 4.
 The short answer is that compression is cheap but architecture-dependent: what an
 architecture will give up depends on where its redundancy lies, DenseNet121's in

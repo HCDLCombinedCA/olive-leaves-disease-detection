@@ -8,14 +8,15 @@ Runs on `kquille/hcaim_gpu_tudublin_course:latest` unmodified; `run.sh` installs
 nothing.
 
 ```bash
-./run.sh python glassbox_fixed.py
+./run.sh python glassbox_fixed.py                    # segmenter crops
+./run.sh python glassbox_fixed.py --protocol common  # official test split
 ./run.sh python acquisition_bias.py
 ./run.sh python gradcam_report.py --model ../compression/artifacts/densenet121_baseline
 ```
 
 ---
 
-## 1. `glassbox_fixed.py` — three defects in the glass-box pipeline
+## 1. `glassbox_fixed.py` — four defects in the glass-box pipeline
 
 Adapted from `glassbox/Olive_Leaf_GlassBox.ipynb`. Feature extraction is
 reproduced faithfully (same colour fractions, same GLCM parameters) so results
@@ -43,23 +44,55 @@ shared** between train and test.
 Logistic Regression is added, and its standardised coefficients are reported as
 the glass-box explanation the rubric asks for.
 
-Results on the corrected grouped split (2,008 train / 995 test crops):
+**No test set in common with the deep models.** The segmented crops all come from
+*training* photographs, while the CNNs are scored on the official 680-image test
+split, so the two sets of numbers could not be placed in the same table — which
+is exactly what RQ a asks for. `--protocol common` re-runs the identical features
+and models over the manifests the CNNs use, scoring on the same official test
+images. Both protocols are kept: the segmented one is the setting the features
+were designed for, and the gap between them is itself a result.
 
-| model | accuracy | macro-F1 |
-|---|---|---|
-| Decision Tree (`max_depth=3`) | 0.624 | 0.621 |
-| **Logistic Regression** | **0.711** | **0.692** |
+| protocol | test set | Decision Tree | Logistic Regression |
+|---|---|---|---|
+| `segmented` | 995 held-out crops, grouped | 0.621 | **0.692** |
+| `common` | official 680 test images | **0.667** | 0.600 |
 
-Logistic Regression outperforms the tree by 7 points of macro-F1, so it is worth
-reporting as the stronger glass-box baseline rather than an afterthought. Its
-coefficients read cleanly in agronomic terms: `frac_yellow` (chlorosis) is the
-dominant positive weight for `olive_peacock_spot` (+1.98) and the dominant
-negative one for `Healthy` (−1.81).
+The two protocols do not rank the models the same way. The colour fractions are
+computed inside a leaf mask that a tight crop makes reliable and a whole
+photograph does not; a linear model has no way to compensate, while a depth-3
+tree's thresholds partly can. Only the `common` row belongs in a comparison
+against the CNNs.
 
-One observation for the report: the GLCM texture features are computed over the
-whole crop rather than inside the leaf mask, so they also describe background
-texture. Given how strongly capture source correlates with class here (see
-below), that is worth stating as a limitation.
+Coefficients read cleanly in agronomic terms: `frac_yellow` (chlorosis) is the
+dominant positive weight for `olive_peacock_spot` and the dominant negative one
+for `Healthy`.
+
+### Individual predictions
+
+Coefficients and a rule list describe the model, not any single decision, and the
+rubric asks for both. Each run also writes two correct and two incorrect test
+predictions per model to `results/glassbox_*_examples.png` and to the
+`explanations` key of the JSON:
+
+- **Logistic Regression** — an exact decomposition. The score is a sum, so each
+  bar is `coefficient × standardised feature value`, with no surrogate involved
+  (unlike the LIME approximations the deep models need). Where the prediction is
+  wrong, the same decomposition is also reported for the class that should have
+  won.
+- **Decision Tree** — the path actually taken, each test shown with the sample's
+  value and the threshold, and the margin scaled by that feature's training
+  standard deviation so the bars are comparable across features.
+
+Worth a sentence in the report: under the `common` protocol both of the tree's
+explained errors turn on the very first split, `frac_yellow <= 0.0134`, and one
+of them misses the threshold by 0.03 standard deviations. The errors are not
+diffuse — they are a knife-edge on a single feature.
+
+One further observation: the GLCM texture features are computed over the whole
+crop rather than inside the leaf mask, so they also describe background texture.
+Given how strongly capture source correlates with class here (see below), and
+that 326 of the 3,003 "crops" are whole photographs the segmenter failed on,
+that is worth stating as a limitation.
 
 ---
 

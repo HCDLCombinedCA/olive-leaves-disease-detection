@@ -3,7 +3,7 @@
 Post-training quantisation and magnitude pruning for the olive leaf disease
 classifier, with the size / latency / accuracy trade-off measured on CPU.
 
-This addresses RQ2: *to what extent can quantisation and pruning reduce model
+This addresses RQ b: *to what extent can quantisation and pruning reduce model
 size and inference latency while preserving accuracy and explanation fidelity?*
 
 ## Scope: course toolset

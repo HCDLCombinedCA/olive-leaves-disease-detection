@@ -69,38 +69,100 @@ def section_dataset(out):
                "so results stay comparable with other work on this dataset.\n")
 
 
-def section_baselines(out):
-    out.append("## 2. Baseline models\n")
-    rows = []
-    for backbone in ("mobilenetv2", "densenet121"):
-        data = load_json("compression/results/%s_baseline.json" % backbone)
-        if data:
-            rows.append((backbone, data))
+def section_segmentation(out):
+    out.append("## 2. Leaf segmentation\n")
+    rows = load_csv("leaf_segmenter/seg_result.csv")
     if not rows:
-        out.append(missing("Baseline results", "compression/results/*_baseline.json"))
+        out.append(missing("Segmentation results", "leaf_segmenter/seg_result.csv"))
         return
 
-    out.append("| backbone | parameters | train time | val macro-F1 | test macro-F1 | "
+    counts = {}
+    for row in rows:
+        counts[int(row["n_leaves"])] = counts.get(int(row["n_leaves"]), 0) + 1
+    detected = sum(n * c for n, c in counts.items())
+    out.append("Model selection is documented in `leaf_segmenter/eval/evaluation_report.md`: "
+               "eleven configurations across five families benchmarked on CVPPP A1, won by "
+               "fine-tuned YOLO11-seg (SBD 0.847, FBD 0.958, 0.015 s/image). That model was "
+               "then applied to the olive photographs.\n")
+    out.append("| leaves detected | photographs | share |")
+    out.append("|---|---|---|")
+    for n in sorted(counts):
+        out.append("| %d | %d | %.1f%% |" % (n, counts[n], counts[n] / len(rows) * 100))
+    out.append("| **total** | **%d** | |\n" % len(rows))
+
+    fallbacks = 0
+    crop_total = 0
+    root = "olive_leaf_dataset/segmented/train"
+    for cls in CLASSES:
+        folder = os.path.join(root, cls)
+        if not os.path.isdir(folder):
+            continue
+        names = os.listdir(folder)
+        crop_total += len(names)
+        fallbacks += sum(1 for n in names if os.path.splitext(n)[0].endswith("_full"))
+    if crop_total:
+        out.append("The crop set reconciles exactly: **%d files = %d detected leaves + %d "
+                   "whole-image fallbacks**. Where the segmenter found nothing, the pipeline "
+                   "writes the entire photograph as `<stem>_full.png`, so %.0f%% of the "
+                   "\"leaf crops\" feeding the glass-box features are unsegmented photographs "
+                   "with their background intact -- relevant given the capture-source "
+                   "confound in section 8.\n"
+                   % (crop_total, detected, fallbacks, fallbacks / crop_total * 100))
+
+
+def section_deep_models(out):
+    out.append("## 3. Deep models: from scratch against transfer learning\n")
+    specs = [
+        ("scratch CNN (notebook architecture)", "compression/results/scratch_original_baseline.json"),
+        ("scratch CNN (redesigned)", "compression/results/scratch_improved_baseline.json"),
+        ("MobileNetV2 (ImageNet)", "compression/results/mobilenetv2_baseline.json"),
+        ("DenseNet121 (ImageNet)", "compression/results/densenet121_baseline.json"),
+    ]
+    rows = [(label, load_json(path)) for label, path in specs]
+    rows = [(label, data) for label, data in rows if data]
+    if not rows:
+        out.append(missing("Deep model results", "compression/results/*_baseline.json"))
+        return
+
+    out.append("| model | parameters | train time | val macro-F1 | test macro-F1 | "
                + " | ".join("test recall %s" % SHORT[c] for c in CLASSES) + " |")
     out.append("|---" * (5 + len(CLASSES)) + "|")
-    for backbone, data in rows:
+    for label, data in rows:
         recalls = data["metrics"]["test"]["per_class_recall"]
         out.append("| %s | %s | %.0f s | %.4f | %.4f | %s |" % (
-            backbone, "{:,}".format(data["total_parameters"]), data["train_seconds"],
+            label, "{:,}".format(data["total_parameters"]), data["train_seconds"],
             data["metrics"]["val"]["macro_f1"], data["metrics"]["test"]["macro_f1"],
             " | ".join("%.3f" % recalls[c] for c in CLASSES)))
     out.append("")
-    for backbone, data in rows:
+    for label, data in rows:
         val, test = data["metrics"]["val"]["macro_f1"], data["metrics"]["test"]["macro_f1"]
         out.append("- **%s**: val %.3f vs test %.3f (gap %+.3f)." % (
-            backbone, val, test, test - val))
-    out.append("\nA small gap in this direction is what a clean split should give. The original "
-               "notebook reported val 0.819 against test 0.946 -- the inversion that first "
-               "suggested leakage.\n")
+            label, val, test, test - val))
+    out.append("\nThe original notebook reported val 0.819 against test 0.946. A validation "
+               "score far *below* the test score is the inversion that first suggested "
+               "leakage, and no model here reproduces it.\n")
+    negative = [label for label, data in rows
+                if data["metrics"]["test"]["macro_f1"] < data["metrics"]["val"]["macro_f1"]]
+    if negative:
+        out.append("Worth a sentence in the report: %s %s the only %s whose validation score "
+                   "*overstates* its test score. Validation is carved from the training "
+                   "photographs while the test split is the dataset's own, so a model that "
+                   "leans on whatever the training photographs share -- capture conditions "
+                   "included, see section 8 -- will look better on validation than it is. "
+                   "Transfer learning does not show this, which is consistent with its "
+                   "features coming from ImageNet rather than from these photographs.\n"
+                   % (", ".join("**%s**" % n for n in negative),
+                      "is" if len(negative) == 1 else "are",
+                      "model" if len(negative) == 1 else "models"))
+    out.append("Every model here shares `compression/src/common.py`: the same manifests, input "
+               "size, augmentation, class weights and metrics. The scratch entries differ from "
+               "the transfer entries only in initialisation and architecture, and the first "
+               "scratch entry reproduces the notebook's chosen architecture unchanged, so the "
+               "effect of the corrected data is separated from the effect of the design.\n")
 
 
 def section_compression(out):
-    out.append("## 3. Compression\n")
+    out.append("## 6. Compression\n")
     found = False
     for backbone in ("mobilenetv2", "densenet121"):
         rows = load_csv("compression/results/%s_compression_table.csv" % backbone)
@@ -130,7 +192,7 @@ def section_compression(out):
 
 
 def section_xai(out):
-    out.append("## 4. Explanation fidelity after compression (LIME)\n")
+    out.append("## 7. Explanation fidelity after compression (LIME)\n")
     data = load_json("compression/results/mobilenetv2_xai_fidelity.json")
     if not data:
         out.append(missing("Fidelity results", "compression/results/*_xai_fidelity.json"))
@@ -147,27 +209,84 @@ def section_xai(out):
                "baseline and every quantised variant.\n")
 
 
+GLASSBOX_MODELS = (("decision_tree", "Decision Tree (depth 3)"),
+                   ("logistic_regression", "Logistic Regression"))
+GLASSBOX_PROTOCOLS = (("segmented", "analysis/results/glassbox_fixed.json"),
+                      ("common", "analysis/results/glassbox_common_protocol.json"))
+
+
 def section_glassbox(out):
-    out.append("## 5. Glass-box models\n")
-    data = load_json("analysis/results/glassbox_fixed.json")
-    if not data:
-        out.append(missing("Glass-box results", "analysis/results/glassbox_fixed.json"))
+    out.append("## 4. Glass-box models\n")
+    found = [(name, load_json(path)) for name, path in GLASSBOX_PROTOCOLS]
+    found = [(name, data) for name, data in found if data]
+    if not found:
+        out.append(missing("Glass-box results", "analysis/results/glassbox_*.json"))
         return
-    out.append("| model | accuracy | macro-F1 |")
-    out.append("|---|---|---|")
-    for key, label in (("decision_tree", "Decision Tree (depth 3)"),
-                       ("logistic_regression", "Logistic Regression")):
-        if key in data:
-            out.append("| %s | %.3f | %.3f |" % (
-                label, data[key]["accuracy"], data[key]["macro_f1"]))
-    split = data.get("split", {})
-    out.append("\nSplit: %d train / %d test crops, grouped by source photograph "
-               "(%d shared groups).\n" % (split.get("train", 0), split.get("test", 0),
-                                          split.get("shared_groups", -1)))
+
+    out.append("| protocol | model | test images | accuracy | macro-F1 |")
+    out.append("|---|---|---|---|---|")
+    for name, data in found:
+        for key, label in GLASSBOX_MODELS:
+            if key in data:
+                out.append("| %s | %s | %d | %.3f | %.3f |" % (
+                    name, label, data["split"]["test"],
+                    data[key]["accuracy"], data[key]["macro_f1"]))
+    out.append("")
+    for name, data in found:
+        split = data["split"]
+        out.append("- **%s**: %d train / %d test, %s, %d shared source photographs." % (
+            name, split["train"], split["test"], split.get("note", "n/a"),
+            split["shared_groups"]))
+    out.append("\nThe two protocols do not rank the models the same way, which is worth stating "
+               "rather than smoothing over: the tree gains on whole photographs while logistic "
+               "regression loses. The engineered colour fractions are computed inside a leaf "
+               "mask that a tight crop makes reliable and a full photograph does not, and a "
+               "linear model has no way to compensate for that where a depth-3 tree's "
+               "thresholds partly can.\n")
+    out.append("Individual predictions -- two correct and two incorrect per model, with the "
+               "decision path or the exact per-feature contribution behind each -- are in "
+               "`analysis/results/glassbox_*_examples.png` and in the `explanations` key of "
+               "each JSON.\n")
+
+
+def section_rq1(out):
+    out.append("## 5. RQ a: like-for-like comparison\n")
+    rows = []
+    for label, path in (("scratch CNN (notebook architecture)",
+                         "compression/results/scratch_original_baseline.json"),
+                        ("scratch CNN (redesigned)",
+                         "compression/results/scratch_improved_baseline.json"),
+                        ("MobileNetV2 (ImageNet)",
+                         "compression/results/mobilenetv2_baseline.json"),
+                        ("DenseNet121 (ImageNet)",
+                         "compression/results/densenet121_baseline.json")):
+        data = load_json(path)
+        if data:
+            rows.append((label, data["metrics"]["test"]["accuracy"],
+                         data["metrics"]["test"]["macro_f1"],
+                         "post-hoc (Grad-CAM / LIME)"))
+
+    glassbox = load_json("analysis/results/glassbox_common_protocol.json")
+    if glassbox:
+        for key, label in GLASSBOX_MODELS:
+            rows.append((label + " (engineered features)", glassbox[key]["accuracy"],
+                         glassbox[key]["macro_f1"], "intrinsic (exact)"))
+    if not rows:
+        out.append(missing("Comparison inputs", "compression/results/, analysis/results/"))
+        return
+
+    out.append("All rows below are scored on the **same official 680-image test split**. The "
+               "segmented-crop glass-box numbers in section 4 are measured on a different "
+               "population and are deliberately not carried into this table.\n")
+    out.append("| model | accuracy | macro-F1 | explanation |")
+    out.append("|---|---|---|---|")
+    for label, accuracy, macro_f1, explanation in rows:
+        out.append("| %s | %.3f | %.3f | %s |" % (label, accuracy, macro_f1, explanation))
+    out.append("")
 
 
 def section_bias(out):
-    out.append("## 6. Acquisition bias\n")
+    out.append("## 8. Acquisition bias\n")
     data = load_json("analysis/results/acquisition_bias.json")
     if not data:
         out.append(missing("Bias results", "analysis/results/acquisition_bias.json"))
@@ -221,8 +340,9 @@ def main():
     out = ["# Results", ""]
     out.append("Generated from the artefacts in `compression/results/` and "
                "`analysis/results/`. Regenerate with `python3 make_report_tables.py`.\n")
-    for section in (section_dataset, section_baselines, section_compression,
-                    section_xai, section_glassbox, section_bias):
+    for section in (section_dataset, section_segmentation, section_deep_models,
+                    section_glassbox, section_rq1, section_compression,
+                    section_xai, section_bias):
         section(out)
         out.append("---\n")
 
