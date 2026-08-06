@@ -1,0 +1,92 @@
+% Bibliography for the combined report.
+%
+% VERIFY BEFORE SUBMITTING. Author, title and year are taken from
+% draft-literature-review.md and from the PDFs in ref/. Venue, volume, page and
+% DOI fields marked with a "% check" comment were not read off the PDF and must
+% be confirmed against it -- do not submit an invented citation.
+%
+% MISSING: ribeiro2016 (LIME) has no PDF in ref/ even though the method is used
+% in compression/src/xai_fidelity.py. Entry below is included because the method
+% must be cited; confirm the details and add the PDF. See
+% draft-literature-review.md section 7, item 1.
+
+@article{mohanty2016,
+  author  = {Mohanty, Sharada P. and Hughes, David P. and Salath{\'e}, Marcel},
+  title   = {Using Deep Learning for Image-Based Plant Disease Detection},
+  journal = {Frontiers in Plant Science},
+  volume  = {7},
+  pages   = {1419},
+  year    = {2016}
+}
+
+@inproceedings{sandler2018,
+  author    = {Sandler, Mark and Howard, Andrew and Zhu, Menglong and
+               Zhmoginov, Andrey and Chen, Liang-Chieh},
+  title     = {{MobileNetV2}: Inverted Residuals and Linear Bottlenecks},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and
+               Pattern Recognition (CVPR)},
+  year      = {2018}
+}
+
+@inproceedings{han2016,
+  author    = {Han, Song and Mao, Huizi and Dally, William J.},
+  title     = {Deep Compression: Compressing Deep Neural Networks with Pruning,
+               Trained Quantization and Huffman Coding},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2016}
+}
+
+@inproceedings{selvaraju2017,
+  author    = {Selvaraju, Ramprasaath R. and Cogswell, Michael and Das, Abhishek
+               and Vedantam, Ramakrishna and Parikh, Devi and Batra, Dhruv},
+  title     = {{Grad-CAM}: Visual Explanations from Deep Networks via
+               Gradient-Based Localization},
+  booktitle = {Proceedings of the IEEE International Conference on Computer
+               Vision (ICCV)},
+  year      = {2017}
+}
+
+@inproceedings{ribeiro2016,
+  author    = {Ribeiro, Marco Tulio and Singh, Sameer and Guestrin, Carlos},
+  title     = {``Why Should {I} Trust You?'': Explaining the Predictions of Any
+               Classifier},
+  booktitle = {Proceedings of the 22nd ACM SIGKDD International Conference on
+               Knowledge Discovery and Data Mining (KDD)},
+  year      = {2016}
+  % check: pages. No PDF held in ref/ -- see header note.
+}
+
+@inproceedings{kuzmin2023,
+  author    = {Kuzmin, Andrey and Nagel, Markus and van Baalen, Mart and
+               Behboodi, Arash and Blankevoort, Tijmen},
+  title     = {Pruning vs Quantization: Which is Better?},
+  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  year      = {2023}
+  % check: author list and volume against ref/recent-pruning-vs-quantization-2023.pdf
+}
+
+@article{silva2024,
+  author  = {Silva, [check] and Almeida, [check]},
+  title   = {[check title]},
+  year    = {2024}
+  % check: EVERYTHING. Read off ref/recent-edge-leaf-disease-thermal-2024.pdf.
+  % Cited in the report for Raspberry Pi 4B deployment with 1.48--2.13x
+  % speed-ups on thermal imagery.
+}
+
+@inproceedings{tan2019,
+  author    = {Tan, Mingxing and Le, Quoc V.},
+  title     = {{EfficientNet}: Rethinking Model Scaling for Convolutional
+               Neural Networks},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2019}
+}
+
+@misc{oliveleafdataset,
+  author       = {Basher, Habibul},
+  title        = {Olive Leaf Image Dataset},
+  howpublished = {Kaggle, CC0 / public domain},
+  note         = {\url{https://www.kaggle.com/datasets/habibulbasher01644/olive-leaf-image-dataset}},
+  year         = {2024}
+  % check: publication year and author's full name on the Kaggle page.
+}

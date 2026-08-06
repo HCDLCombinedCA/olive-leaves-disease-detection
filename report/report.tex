@@ -1,0 +1,469 @@
+%==============================================================================
+% Combined Project 2 -- draft report
+%
+% DRAFT. Not submittable as-is. Every \NEEDSTEAM{...} below marks something only
+% the team can supply (names, student IDs, individual contributions, the signed
+% AI declaration). Search for NEEDSTEAM before submitting.
+%
+% Template: ACM Conference Proceedings Primary Article Template (acmart, sigconf).
+% Drop this file and refs.bib into the Overleaf template and compile.
+%
+% PAGE BUDGET (6 pages excluding references, contribution text and appendices;
+% 5 percentage points penalty per additional half-page):
+%   Abstract 250-300 words + AI declaration   -- before Introduction, as required
+%   Introduction + Literature Review          -- 1.5 pages
+%   Data exploration and pre-processing       -- 0.5 page
+%   Model development + evaluation            -- 1.0 page
+%   XAI + discussion                          -- 1.5 pages
+%   Emerging trends + ethics                  -- 1.0 page
+%   Summary and conclusion                    -- 0.5 page
+%
+% This draft is written slightly under budget so the team's own interpretation
+% can be added without overrunning. Check the page count after every edit.
+%
+% Every number in this document comes from RESULTS.md, which is generated from
+% the JSON/CSV artefacts by make_report_tables.py. If a number here disagrees
+% with RESULTS.md, RESULTS.md is right.
+%==============================================================================
+\documentclass[sigconf,nonacm]{acmart}
+
+% Deliberately no \textcolor here: acmart loads xcolor itself and an explicit
+% \usepackage can clash with its options. Bold is enough to find these.
+\newcommand{\NEEDSTEAM}[1]{\textbf{[TEAM: #1]}}
+
+\begin{document}
+
+\title{Explainable, Edge-Efficient Olive Leaf Disease Classification}
+
+%------------------------------------------------------------------------------
+% NEEDSTEAM: one \author block per student, with student number in \affiliation.
+%------------------------------------------------------------------------------
+\author{\NEEDSTEAM{author names}}
+\affiliation{%
+  \institution{TU Dublin, Tallaght Campus}
+  \city{Dublin}
+  \country{Ireland}}
+
+\begin{abstract}
+Olive cultivation in the Mediterranean faces increasing pressure from foliar
+disease, and automated leaf-level diagnosis is attractive precisely where expert
+agronomists are scarce --- which is also where computing hardware is
+constrained. This work asks two questions of a three-class olive leaf dataset
+(healthy, olive peacock spot, \emph{Aculus olearius}): how ImageNet transfer
+learning compares with training from scratch and with intrinsically interpretable
+models, and how far the resulting model can be compressed before either its
+accuracy or its explanations degrade.
+
+Reproducing the published dataset split revealed train/test leakage that had to
+be corrected first. Perceptual hashing found 119 duplicate pairs across the
+boundary, of which byte-identical hashing found only 24; together with
+burst-linked photographs, 359 training images were removed while the official
+test split was left intact. All subsequent results use this corrected split.
+
+On the corrected data, DenseNet121 and MobileNetV2 reach 0.939 and 0.930 test
+macro-F1. A CNN trained from scratch reaches 0.871, and reproducing the
+architecture originally chosen for this dataset reaches 0.810 --- against 0.401
+reported before the correction, showing that figure was a product of leakage and
+architecture jointly rather than evidence that scratch training fails here. Two
+glass-box models on nine engineered features reach 0.667 and 0.600 when evaluated
+on the same test images, quantifying a 27-point cost of intrinsic
+interpretability.
+
+Compression is effective but asymmetric. Full-integer quantisation makes
+MobileNetV2 4.9$\times$ smaller and 5.6$\times$ faster for 0.005 macro-F1;
+unstructured pruning reduces no latency at all and shows its saving only after
+entropy coding. LIME explanations degrade in step with accuracy rather than
+independently of it.
+\end{abstract}
+
+\maketitle
+
+%------------------------------------------------------------------------------
+% AI DECLARATION -- required position: after the Abstract, before the
+% Introduction. Level 2 (AI-assisted idea generation and brainstorming); no AI
+% content permitted in the final submission.
+%
+% NEEDSTEAM: this must be written and signed by the team. The paragraph below is
+% a structural placeholder showing what has to be covered, NOT submittable text.
+% draft-ethics.md section 8 records the team's decision and the verifiable facts
+% it has to be consistent with (all commits on develop/model-compression carry
+% Co-Authored-By trailers recording AI assistance).
+%------------------------------------------------------------------------------
+\section*{Declaration of AI Usage}
+\NEEDSTEAM{Signed declaration, written by the team. It must state the scope of AI
+assistance truthfully, confirm adherence to Level 2, and confirm that all
+submitted text was written, verified and is owned by the authors. It must be
+consistent with the repository's commit history, which records AI assistance
+throughout. Do not submit this placeholder.}
+
+%==============================================================================
+\section{Introduction and Rationale}
+%==============================================================================
+
+Olive (\emph{Olea europaea} L.) is a defining crop of the Mediterranean basin.
+Two foliar conditions dominate its disease burden: olive peacock spot
+(\emph{Venturia oleaginea}), a fungal infection producing characteristic ringed
+lesions, and infestation by the eriophyid mite \emph{Aculus olearius}, which
+produces silvering and deformation rather than discrete lesions. Distinguishing
+them matters because they call for different treatments, and misdiagnosis wastes
+both chemical input and the grower's time.
+
+\NEEDSTEAM{One to two sentences on the agronomic and climate motivation. The
+proposal's figures --- Mediterranean warming 20\% faster than the global average,
+yield losses of approximately 20\% --- are currently uncited. Either cite them or
+state the motivation qualitatively. See draft-literature-review.md section 7.}
+
+The dataset is the Olive Leaf Image Dataset, published on Kaggle under CC0, with
+2{,}720 training and 680 test photographs across three balanced-ish classes. Two
+properties made it a good choice for this project and one made it a demanding
+one. It is single-leaf imagery against a plain background, so segmentation and
+engineered features are both tractable; it is small enough to train repeatedly on
+CPU; and, as Section~\ref{sec:data} shows, its published split contains leakage,
+which turned data auditing from a formality into a substantive part of the work.
+
+Two research questions follow, matching the two modules:
+
+\begin{itemize}
+\item \textbf{RQ~a.} How effectively do ImageNet-pretrained CNNs transfer to
+  olive leaf disease classification compared with training from scratch and with
+  an interpretable glass-box baseline, and what do XAI techniques reveal about
+  them?
+\item \textbf{RQ~b.} To what extent can post-training quantisation and pruning
+  reduce model size and inference latency while preserving accuracy and
+  explanation fidelity, enabling deployment on low-cost edge hardware?
+\end{itemize}
+
+%==============================================================================
+\section{Literature Review}
+%==============================================================================
+
+\NEEDSTEAM{Condense draft-literature-review.md to roughly 900 words. It currently
+runs much longer. The structure below is what the rubric rewards --- emerging
+tools in the context of the application --- and the citation gaps flagged in its
+Section 7 must be closed or the corresponding claims weakened before submission.}
+
+\paragraph{Plant disease classification with CNNs.}
+Mohanty et al.~\cite{mohanty2016} established the transfer-learning baseline for
+leaf disease classification on PlantVillage, and the pattern --- an ImageNet
+backbone with a replaced head --- remains the default. \NEEDSTEAM{Add the
+olive-specific transfer-learning studies the proposal asserts exist, or restrict
+this paragraph to the general plant-disease literature.}
+
+\paragraph{Efficient architectures and model compression.}
+MobileNetV2~\cite{sandler2018} makes depthwise-separable convolution the basis of
+an architecture designed for constrained inference. Compression of already-trained
+networks divides into pruning and quantisation. Han et
+al.~\cite{han2016} combined pruning, trained quantisation and Huffman coding for
+35--49$\times$ storage reduction, framing the problem as one of storage rather
+than latency. Kuzmin et al.~\cite{kuzmin2023} compared the two families directly
+across nine models and four tasks and found quantisation usually preferable,
+with pruning competitive only at extreme ratios --- a finding
+Section~\ref{sec:compression} reproduces on this dataset. Silva and
+Almeida~\cite{silva2024} deploy compressed leaf-disease models to a Raspberry
+Pi~4B and report 1.48--2.13$\times$ speed-ups, though on thermal rather than RGB
+imagery.
+
+\paragraph{Explainability.}
+Grad-CAM~\cite{selvaraju2017} and its Grad-CAM++ refinement attribute a
+convolutional prediction to spatial regions via gradients.
+LIME~\cite{ribeiro2016} instead fits a sparse linear surrogate around a
+perturbed neighbourhood of one input, requiring only a function from inputs to
+class probabilities. That distinction is what makes LIME usable in
+Section~\ref{sec:compression}: a quantised TFLite graph exposes no gradients.
+
+%==============================================================================
+\section{Data Exploration and Pre-processing}
+\label{sec:data}
+%==============================================================================
+
+\paragraph{The published split leaks.}
+Comparing 16$\times$16 greyscale thumbnails at a mean-absolute-error threshold
+identified 119 duplicate photograph pairs spanning the train/test boundary. MD5
+hashing finds only 24 of them: the remaining 95 are the same photograph
+re-encoded, identical to the eye and to a downsampled comparison but not
+byte-for-byte. A second class of leakage comes from burst photography, where
+consecutive frames of one leaf are split across the boundary. Removing training
+images that duplicate a test image (114) or share a burst with one (264) removes
+359 images in total, leaving 2{,}361. The official test split was deliberately
+left untouched so that results remain comparable with other work.
+
+The effect is measurable. Before correction, the project's CNN reported
+validation macro-F1 0.819 against test 0.946 --- a model scoring markedly higher
+on data it was never validated against, which is the signature of test
+contamination. After correction, every transfer-learned model shows the expected
+ordering.
+
+\paragraph{Capture source is confounded with label.}
+Filenames encode the capture device. Cross-tabulating the prefix against the
+class shows severe entanglement: the bare-numeric block is 100\%
+\emph{Aculus olearius} and the \texttt{B*} block is 99.8\% healthy. A classifier
+given \emph{nothing but the filename prefix} reaches 91.8\% accuracy on training
+data against a 38.2\% majority baseline. It reaches only 49.9\% on the official
+test split, which is itself evidence that the train and test photographs were
+captured under different conditions. Any accuracy figure on this dataset must be
+read with that confound in mind, and Section~\ref{sec:xai} tests whether the
+model actually exploits it.
+
+\paragraph{Segmentation.}
+Eleven segmentation configurations across five model families were benchmarked on
+the CVPPP A1 split; fine-tuned YOLO11-seg won on both quality (SBD 0.847, FBD
+0.958) and speed (0.015\,s/image). Applied to the olive photographs it produced
+3{,}003 files, which reconcile as 2{,}677 detected leaves plus 326 whole-image
+fallbacks where no leaf was found. About 11\% of the crops feeding the glass-box
+features are therefore unsegmented photographs with their background intact.
+
+\paragraph{Pre-processing.}
+All deep models share one pipeline: 224$\times$224 inputs, backbone-specific
+ImageNet normalisation, training-only augmentation (rotation, zoom, shift,
+flips), and balanced class weights. Holding this constant is what allows
+architecture and compression effects to be separated from pre-processing effects.
+
+%==============================================================================
+\section{Model Development and Evaluation}
+%==============================================================================
+
+Four deep models were trained on the corrected split, differing only in
+initialisation and architecture. Two are ImageNet-pretrained backbones fine-tuned
+in two stages --- a head trained on a frozen backbone, then the final block
+unfrozen at a lower learning rate with BatchNorm held in inference mode. Two are
+randomly initialised: one reproducing layer-for-layer the architecture originally
+selected for this dataset, and one redesigned to spend its parameters
+differently. Model selection is by validation loss throughout, with the test
+split evaluated once at the end.
+
+Two interpretable models --- a depth-3 decision tree and logistic regression ---
+were fitted to nine engineered features: five colour fractions measured inside a
+leaf mask (green, yellow as a chlorosis proxy, brown, dark as necrosis, grey as
+silvering) and four GLCM texture descriptors. Critically, these are evaluated
+under the \emph{same} protocol as the CNNs, on the same official test images, so
+the comparison in Table~\ref{tab:rqa} is like-for-like.
+
+\begin{table}[t]
+\caption{RQ~a: all models on the official 680-image test split.}
+\label{tab:rqa}
+\begin{tabular}{lrrl}
+\toprule
+Model & Params & macro-F1 & Explanation \\
+\midrule
+DenseNet121 (ImageNet)   & 7{,}040{,}579 & 0.939 & post-hoc \\
+MobileNetV2 (ImageNet)   & 2{,}261{,}827 & 0.930 & post-hoc \\
+Scratch CNN, redesigned  &   585{,}059 & 0.871 & post-hoc \\
+Scratch CNN, original    & 5{,}767{,}139 & 0.810 & post-hoc \\
+Decision tree            &   9 features & 0.667 & intrinsic \\
+Logistic regression      &   9 features & 0.600 & intrinsic \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three results follow, and only the first is the expected one.
+
+Transfer learning wins, but by six points of macro-F1 over a competently designed
+scratch network rather than by the margin the earlier work implied. What ImageNet
+initialisation buys most clearly here is training time: MobileNetV2 reached 0.930
+in 1{,}175\,s against 2{,}632\,s for the scratch network's 0.871.
+
+The 0.401 macro-F1 previously reported for a scratch CNN on this dataset was not
+evidence that scratch training fails. Reproducing that architecture unchanged on
+the corrected split yields 0.810. The remaining gap to 0.871 is architectural:
+the original design commits 5.75M of its 5.77M parameters to a single
+\texttt{Flatten} into \texttt{Dense(64)}, so redirecting a tenth of that budget
+into depth, batch normalisation and global average pooling beats it outright.
+Both causes must be named; attributing the figure to either alone would be wrong.
+
+One anomaly deserves reporting rather than smoothing. The redesigned scratch
+network is the only model whose validation score (0.916) \emph{overstates} its
+test score (0.871). Validation is carved from the training photographs while the
+test split is the dataset's own, so a model whose features are learned entirely
+from these photographs can lean on what they share --- consistent with the
+capture-source confound above. Both transfer-learned models show the opposite,
+smaller gap of $+0.015$.
+
+%==============================================================================
+\section{Explainability}
+\label{sec:xai}
+%==============================================================================
+
+Explanations here serve four distinct purposes, and separating them is what keeps
+the section from being decorative: debugging, bias detection, trust calibration,
+and drift monitoring.
+
+\paragraph{Debugging.} The first finding was negative. The saliency maps in the
+project's earlier notebook explain the scratch CNN with 0.401 macro-F1 and 0.5\%
+recall on \emph{Aculus olearius}, not the working model --- the wrong checkpoint
+had been saved and reloaded. Every heatmap was faithfully explaining a model that
+essentially never predicted one of the three classes.
+
+\paragraph{Bias detection.} Grad-CAM++ attention was measured against a leaf
+mask. The model places 10.9\% of its attention mass outside a leaf occupying
+15.5\% of the frame --- a ratio of 0.70, meaning attention concentrates on leaf
+tissue well beyond chance. The ratio is essentially unchanged between correct
+(0.71) and incorrect (0.67) predictions. The capture-source confound is
+demonstrably present in the data, and this model is demonstrably not exploiting
+it. Establishing that required measurement; inspecting heatmaps by eye could not
+have settled it.
+
+\paragraph{Intrinsic against post-hoc.} The glass-box models offer something the
+CNNs cannot: an explanation that \emph{is} the model. For logistic regression the
+class score is a sum, so each feature's contribution is exactly
+$\text{coefficient} \times \text{standardised value}$ with no surrogate involved.
+For the depth-3 tree the explanation is the path taken, three tests with explicit
+thresholds. Examining two correct and two incorrect test predictions per model
+showed that both of the tree's errors turn on its very first split
+(\texttt{frac\_yellow} $\leq 0.0134$), one of them missing the threshold by 0.03
+standard deviations. The errors are not diffuse; they are a knife-edge on a
+single feature. No post-hoc method could establish that.
+
+The interpretability cost is 27 points of macro-F1 (0.939 against 0.667). It must
+be quoted from the common protocol: evaluating the glass-box models on segmented
+crops from training photographs instead gives 0.692, and pairing that with 0.939
+would compare two different test sets. Notably, the two protocols \emph{reverse}
+the ranking of the two interpretable models, so any claim about which is stronger
+has to name its protocol.
+
+%==============================================================================
+\section{Emerging Techniques: Compression}
+\label{sec:compression}
+%==============================================================================
+
+Two focus areas were implemented: transfer learning (Section~4) and model
+compression, the latter in two variants --- post-training quantisation and
+magnitude pruning.
+
+\begin{table}[t]
+\caption{MobileNetV2 compression. Latency is median single-image, single-thread
+CPU.}
+\label{tab:compression}
+\begin{tabular}{lrrrr}
+\toprule
+Variant & MB & gzip MB & ms & macro-F1 \\
+\midrule
+Baseline (Keras)  & 13.21 & 8.74 & 53.55 & 0.930 \\
+Float32 TFLite    &  8.88 & 8.23 & 11.56 & 0.930 \\
+Float16           &  4.48 & 4.11 & 11.16 & 0.928 \\
+Dynamic range     &  2.51 & 2.16 & 18.63 & 0.934 \\
+Full integer      &  2.72 & 2.21 &  9.48 & 0.924 \\
+Pruned 50\%       & 13.24 & 5.55 & 52.10 & 0.833 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Quantisation is close to free.} Full-integer quantisation makes
+MobileNetV2 4.9$\times$ smaller and 5.6$\times$ faster for 0.005 macro-F1. The
+smallest model is not the fastest: dynamic-range quantisation produces the
+smallest file but runs slower than float16, because its int8 weights are
+dequantised at runtime.
+
+\paragraph{Unstructured pruning does not accelerate anything.} Zeroing weights
+without changing tensor shapes leaves the file size and the latency unchanged
+--- 52.10\,ms against a 53.55\,ms baseline is measurement noise. The saving
+appears only after entropy coding, where the gzipped size falls from 8.74\,MB to
+5.55\,MB. Reporting both columns is what makes the result readable rather than
+disappointing.
+
+\paragraph{Architecture decides what compression costs.} MobileNetV2 loses
+0.097 macro-F1 at 50\% sparsity; DenseNet121 at the same sparsity \emph{gains}
+slightly (0.939 to 0.947), and tolerates 65\% before degrading. DenseNet121's
+redundancy lies in the number of its weights, MobileNetV2's in their precision,
+which is precisely why the architecture already designed for efficiency has less
+to give up. This reproduces Kuzmin et al.~\cite{kuzmin2023} on our own data.
+
+\paragraph{Explanation fidelity tracks accuracy.} LIME explanations were compared
+before and after quantisation using a fixed segmentation and seed, so any
+difference is attributable to the models. Rank correlation of the feature weights
+runs 0.599 (float16), 0.556 (dynamic range) and 0.407 (full integer) --- the
+same ordering as the accuracy cost. Top-5 region overlap is higher than the rank
+correlation, locating the instability in low-weight regions rather than in the
+evidence a prediction rests on. Label agreement was 6/6 images for float16 and
+full integer, and 5/6 for dynamic range; six images cannot support a rate, which
+is why the raw counts are given. Fidelity does not degrade independently of
+accuracy.
+
+%==============================================================================
+\section{Ethical Considerations}
+%==============================================================================
+
+Four positions were decided by the team, each grounded in a measurement rather
+than in generic principle.
+
+\paragraph{Triage, not diagnosis.} The system is framed as a triage and
+decision-support tool that prioritises which trees an expert inspects. Two
+measurements rule out a diagnostic claim: the label set is closed at three
+classes, so any condition outside it is silently mapped onto one of them, and the
+errors that occur are confident ones between diseases rather than between
+diseased and healthy.
+
+\paragraph{No raw confidence.} Confidence is not calibrated and the failures show
+it: one misclassification carries 0.979 confidence and another 0.991. No raw
+softmax output is presented to a grower as a probability; the system abstains
+below a threshold. Displaying a numeric confidence requires calibration first,
+which this project has not performed and which is stated as future work rather
+than implied to be done.
+
+\paragraph{Metadata.} EXIF is stripped by default from any image shared outward,
+with provenance retained separately where the bias analysis needs it. The
+pipeline already drops EXIF as a side effect of re-encoding; the decision makes
+an incidental behaviour an intended one.
+
+\paragraph{Provenance and licensing.} The dataset is CC0, so attribution is an
+academic norm rather than a legal obligation, and it is given. Provenance is
+incomplete --- the dataset documents neither who photographed the leaves nor how
+labels were assigned --- and the leakage found during preparation is a reason for
+caution about its curation generally.
+
+\paragraph{Model drift.} Treating drift as a post-hoc XAI concern, the bias
+measurements above form a monitoring baseline. The realistic drift axis is
+capture conditions, not the disease: a deployment that changed camera, season or
+lighting would move the input distribution along exactly the axis this dataset
+confounds with the label. Three signals are monitorable in increasing cost ---
+input colour and device statistics, prediction distribution and confidence, and
+the attention-outside-leaf ratio, currently 0.70 and trending toward 1.0 if the
+model started reading background. One measurement per signal sets a baseline but
+cannot set a threshold; a sustained move across batches, sized against the
+variation between existing capture sources, is the defensible trigger. Response
+escalates with the signal: re-measure for an input-side change alone, retrain on
+data including the new conditions if the attention ratio rises, and suspend
+deployment if confidence collapses without an input-side explanation.
+
+%==============================================================================
+\section{Summary and Conclusion}
+%==============================================================================
+
+Auditing the published dataset split was not preliminary work but a precondition
+for every number reported here: 119 leaked duplicate pairs, of which exact
+hashing found 24, plus burst-linked photographs, required removing 359 training
+images. The corrected split reversed the previously reported
+validation-above-test inversion and cut a previously reported scratch-CNN result
+approximately in half in the opposite direction --- 0.401 becoming 0.810 once
+leakage and architecture were separated.
+
+On RQ~a, ImageNet transfer reaches 0.939 macro-F1 against 0.871 from scratch and
+0.667 from the best intrinsically interpretable model, all on the same test
+split. The transfer advantage is real but smaller than expected, and expresses
+itself as much in training time as in final accuracy. On RQ~b, quantisation
+delivers a 4.9$\times$ size and 5.6$\times$ latency improvement for 0.005
+macro-F1, while unstructured pruning improves neither size nor latency and is
+architecture-dependent in what it costs. Explanation fidelity degrades in step
+with accuracy, so compression does not silently trade away interpretability as a
+separate axis.
+
+\NEEDSTEAM{Add two to three sentences of the team's own conclusion: what you
+would do next, and what you would tell a grower considering this system.}
+
+Limitations are stated where they arise: LIME fidelity rests on six images,
+Grad-CAM++ output at a 7$\times$7 grid cannot localise individual lesions, three
+pruning sweep points did not converge, and the capture-source confound bounds
+what any accuracy figure on this dataset means.
+
+%==============================================================================
+% Excluded from the 6-page limit: references, contributions, appendices.
+%==============================================================================
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\appendix
+\section{Individual Contributions}
+\NEEDSTEAM{One subsection per student, unique text, maximum 500 words each. This
+is excluded from the page limit and is graded individually. Each student uploads
+the project and their own contribution.}
+
+\end{document}

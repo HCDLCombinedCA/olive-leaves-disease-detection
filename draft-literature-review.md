@@ -178,30 +178,26 @@ comparison has an architecture-dependent term.
 
 ---
 
-## 7. What is still missing
+## 7. Missing citations — open, needs a team member
 
-Four claims in the proposal introduction have no supporting reference in `ref/`,
-and the review should either cite them properly or soften them.
+**These are not fixed and are not being fixed by whoever wrote this section.**
+They are listed here so somebody can claim one and close it.
 
-1. **Climate warming in the Mediterranean progressing 20% faster than the global
-   average**, and **yield losses of ~20% from peacock spot and *Aculus
-   olearius***. These are specific agronomic figures presented as fact. They need
-   an agronomic or climate source, or they should be removed.
-2. **Olive-specific VGG16/VGG19 transfer-learning studies.** The proposal asserts
-   these exist and that data augmentation was confirmed important. No such paper
-   is held locally.
-3. **CNN + Vision Transformer hybrids for leaf disease detection.** Asserted, not
-   cited.
-4. **Raspberry Pi / Jetson Nano deployment of plant-disease CNNs.** Partially
-   covered by Silva and Almeida (2024), who use a Raspberry Pi 4B — but for
-   *thermal* imaging, so it does not fully support a claim about RGB
-   plant-disease CNNs on that hardware.
+Every claim below currently sits in `proposal.txt`, in three sentences that will
+be lifted into the report's Introduction. That is what makes them urgent: they
+are not buried in a draft, they are on the path into the submitted document.
+Each needs either a real citation added to `ref/` and to the reference list, or
+the sentence weakened to what the evidence supports.
 
-Additionally, **LIME has no reference in `ref/`** even though it is used in the
-compression fidelity analysis. Ribeiro, Singh and Guestrin (2016), *"Why Should I
-Trust You?"*, needs to be added.
+| # | Claim | Where it is now | What closes it | Priority |
+|---|---|---|---|---|
+| 1 | LIME as a method | used in `compression/src/xai_fidelity.py`, cited nowhere | Add Ribeiro, Singh & Guestrin (2016), *"Why Should I Trust You?"*, KDD. Non-negotiable: we run the method and do not cite it. | **highest** |
+| 2 | Olive-specific VGG16/VGG19 transfer learning "has demonstrated strong performance", augmentation "confirmed important" | `proposal.txt:9` | Find the olive-leaf transfer-learning papers this refers to, or reduce the sentence to the general plant-disease literature we do hold (Mohanty et al.) | high — it is the project's premise |
+| 3 | Mediterranean warming "20% faster than the global average"; yield losses "approximately 20% or higher" | `proposal.txt:7` | An agronomic or climate source for each figure. Two separate numbers, so potentially two sources. If neither is found, delete the figures and keep the qualitative claim. | medium |
+| 4 | CNN + Vision Transformer hybrids for leaf disease | `proposal.txt:9` | A citation, or cut the sentence. Nothing in this project depends on it, so cutting costs nothing. | low — cheapest to close by deletion |
+| 5 | Raspberry Pi / Jetson Nano deployment of plant-disease CNNs | `proposal.txt:11` | Partially covered by Silva & Almeida (2024), but that is *thermal* imaging on a Pi 4B, not RGB. Either add an RGB source or restrict the sentence to what Silva & Almeida actually show. | medium |
 
-Priority order if time is limited: LIME (a method actually used and currently
-uncited), then the olive-specific transfer-learning studies (the whole project's
-premise), then the agronomic figures, then the ViT claim — which could simply be
-cut, since nothing in the project depends on it.
+Two notes for whoever picks these up. Claim 4 is the only one that can be closed
+by deletion alone. Claim 1 is the only one where the absence is a defect in the
+work rather than in the writing — we use the method, so it must be cited whatever
+happens to the rest of the introduction.
