@@ -214,32 +214,68 @@ def section_xai(out):
 
 GLASSBOX_MODELS = (("decision_tree", "Decision Tree (depth 3)"),
                    ("logistic_regression", "Logistic Regression"))
-GLASSBOX_PROTOCOLS = (("segmented", "analysis/results/glassbox_fixed.json"),
-                      ("common", "analysis/results/glassbox_common_protocol.json"))
+GLASSBOX_PROTOCOLS = (
+    ("segmented", "base", "analysis/results/glassbox_fixed.json"),
+    ("segmented", "extended", "analysis/results/glassbox_fixed_extended.json"),
+    ("common", "base", "analysis/results/glassbox_common_protocol.json"),
+    ("common", "extended", "analysis/results/glassbox_common_protocol_extended.json"),
+)
+
+
+def best_common_glassbox():
+    """The strongest glass-box model on the official test split, whatever it is.
+
+    Which feature set and which classifier win is not fixed -- the 47-feature set
+    lifts logistic regression well clear while costing the depth-3 tree -- so the
+    comparison table asks for the best rather than hard-coding a winner.
+    """
+    best = None
+    for protocol, features, path in GLASSBOX_PROTOCOLS:
+        if protocol != "common":
+            continue
+        data = load_json(path)
+        if not data:
+            continue
+        for key, label in GLASSBOX_MODELS:
+            entry = data.get(key)
+            if entry and (best is None or entry["macro_f1"] > best[2]):
+                best = (label, features, entry["macro_f1"], entry["accuracy"],
+                        len(data["features"]))
+    return best
 
 
 def section_glassbox(out):
     out.append("## 4. Glass-box models\n")
-    found = [(name, load_json(path)) for name, path in GLASSBOX_PROTOCOLS]
-    found = [(name, data) for name, data in found if data]
+    found = [(name, feats, load_json(path)) for name, feats, path in GLASSBOX_PROTOCOLS]
+    found = [(name, feats, data) for name, feats, data in found if data]
     if not found:
         out.append(missing("Glass-box results", "analysis/results/glassbox_*.json"))
         return
 
-    out.append("| protocol | model | test images | accuracy | macro-F1 |")
-    out.append("|---|---|---|---|---|")
-    for name, data in found:
+    out.append("| protocol | features | model | test images | accuracy | macro-F1 |")
+    out.append("|---|---|---|---|---|---|")
+    for name, feats, data in found:
         for key, label in GLASSBOX_MODELS:
             if key in data:
-                out.append("| %s | %s | %d | %.3f | %.3f |" % (
-                    name, label, data["split"]["test"],
-                    data[key]["accuracy"], data[key]["macro_f1"]))
+                out.append("| %s | %s (%d) | %s | %d | %.3f | %.3f |" % (
+                    name, feats, len(data["features"]), label,
+                    data["split"]["test"], data[key]["accuracy"], data[key]["macro_f1"]))
     out.append("")
-    for name, data in found:
+    seen = set()
+    for name, _feats, data in found:
+        if name in seen:
+            continue
+        seen.add(name)
         split = data["split"]
         out.append("- **%s**: %d train / %d test, %s, %d shared source photographs." % (
             name, split["train"], split["test"], split.get("note", "n/a"),
             split["shared_groups"]))
+    out.append("\nThe 47-feature set adds colour statistics, lesion morphology, LBP, edge, "
+               "local-variance, entropy and Gabor descriptors to the original nine. It is "
+               "worth having: on the common protocol it lifts logistic regression from 0.600 "
+               "to 0.742. It does not help the depth-3 tree, which can only consult three "
+               "features however many it is offered, and with 47 candidates it picks worse "
+               "ones.")
     out.append("\nThe two protocols do not rank the models the same way, which is worth stating "
                "rather than smoothing over: the tree gains on whole photographs while logistic "
                "regression loses. The engineered colour fractions are computed inside a leaf "
@@ -269,11 +305,17 @@ def section_rq1(out):
                          data["metrics"]["test"]["macro_f1"],
                          "post-hoc (Grad-CAM / LIME)"))
 
-    glassbox = load_json("analysis/results/glassbox_common_protocol.json")
-    if glassbox:
+    for protocol, features, path in GLASSBOX_PROTOCOLS:
+        if protocol != "common":
+            continue
+        glassbox = load_json(path)
+        if not glassbox:
+            continue
         for key, label in GLASSBOX_MODELS:
-            rows.append((label + " (engineered features)", glassbox[key]["accuracy"],
-                         glassbox[key]["macro_f1"], "intrinsic (exact)"))
+            rows.append(("%s, %d features" % (label, len(glassbox["features"])),
+                         glassbox[key]["accuracy"], glassbox[key]["macro_f1"],
+                         "intrinsic (exact)"))
+    rows.sort(key=lambda r: -r[2])
     if not rows:
         out.append(missing("Comparison inputs", "compression/results/, analysis/results/"))
         return
@@ -286,6 +328,15 @@ def section_rq1(out):
     for label, accuracy, macro_f1, explanation in rows:
         out.append("| %s | %.3f | %.3f | %s |" % (label, accuracy, macro_f1, explanation))
     out.append("")
+    best = best_common_glassbox()
+    if best and rows:
+        label, features, macro_f1, _accuracy, n_features = best
+        top = max(r[2] for r in rows)
+        out.append("The interpretability cost is the gap between the best deep model and the "
+                   "best intrinsically interpretable one: **%.3f against %.3f, %.0f points**. "
+                   "That best glass-box is %s on the %s %d-feature set -- not the nine "
+                   "features the pipeline started from, which reach only 0.667 here.\n"
+                   % (top, macro_f1, (top - macro_f1) * 100, label, features, n_features))
 
 
 def section_bias(out):

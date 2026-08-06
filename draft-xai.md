@@ -79,12 +79,12 @@ is that an explanation can be wrong about the model in ways that are hard to
 detect.
 
 The comparison is itself a result: on the same official 680-image test split, the
-best intrinsic model reaches macro-F1 0.667 and the post-hoc-explained CNNs reach
-0.939. That gap of roughly 27 points is the cost of interpretability on this
+best intrinsic model reaches macro-F1 0.742 and the post-hoc-explained CNNs reach
+0.939. That gap of roughly 20 points is the cost of interpretability on this
 task, and it is the number the trade-off discussion should be built on. It has to
-be quoted from the common protocol: the segmented-crop figure of 0.692 is
-measured on held-out crops from training photographs, so pairing it with 0.939
-would compare two different test sets.
+be quoted from the common protocol on the best feature set: the segmented-crop
+figure of 0.831 is measured on held-out crops from training photographs, and the
+nine base features reach only 0.667, so both would misstate the gap.
 
 ### 2.4 Purpose
 

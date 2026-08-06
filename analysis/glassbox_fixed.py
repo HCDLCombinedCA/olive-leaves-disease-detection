@@ -125,6 +125,128 @@ def leaf_features(img):
     return features
 
 
+def leaf_features_extended(img):
+    """The enhanced feature set from `glassbox/Olive_Leaf_GlassBox.ipynb` (Pooja,
+    branch `pooja-glassbox-1`), reproduced here so it can be evaluated without
+    the split defects that notebook still carries.
+
+    Copied faithfully -- same leaf mask, same thresholds, same parameters -- so
+    the only difference between running it there and running it here is the
+    train/test split and the label alignment. It is a strict superset of
+    `leaf_features` above: the five colour fractions and four GLCM descriptors
+    are identical, and it adds colour statistics, lesion morphology, LBP, edge,
+    local-variance, entropy, Gabor and saturation-GLCM features (47 in total).
+
+    Why this exists rather than a call into the notebook: that notebook splits
+    with `train_test_split(..., test_size=0.3)` and no `groups=`, so sibling
+    crops of one photograph land on both sides, and it shuffles `X`/`Y` without
+    shuffling `paths`, so its exported CSV cannot be traced back to images.
+    Neither defect is in the features, which is why they are worth keeping.
+    """
+    from scipy.ndimage import uniform_filter
+    from skimage.feature import local_binary_pattern
+    from skimage.filters import gabor, sobel
+    from skimage.filters.rank import entropy as rank_entropy
+    from skimage.measure import label, regionprops
+    from skimage.morphology import disk
+
+    img = np.asarray(img, dtype=float)
+    if img.max() > 1.5:
+        img = img / 255.0
+    R, G, B = img[..., 0], img[..., 1], img[..., 2]
+    hsv = rgb2hsv(img)
+    hue, sat, val = hsv[..., 0] * 360, hsv[..., 1], hsv[..., 2]
+    gray = rgb2gray(img)
+    features = {}
+
+    leaf = (val > 0.15) & ~((sat < 0.15) & (val > 0.85))
+    if leaf.sum() < 100:
+        leaf = np.ones_like(val, dtype=bool)
+    n_leaf = leaf.sum()
+
+    def frac(mask):
+        return (mask & leaf).sum() / n_leaf
+
+    features["frac_green"] = frac((hue >= 70) & (hue < 160) & (sat > 0.25))
+    features["frac_yellow"] = frac((hue >= 40) & (hue < 70) & (sat > 0.25))
+    features["frac_brown"] = frac((hue >= 10) & (hue < 40) & (sat > 0.20) & (val < 0.6))
+    features["frac_dark"] = frac(val < 0.25)
+    features["frac_gray"] = frac(sat < 0.20)
+
+    features["mean_hue"] = hue[leaf].mean()
+    features["std_hue"] = hue[leaf].std()            # mottling -> high
+    features["mean_sat"] = sat[leaf].mean()
+    features["std_sat"] = sat[leaf].std()
+    features["mean_val"] = val[leaf].mean()
+    features["std_val"] = val[leaf].std()
+    features["excess_green"] = (2 * G - R - B)[leaf].mean()
+    features["green_minus_red"] = (G - R)[leaf].mean()
+
+    # Lesion morphology: the peacock-spot signature is dark or brown blobs
+    # sitting inside otherwise green tissue.
+    lesion = leaf & ((val < 0.35) | ((hue >= 10) & (hue < 45) & (sat > 0.25) & (val < 0.55)))
+    props = [p for p in regionprops(label(lesion)) if p.area >= 20]
+    features["lesion_area_frac"] = lesion.sum() / n_leaf
+    features["n_lesions"] = len(props)
+    if props:
+        areas = np.array([p.area for p in props])
+        features["lesion_mean_area"] = areas.mean() / n_leaf
+        features["lesion_max_area"] = areas.max() / n_leaf
+        features["lesion_area_std"] = areas.std() / n_leaf
+        features["lesion_circularity"] = float(np.mean(
+            [4 * np.pi * p.area / max(p.perimeter ** 2, 1e-6) for p in props]))
+        features["lesion_eccentricity"] = float(np.mean([p.eccentricity for p in props]))
+    else:
+        for key in ("lesion_mean_area", "lesion_max_area", "lesion_area_std",
+                    "lesion_circularity", "lesion_eccentricity"):
+            features[key] = 0.0
+
+    quantised = (gray * 63).astype(np.uint8)
+    glcm = graycomatrix(quantised, distances=[1, 3], angles=[0, np.pi / 2],
+                        levels=64, symmetric=True, normed=True)
+    for prop in ("contrast", "homogeneity", "energy", "correlation"):
+        features["glcm_%s" % prop] = float(graycoprops(glcm, prop).mean())
+
+    lbp = local_binary_pattern((gray * 255).astype(np.uint8), P=8, R=1, method="uniform")
+    hist, _ = np.histogram(lbp[leaf], bins=10, range=(0, 10), density=True)
+    for index, value in enumerate(hist):
+        features["lbp_%d" % index] = float(value)
+    features["lbp_uniform_frac"] = float(hist[:9].sum())
+
+    edges = sobel(gray)
+    features["edge_mean"] = edges[leaf].mean()
+    features["edge_frac_strong"] = (edges[leaf] > 0.08).mean()
+
+    window = 5
+    v_local_var = uniform_filter(val ** 2, size=window) - uniform_filter(val, size=window) ** 2
+    features["v_local_var_mean"] = float(v_local_var[leaf].mean())
+    features["v_local_var_std"] = float(v_local_var[leaf].std())
+    features["frac_flat_gloss"] = float(
+        (v_local_var[leaf] < np.percentile(v_local_var[leaf], 20)).mean())
+    s_local_var = uniform_filter(sat ** 2, size=window) - uniform_filter(sat, size=window) ** 2
+    features["s_local_var_mean"] = float(s_local_var[leaf].mean())
+
+    ent = rank_entropy((gray * 255).astype(np.uint8), disk(3))
+    features["entropy_mean"] = float(ent[leaf].mean())
+    features["entropy_std"] = float(ent[leaf].std())
+
+    energies = []
+    for theta in (0, np.pi / 4, np.pi / 2, 3 * np.pi / 4):
+        real, imag = gabor(gray, frequency=0.3, theta=theta)
+        energies.append(np.sqrt(real ** 2 + imag ** 2)[leaf].mean())
+    features["gabor_energy_mean"] = float(np.mean(energies))
+    features["gabor_energy_std"] = float(np.std(energies))
+
+    glcm_sat = graycomatrix((sat * 63).astype(np.uint8), distances=[1],
+                            angles=[0, np.pi / 2], levels=64, symmetric=True, normed=True)
+    features["glcm_sat_contrast"] = float(graycoprops(glcm_sat, "contrast").mean())
+    features["glcm_sat_homogeneity"] = float(graycoprops(glcm_sat, "homogeneity").mean())
+    return features
+
+
+FEATURE_SETS = {"base": leaf_features, "extended": leaf_features_extended}
+
+
 def source_image(filename):
     """Strip the per-leaf suffix to recover the photograph a crop came from.
 
@@ -139,7 +261,7 @@ def read_image(path):
     return np.asarray(image.resize(IMAGE_SIZE, Image.LANCZOS), dtype=np.float32) / 255.0
 
 
-def load_segmented(root):
+def load_segmented(root, extract=leaf_features):
     """Every segmented crop with its label, path and source-photo group.
 
     Deliberately no shuffling: the original notebook's manual shuffle is what
@@ -156,11 +278,11 @@ def load_segmented(root):
             path = os.path.join(folder, filename)
             rows.append({"file": filename, "path": path, "class": cls, "label": label,
                          "group": source_image(filename), "split": None,
-                         "features": leaf_features(read_image(path))})
+                         "features": extract(read_image(path))})
     return rows
 
 
-def load_prepared(root):
+def load_prepared(root, extract=leaf_features):
     """The exact images the CNNs are trained and scored on.
 
     Reads `compression/src/prepare_data.py`'s manifests, so the train/val/test
@@ -182,7 +304,7 @@ def load_prepared(root):
                 "label": int(record["label"]),
                 # Whole photographs, one leaf each: the photograph is its own group.
                 "group": record["file"], "split": record["split"],
-                "features": leaf_features(read_image(path)),
+                "features": extract(read_image(path)),
             })
     return rows
 
@@ -390,6 +512,11 @@ def main():
                         help="segmented protocol only; StratifiedGroupKFold uses 1/n_splits")
     parser.add_argument("--max-depth", type=int, default=3,
                         help="decision tree depth; kept shallow so the tree stays readable")
+    parser.add_argument("--features", choices=sorted(FEATURE_SETS), default="base",
+                        help="'base' is the nine features the corrected pipeline "
+                             "started from; 'extended' is the 47-feature set from "
+                             "the pooja-glassbox-1 notebook, evaluated here under "
+                             "a grouped split it does not currently get")
     parser.add_argument("--out", default="results")
     parser.add_argument("--out-name", default=None)
     args = parser.parse_args()
@@ -397,9 +524,13 @@ def main():
     common_protocol = args.protocol == "common"
     root = args.root or (PREPARED_ROOT if common_protocol else SEGMENTED_ROOT)
     stem = args.out_name or ("glassbox_common_protocol" if common_protocol else "glassbox_fixed")
+    if args.features != "base":
+        stem += "_" + args.features
+    extract = FEATURE_SETS[args.features]
 
-    print("Loading %s images from %s ..." % (args.protocol, root))
-    rows = load_prepared(root) if common_protocol else load_segmented(root)
+    print("Loading %s images from %s (%s features) ..." % (args.protocol, root, args.features))
+    rows = (load_prepared(root, extract) if common_protocol
+            else load_segmented(root, extract))
     print("  %d images from %d source photographs"
           % (len(rows), len({r["group"] for r in rows})))
 
@@ -420,7 +551,7 @@ def main():
     frame.insert(2, "label", y)
     frame.insert(3, "source_image", groups)
     csv_path = os.path.join(args.out, "leaf_features_%s.csv"
-                            % ("common_protocol" if common_protocol else "fixed"))
+                            % stem.replace("glassbox_", ""))
     frame.to_csv(csv_path, index=False)
     print("  wrote %s  (%d rows, %d features)" % (csv_path, len(frame), len(names)))
 
@@ -500,6 +631,7 @@ def main():
     results["explanations"] = explanations
     results["split"] = {
         "protocol": args.protocol,
+        "feature_set": args.features,
         "train": int(len(train_idx)), "test": int(len(test_idx)),
         "grouped_by": "source photograph", "shared_groups": len(overlap),
         "n_splits": n_splits, "note": split_note,

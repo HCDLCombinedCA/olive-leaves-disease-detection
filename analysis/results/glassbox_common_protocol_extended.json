@@ -1,0 +1,3175 @@
+{
+  "decision_tree": {
+    "macro_f1": 0.5524099559795078,
+    "accuracy": 0.6,
+    "confusion_matrix": [
+      [
+        39,
+        173,
+        8
+      ],
+      [
+        9,
+        155,
+        36
+      ],
+      [
+        1,
+        45,
+        214
+      ]
+    ],
+    "report": {
+      "Healthy": {
+        "precision": 0.7959183673469388,
+        "recall": 0.17727272727272728,
+        "f1-score": 0.28996282527881045,
+        "support": 220
+      },
+      "aculus_olearius": {
+        "precision": 0.4155495978552279,
+        "recall": 0.775,
+        "f1-score": 0.5410122164048866,
+        "support": 200
+      },
+      "olive_peacock_spot": {
+        "precision": 0.8294573643410853,
+        "recall": 0.823076923076923,
+        "f1-score": 0.8262548262548264,
+        "support": 260
+      },
+      "accuracy": 0.6,
+      "macro avg": {
+        "precision": 0.680308443181084,
+        "recall": 0.5917832167832168,
+        "f1-score": 0.5524099559795078,
+        "support": 680
+      },
+      "weighted avg": {
+        "precision": 0.6968689339941976,
+        "recall": 0.6,
+        "f1-score": 0.5688537053949565,
+        "support": 680
+      }
+    }
+  },
+  "logistic_regression": {
+    "macro_f1": 0.7421144017572506,
+    "accuracy": 0.7455882352941177,
+    "confusion_matrix": [
+      [
+        150,
+        31,
+        39
+      ],
+      [
+        25,
+        148,
+        27
+      ],
+      [
+        14,
+        37,
+        209
+      ]
+    ],
+    "report": {
+      "Healthy": {
+        "precision": 0.7936507936507936,
+        "recall": 0.6818181818181818,
+        "f1-score": 0.7334963325183373,
+        "support": 220
+      },
+      "aculus_olearius": {
+        "precision": 0.6851851851851852,
+        "recall": 0.74,
+        "f1-score": 0.7115384615384615,
+        "support": 200
+      },
+      "olive_peacock_spot": {
+        "precision": 0.76,
+        "recall": 0.8038461538461539,
+        "f1-score": 0.7813084112149532,
+        "support": 260
+      },
+      "accuracy": 0.7455882352941177,
+      "macro avg": {
+        "precision": 0.7462786596119929,
+        "recall": 0.7418881118881119,
+        "f1-score": 0.7421144017572506,
+        "support": 680
+      },
+      "weighted avg": {
+        "precision": 0.7488826641767818,
+        "recall": 0.7455882352941177,
+        "f1-score": 0.745319224084727,
+        "support": 680
+      }
+    }
+  },
+  "logistic_regression_coefficients": {
+    "frac_green": {
+      "Healthy": 0.604,
+      "aculus_olearius": 0.758,
+      "olive_peacock_spot": -1.363
+    },
+    "frac_yellow": {
+      "Healthy": -1.03,
+      "aculus_olearius": 0.011,
+      "olive_peacock_spot": 1.018
+    },
+    "frac_brown": {
+      "Healthy": 0.27,
+      "aculus_olearius": -0.349,
+      "olive_peacock_spot": 0.08
+    },
+    "frac_dark": {
+      "Healthy": 0.069,
+      "aculus_olearius": 0.0,
+      "olive_peacock_spot": -0.069
+    },
+    "frac_gray": {
+      "Healthy": 0.182,
+      "aculus_olearius": -0.217,
+      "olive_peacock_spot": 0.035
+    },
+    "mean_hue": {
+      "Healthy": -0.567,
+      "aculus_olearius": 0.511,
+      "olive_peacock_spot": 0.056
+    },
+    "std_hue": {
+      "Healthy": 0.229,
+      "aculus_olearius": 0.272,
+      "olive_peacock_spot": -0.501
+    },
+    "mean_sat": {
+      "Healthy": 0.344,
+      "aculus_olearius": -0.242,
+      "olive_peacock_spot": -0.102
+    },
+    "std_sat": {
+      "Healthy": 0.246,
+      "aculus_olearius": -0.63,
+      "olive_peacock_spot": 0.385
+    },
+    "mean_val": {
+      "Healthy": 0.332,
+      "aculus_olearius": -0.063,
+      "olive_peacock_spot": -0.269
+    },
+    "std_val": {
+      "Healthy": 0.932,
+      "aculus_olearius": -1.841,
+      "olive_peacock_spot": 0.909
+    },
+    "excess_green": {
+      "Healthy": 0.999,
+      "aculus_olearius": -0.495,
+      "olive_peacock_spot": -0.504
+    },
+    "green_minus_red": {
+      "Healthy": -1.208,
+      "aculus_olearius": 0.775,
+      "olive_peacock_spot": 0.433
+    },
+    "lesion_area_frac": {
+      "Healthy": -0.877,
+      "aculus_olearius": 1.689,
+      "olive_peacock_spot": -0.812
+    },
+    "n_lesions": {
+      "Healthy": -0.725,
+      "aculus_olearius": 0.21,
+      "olive_peacock_spot": 0.515
+    },
+    "lesion_mean_area": {
+      "Healthy": -0.2,
+      "aculus_olearius": -0.21,
+      "olive_peacock_spot": 0.411
+    },
+    "lesion_max_area": {
+      "Healthy": 0.264,
+      "aculus_olearius": -0.547,
+      "olive_peacock_spot": 0.284
+    },
+    "lesion_area_std": {
+      "Healthy": -0.015,
+      "aculus_olearius": -0.326,
+      "olive_peacock_spot": 0.341
+    },
+    "lesion_circularity": {
+      "Healthy": -0.084,
+      "aculus_olearius": 0.237,
+      "olive_peacock_spot": -0.153
+    },
+    "lesion_eccentricity": {
+      "Healthy": 0.377,
+      "aculus_olearius": -0.414,
+      "olive_peacock_spot": 0.037
+    },
+    "glcm_contrast": {
+      "Healthy": -0.949,
+      "aculus_olearius": 0.263,
+      "olive_peacock_spot": 0.686
+    },
+    "glcm_homogeneity": {
+      "Healthy": -0.363,
+      "aculus_olearius": -0.052,
+      "olive_peacock_spot": 0.415
+    },
+    "glcm_energy": {
+      "Healthy": 0.272,
+      "aculus_olearius": -0.516,
+      "olive_peacock_spot": 0.244
+    },
+    "glcm_correlation": {
+      "Healthy": 0.357,
+      "aculus_olearius": -0.493,
+      "olive_peacock_spot": 0.136
+    },
+    "lbp_0": {
+      "Healthy": 0.599,
+      "aculus_olearius": 0.195,
+      "olive_peacock_spot": -0.794
+    },
+    "lbp_1": {
+      "Healthy": -0.036,
+      "aculus_olearius": 0.272,
+      "olive_peacock_spot": -0.237
+    },
+    "lbp_2": {
+      "Healthy": -0.812,
+      "aculus_olearius": 0.118,
+      "olive_peacock_spot": 0.694
+    },
+    "lbp_3": {
+      "Healthy": -0.151,
+      "aculus_olearius": -0.025,
+      "olive_peacock_spot": 0.177
+    },
+    "lbp_4": {
+      "Healthy": 0.038,
+      "aculus_olearius": -0.072,
+      "olive_peacock_spot": 0.035
+    },
+    "lbp_5": {
+      "Healthy": -0.856,
+      "aculus_olearius": 0.707,
+      "olive_peacock_spot": 0.149
+    },
+    "lbp_6": {
+      "Healthy": 0.411,
+      "aculus_olearius": 0.008,
+      "olive_peacock_spot": -0.42
+    },
+    "lbp_7": {
+      "Healthy": -0.531,
+      "aculus_olearius": 0.426,
+      "olive_peacock_spot": 0.105
+    },
+    "lbp_8": {
+      "Healthy": 0.754,
+      "aculus_olearius": -0.628,
+      "olive_peacock_spot": -0.127
+    },
+    "lbp_9": {
+      "Healthy": -0.107,
+      "aculus_olearius": -0.179,
+      "olive_peacock_spot": 0.286
+    },
+    "lbp_uniform_frac": {
+      "Healthy": 0.107,
+      "aculus_olearius": 0.179,
+      "olive_peacock_spot": -0.286
+    },
+    "edge_mean": {
+      "Healthy": 0.516,
+      "aculus_olearius": 1.426,
+      "olive_peacock_spot": -1.942
+    },
+    "edge_frac_strong": {
+      "Healthy": -0.273,
+      "aculus_olearius": 0.739,
+      "olive_peacock_spot": -0.466
+    },
+    "v_local_var_mean": {
+      "Healthy": 0.709,
+      "aculus_olearius": -1.504,
+      "olive_peacock_spot": 0.796
+    },
+    "v_local_var_std": {
+      "Healthy": 0.194,
+      "aculus_olearius": 0.95,
+      "olive_peacock_spot": -1.144
+    },
+    "frac_flat_gloss": {
+      "Healthy": -0.055,
+      "aculus_olearius": 0.086,
+      "olive_peacock_spot": -0.031
+    },
+    "s_local_var_mean": {
+      "Healthy": -1.417,
+      "aculus_olearius": 0.077,
+      "olive_peacock_spot": 1.34
+    },
+    "entropy_mean": {
+      "Healthy": 0.107,
+      "aculus_olearius": -0.446,
+      "olive_peacock_spot": 0.339
+    },
+    "entropy_std": {
+      "Healthy": -0.723,
+      "aculus_olearius": 1.351,
+      "olive_peacock_spot": -0.629
+    },
+    "gabor_energy_mean": {
+      "Healthy": 0.259,
+      "aculus_olearius": -0.292,
+      "olive_peacock_spot": 0.033
+    },
+    "gabor_energy_std": {
+      "Healthy": 0.237,
+      "aculus_olearius": -0.149,
+      "olive_peacock_spot": -0.087
+    },
+    "glcm_sat_contrast": {
+      "Healthy": 0.431,
+      "aculus_olearius": 0.043,
+      "olive_peacock_spot": -0.474
+    },
+    "glcm_sat_homogeneity": {
+      "Healthy": 0.158,
+      "aculus_olearius": 0.182,
+      "olive_peacock_spot": -0.34
+    }
+  },
+  "decision_tree_rules": "|--- mean_hue <= 79.04\n|   |--- frac_yellow <= 0.03\n|   |   |--- frac_green <= 0.00\n|   |   |   |--- class: 2\n|   |   |--- frac_green >  0.00\n|   |   |   |--- class: 0\n|   |--- frac_yellow >  0.03\n|   |   |--- edge_frac_strong <= 0.04\n|   |   |   |--- class: 2\n|   |   |--- edge_frac_strong >  0.04\n|   |   |   |--- class: 1\n|--- mean_hue >  79.04\n|   |--- frac_green <= 0.09\n|   |   |--- frac_yellow <= 0.01\n|   |   |   |--- class: 1\n|   |   |--- frac_yellow >  0.01\n|   |   |   |--- class: 2\n|   |--- frac_green >  0.09\n|   |   |--- n_lesions <= 3.50\n|   |   |   |--- class: 1\n|   |   |--- n_lesions >  3.50\n|   |   |   |--- class: 1\n",
+  "explanations": {
+    "decision_tree": [
+      {
+        "file": "test/olive_peacock_spot/DSC_0083.JPG",
+        "path": "../compression/data/prepared/images/test/olive_peacock_spot/DSC_0083.JPG",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 1.0,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.0076,
+          "frac_yellow": 0.2253,
+          "frac_brown": 0.0033,
+          "frac_dark": 0.004,
+          "frac_gray": 0.6606,
+          "mean_hue": 77.646,
+          "std_hue": 81.3203,
+          "mean_sat": 0.2561,
+          "std_sat": 0.2437,
+          "mean_val": 0.7329,
+          "std_val": 0.1243,
+          "excess_green": 0.0657,
+          "green_minus_red": -0.0283,
+          "lesion_area_frac": 0.0278,
+          "n_lesions": 4.0,
+          "lesion_mean_area": 0.0062,
+          "lesion_max_area": 0.0185,
+          "lesion_area_std": 0.0073,
+          "lesion_circularity": 0.5434,
+          "lesion_eccentricity": 0.877,
+          "glcm_contrast": 2.6926,
+          "glcm_homogeneity": 0.7735,
+          "glcm_energy": 0.1683,
+          "glcm_correlation": 0.9823,
+          "lbp_0": 0.0456,
+          "lbp_1": 0.0686,
+          "lbp_2": 0.0438,
+          "lbp_3": 0.0943,
+          "lbp_4": 0.1512,
+          "lbp_5": 0.1328,
+          "lbp_6": 0.0867,
+          "lbp_7": 0.0923,
+          "lbp_8": 0.134,
+          "lbp_9": 0.1507,
+          "lbp_uniform_frac": 0.8493,
+          "edge_mean": 0.016,
+          "edge_frac_strong": 0.0411,
+          "v_local_var_mean": 0.0011,
+          "v_local_var_std": 0.0037,
+          "frac_flat_gloss": 0.2,
+          "s_local_var_mean": 0.0016,
+          "entropy_mean": 2.9118,
+          "entropy_std": 0.8091,
+          "gabor_energy_mean": 0.0017,
+          "gabor_energy_std": 0.0002,
+          "glcm_sat_contrast": 1.855,
+          "glcm_sat_homogeneity": 0.8238
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "mean_hue",
+            "threshold": 79.0397,
+            "value": 77.646,
+            "test": "mean_hue = 77.6460 <= 79.0397"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0256,
+            "value": 0.2253,
+            "test": "frac_yellow = 0.2253 > 0.0256"
+          },
+          {
+            "leaf": false,
+            "feature": "edge_frac_strong",
+            "threshold": 0.0413,
+            "value": 0.0411,
+            "test": "edge_frac_strong = 0.0411 <= 0.0413"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 0.0,
+              "aculus_olearius": 0.0,
+              "olive_peacock_spot": 61.87106918239001
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "mean_hue",
+            "label": "mean_hue = 77.6460 <= 79.0397",
+            "contribution": -0.02342560790994129
+          },
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.2253 > 0.0256",
+            "contribution": 5.339211124122997
+          },
+          {
+            "feature": "edge_frac_strong",
+            "label": "edge_frac_strong = 0.0411 <= 0.0413",
+            "contribution": -0.009818108266859244
+          }
+        ]
+      },
+      {
+        "file": "test/Healthy/B-744.JPG",
+        "path": "../compression/data/prepared/images/test/Healthy/B-744.JPG",
+        "true_class": "Healthy",
+        "predicted_class": "Healthy",
+        "confidence": 0.9286745488705244,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.0464,
+          "frac_yellow": 0.0032,
+          "frac_brown": 0.0,
+          "frac_dark": 0.0441,
+          "frac_gray": 0.9487,
+          "mean_hue": 44.256,
+          "std_hue": 12.8822,
+          "mean_sat": 0.0661,
+          "std_sat": 0.1034,
+          "mean_val": 0.6729,
+          "std_val": 0.1148,
+          "excess_green": 0.0182,
+          "green_minus_red": -0.0065,
+          "lesion_area_frac": 0.0507,
+          "n_lesions": 1.0,
+          "lesion_mean_area": 0.0507,
+          "lesion_max_area": 0.0507,
+          "lesion_area_std": 0.0,
+          "lesion_circularity": 0.3903,
+          "lesion_eccentricity": 0.9027,
+          "glcm_contrast": 4.3041,
+          "glcm_homogeneity": 0.8859,
+          "glcm_energy": 0.291,
+          "glcm_correlation": 0.9606,
+          "lbp_0": 0.0091,
+          "lbp_1": 0.0399,
+          "lbp_2": 0.0062,
+          "lbp_3": 0.0782,
+          "lbp_4": 0.0498,
+          "lbp_5": 0.2346,
+          "lbp_6": 0.0666,
+          "lbp_7": 0.0852,
+          "lbp_8": 0.3632,
+          "lbp_9": 0.0671,
+          "lbp_uniform_frac": 0.9329,
+          "edge_mean": 0.0069,
+          "edge_frac_strong": 0.0122,
+          "v_local_var_mean": 0.0007,
+          "v_local_var_std": 0.0052,
+          "frac_flat_gloss": 0.2,
+          "s_local_var_mean": 0.0005,
+          "entropy_mean": 1.7531,
+          "entropy_std": 0.6727,
+          "gabor_energy_mean": 0.0013,
+          "gabor_energy_std": 0.0003,
+          "glcm_sat_contrast": 1.0315,
+          "glcm_sat_homogeneity": 0.9461
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "mean_hue",
+            "threshold": 79.0397,
+            "value": 44.256,
+            "test": "mean_hue = 44.2560 <= 79.0397"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0256,
+            "value": 0.0032,
+            "test": "frac_yellow = 0.0032 <= 0.0256"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_green",
+            "threshold": 0.0041,
+            "value": 0.0464,
+            "test": "frac_green = 0.0464 > 0.0041"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 431.0539419087136,
+              "aculus_olearius": 14.95760233918129,
+              "olive_peacock_spot": 18.148846960167706
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "mean_hue",
+            "label": "mean_hue = 44.2560 <= 79.0397",
+            "contribution": -0.584651874762881
+          },
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.0032 <= 0.0256",
+            "contribution": -0.5988899808730853
+          },
+          {
+            "feature": "frac_green",
+            "label": "frac_green = 0.0464 > 0.0041",
+            "contribution": 0.5038438305958116
+          }
+        ]
+      },
+      {
+        "file": "test/aculus_olearius/A698.JPG",
+        "path": "../compression/data/prepared/images/test/aculus_olearius/A698.JPG",
+        "true_class": "aculus_olearius",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 1.0,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.1109,
+          "frac_yellow": 0.0752,
+          "frac_brown": 0.0054,
+          "frac_dark": 0.0688,
+          "frac_gray": 0.76,
+          "mean_hue": 47.8279,
+          "std_hue": 40.5717,
+          "mean_sat": 0.1196,
+          "std_sat": 0.1377,
+          "mean_val": 0.6759,
+          "std_val": 0.2136,
+          "excess_green": 0.0335,
+          "green_minus_red": -0.0068,
+          "lesion_area_frac": 0.1329,
+          "n_lesions": 3.0,
+          "lesion_mean_area": 0.044,
+          "lesion_max_area": 0.1279,
+          "lesion_area_std": 0.0594,
+          "lesion_circularity": 0.5089,
+          "lesion_eccentricity": 0.8226,
+          "glcm_contrast": 4.3553,
+          "glcm_homogeneity": 0.7885,
+          "glcm_energy": 0.223,
+          "glcm_correlation": 0.9863,
+          "lbp_0": 0.0093,
+          "lbp_1": 0.0354,
+          "lbp_2": 0.0204,
+          "lbp_3": 0.1075,
+          "lbp_4": 0.1925,
+          "lbp_5": 0.2442,
+          "lbp_6": 0.0857,
+          "lbp_7": 0.0637,
+          "lbp_8": 0.1833,
+          "lbp_9": 0.058,
+          "lbp_uniform_frac": 0.942,
+          "edge_mean": 0.0179,
+          "edge_frac_strong": 0.0406,
+          "v_local_var_mean": 0.0012,
+          "v_local_var_std": 0.0044,
+          "frac_flat_gloss": 0.1998,
+          "s_local_var_mean": 0.0006,
+          "entropy_mean": 2.7492,
+          "entropy_std": 1.0334,
+          "gabor_energy_mean": 0.0017,
+          "gabor_energy_std": 0.0002,
+          "glcm_sat_contrast": 0.8071,
+          "glcm_sat_homogeneity": 0.8842
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "mean_hue",
+            "threshold": 79.0397,
+            "value": 47.8279,
+            "test": "mean_hue = 47.8279 <= 79.0397"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0256,
+            "value": 0.0752,
+            "test": "frac_yellow = 0.0752 > 0.0256"
+          },
+          {
+            "leaf": false,
+            "feature": "edge_frac_strong",
+            "threshold": 0.0413,
+            "value": 0.0406,
+            "test": "edge_frac_strong = 0.0406 <= 0.0413"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 0.0,
+              "aculus_olearius": 0.0,
+              "olive_peacock_spot": 61.87106918239001
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "mean_hue",
+            "label": "mean_hue = 47.8279 <= 79.0397",
+            "contribution": -0.5246146150272711
+          },
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.0752 > 0.0256",
+            "contribution": 1.3261135290761177
+          },
+          {
+            "feature": "edge_frac_strong",
+            "label": "edge_frac_strong = 0.0406 <= 0.0413",
+            "contribution": -0.03436337893400668
+          }
+        ]
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_170043.jpg",
+        "path": "../compression/data/prepared/images/test/olive_peacock_spot/IMG_20190806_170043.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "Healthy",
+        "confidence": 0.9286745488705244,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.0909,
+          "frac_yellow": 0.0148,
+          "frac_brown": 0.0,
+          "frac_dark": 0.0002,
+          "frac_gray": 0.8862,
+          "mean_hue": 67.9831,
+          "std_hue": 45.5902,
+          "mean_sat": 0.0647,
+          "std_sat": 0.1302,
+          "mean_val": 0.7236,
+          "std_val": 0.1371,
+          "excess_green": 0.0347,
+          "green_minus_red": 0.0076,
+          "lesion_area_frac": 0.0482,
+          "n_lesions": 7.0,
+          "lesion_mean_area": 0.0065,
+          "lesion_max_area": 0.038,
+          "lesion_area_std": 0.0129,
+          "lesion_circularity": 0.4602,
+          "lesion_eccentricity": 0.7595,
+          "glcm_contrast": 3.3784,
+          "glcm_homogeneity": 0.802,
+          "glcm_energy": 0.1969,
+          "glcm_correlation": 0.9795,
+          "lbp_0": 0.0354,
+          "lbp_1": 0.0722,
+          "lbp_2": 0.0257,
+          "lbp_3": 0.0812,
+          "lbp_4": 0.0859,
+          "lbp_5": 0.1488,
+          "lbp_6": 0.09,
+          "lbp_7": 0.1042,
+          "lbp_8": 0.2035,
+          "lbp_9": 0.153,
+          "lbp_uniform_frac": 0.847,
+          "edge_mean": 0.0106,
+          "edge_frac_strong": 0.021,
+          "v_local_var_mean": 0.0006,
+          "v_local_var_std": 0.0027,
+          "frac_flat_gloss": 0.1999,
+          "s_local_var_mean": 0.0008,
+          "entropy_mean": 2.3591,
+          "entropy_std": 0.7776,
+          "gabor_energy_mean": 0.0017,
+          "gabor_energy_std": 0.0003,
+          "glcm_sat_contrast": 1.5447,
+          "glcm_sat_homogeneity": 0.8993
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "mean_hue",
+            "threshold": 79.0397,
+            "value": 67.9831,
+            "test": "mean_hue = 67.9831 <= 79.0397"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0256,
+            "value": 0.0148,
+            "test": "frac_yellow = 0.0148 <= 0.0256"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_green",
+            "threshold": 0.0041,
+            "value": 0.0909,
+            "test": "frac_green = 0.0909 > 0.0041"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 431.0539419087136,
+              "aculus_olearius": 14.95760233918129,
+              "olive_peacock_spot": 18.148846960167706
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "mean_hue",
+            "label": "mean_hue = 67.9831 <= 79.0397",
+            "contribution": -0.18584169937365128
+          },
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.0148 <= 0.0256",
+            "contribution": -0.2887505264923804
+          },
+          {
+            "feature": "frac_green",
+            "label": "frac_green = 0.0909 > 0.0041",
+            "contribution": 1.0338923048632729
+          }
+        ]
+      }
+    ],
+    "logistic_regression": [
+      {
+        "file": "test/olive_peacock_spot/IMG_20190806_162831.jpg",
+        "path": "../compression/data/prepared/images/test/olive_peacock_spot/IMG_20190806_162831.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.999983199162026,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.0238,
+          "frac_yellow": 0.1672,
+          "frac_brown": 0.0072,
+          "frac_dark": 0.0,
+          "frac_gray": 0.7977,
+          "mean_hue": 166.8521,
+          "std_hue": 96.4857,
+          "mean_sat": 0.1638,
+          "std_sat": 0.2748,
+          "mean_val": 0.7547,
+          "std_val": 0.1138,
+          "excess_green": 0.0474,
+          "green_minus_red": -0.0138,
+          "lesion_area_frac": 0.0218,
+          "n_lesions": 6.0,
+          "lesion_mean_area": 0.0033,
+          "lesion_max_area": 0.0116,
+          "lesion_area_std": 0.0038,
+          "lesion_circularity": 0.3077,
+          "lesion_eccentricity": 0.8602,
+          "glcm_contrast": 1.9386,
+          "glcm_homogeneity": 0.7262,
+          "glcm_energy": 0.2019,
+          "glcm_correlation": 0.9841,
+          "lbp_0": 0.0584,
+          "lbp_1": 0.0809,
+          "lbp_2": 0.0447,
+          "lbp_3": 0.0789,
+          "lbp_4": 0.111,
+          "lbp_5": 0.1117,
+          "lbp_6": 0.0828,
+          "lbp_7": 0.1026,
+          "lbp_8": 0.1442,
+          "lbp_9": 0.1848,
+          "lbp_uniform_frac": 0.8152,
+          "edge_mean": 0.0116,
+          "edge_frac_strong": 0.0109,
+          "v_local_var_mean": 0.0004,
+          "v_local_var_std": 0.0013,
+          "frac_flat_gloss": 0.2,
+          "s_local_var_mean": 0.0021,
+          "entropy_mean": 2.8905,
+          "entropy_std": 0.6187,
+          "gabor_energy_mean": 0.0017,
+          "gabor_energy_std": 0.0003,
+          "glcm_sat_contrast": 3.177,
+          "glcm_sat_homogeneity": 0.853
+        },
+        "linear_explanation": {
+          "intercept": 0.16131283652163644,
+          "decision_score": 7.793241390689138,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.1672,
+              "standardised_value": 3.734,
+              "coefficient": 1.018,
+              "contribution": 3.802
+            },
+            {
+              "feature": "v_local_var_std",
+              "raw_value": 0.0013,
+              "standardised_value": -1.207,
+              "coefficient": -1.144,
+              "contribution": 1.381
+            },
+            {
+              "feature": "s_local_var_mean",
+              "raw_value": 0.0021,
+              "standardised_value": 0.98,
+              "coefficient": 1.34,
+              "contribution": 1.313
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0238,
+              "standardised_value": -0.712,
+              "coefficient": -1.363,
+              "contribution": 0.97
+            },
+            {
+              "feature": "std_sat",
+              "raw_value": 0.2748,
+              "standardised_value": 2.475,
+              "coefficient": 0.385,
+              "contribution": 0.953
+            },
+            {
+              "feature": "edge_mean",
+              "raw_value": 0.0116,
+              "standardised_value": -0.421,
+              "coefficient": -1.942,
+              "contribution": 0.818
+            },
+            {
+              "feature": "std_hue",
+              "raw_value": 96.4857,
+              "standardised_value": 1.545,
+              "coefficient": -0.501,
+              "contribution": -0.774
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 1.9386,
+              "standardised_value": -1.089,
+              "coefficient": 0.686,
+              "contribution": -0.748
+            },
+            {
+              "feature": "n_lesions",
+              "raw_value": 6.0,
+              "standardised_value": 1.31,
+              "coefficient": 0.515,
+              "contribution": 0.674
+            },
+            {
+              "feature": "v_local_var_mean",
+              "raw_value": 0.0004,
+              "standardised_value": -0.814,
+              "coefficient": 0.796,
+              "contribution": -0.648
+            },
+            {
+              "feature": "lesion_area_frac",
+              "raw_value": 0.0218,
+              "standardised_value": -0.774,
+              "coefficient": -0.812,
+              "contribution": 0.628
+            },
+            {
+              "feature": "std_val",
+              "raw_value": 0.1138,
+              "standardised_value": -0.607,
+              "coefficient": 0.909,
+              "contribution": -0.552
+            },
+            {
+              "feature": "lbp_2",
+              "raw_value": 0.0447,
+              "standardised_value": 0.788,
+              "coefficient": 0.694,
+              "contribution": 0.547
+            },
+            {
+              "feature": "lbp_0",
+              "raw_value": 0.0584,
+              "standardised_value": 0.583,
+              "coefficient": -0.794,
+              "contribution": -0.463
+            },
+            {
+              "feature": "glcm_sat_contrast",
+              "raw_value": 3.177,
+              "standardised_value": 0.883,
+              "coefficient": -0.474,
+              "contribution": -0.418
+            },
+            {
+              "feature": "edge_frac_strong",
+              "raw_value": 0.0109,
+              "standardised_value": -0.865,
+              "coefficient": -0.466,
+              "contribution": 0.403
+            },
+            {
+              "feature": "entropy_std",
+              "raw_value": 0.6187,
+              "standardised_value": -0.617,
+              "coefficient": -0.629,
+              "contribution": 0.388
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7262,
+              "standardised_value": -0.81,
+              "coefficient": 0.415,
+              "contribution": -0.336
+            },
+            {
+              "feature": "mean_val",
+              "raw_value": 0.7547,
+              "standardised_value": 1.1,
+              "coefficient": -0.269,
+              "contribution": -0.296
+            },
+            {
+              "feature": "lesion_mean_area",
+              "raw_value": 0.0033,
+              "standardised_value": -0.713,
+              "coefficient": 0.411,
+              "contribution": -0.293
+            },
+            {
+              "feature": "lesion_max_area",
+              "raw_value": 0.0116,
+              "standardised_value": -0.795,
+              "coefficient": 0.284,
+              "contribution": -0.225
+            },
+            {
+              "feature": "excess_green",
+              "raw_value": 0.0474,
+              "standardised_value": 0.421,
+              "coefficient": -0.504,
+              "contribution": -0.212
+            },
+            {
+              "feature": "lbp_uniform_frac",
+              "raw_value": 0.8152,
+              "standardised_value": -0.736,
+              "coefficient": -0.286,
+              "contribution": 0.211
+            },
+            {
+              "feature": "lbp_9",
+              "raw_value": 0.1848,
+              "standardised_value": 0.736,
+              "coefficient": 0.286,
+              "contribution": 0.211
+            },
+            {
+              "feature": "lbp_6",
+              "raw_value": 0.0828,
+              "standardised_value": -0.472,
+              "coefficient": -0.42,
+              "contribution": 0.198
+            },
+            {
+              "feature": "entropy_mean",
+              "raw_value": 2.8905,
+              "standardised_value": 0.581,
+              "coefficient": 0.339,
+              "contribution": 0.197
+            },
+            {
+              "feature": "lesion_area_std",
+              "raw_value": 0.0038,
+              "standardised_value": -0.543,
+              "coefficient": 0.341,
+              "contribution": -0.185
+            },
+            {
+              "feature": "glcm_sat_homogeneity",
+              "raw_value": 0.853,
+              "standardised_value": -0.476,
+              "coefficient": -0.34,
+              "contribution": 0.162
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9841,
+              "standardised_value": 0.954,
+              "coefficient": 0.136,
+              "contribution": 0.129
+            },
+            {
+              "feature": "green_minus_red",
+              "raw_value": -0.0138,
+              "standardised_value": -0.287,
+              "coefficient": 0.433,
+              "contribution": -0.124
+            },
+            {
+              "feature": "lbp_1",
+              "raw_value": 0.0809,
+              "standardised_value": 0.441,
+              "coefficient": -0.237,
+              "contribution": -0.104
+            },
+            {
+              "feature": "lbp_5",
+              "raw_value": 0.1117,
+              "standardised_value": -0.634,
+              "coefficient": 0.149,
+              "contribution": -0.094
+            },
+            {
+              "feature": "lbp_3",
+              "raw_value": 0.0789,
+              "standardised_value": -0.512,
+              "coefficient": 0.177,
+              "contribution": -0.09
+            },
+            {
+              "feature": "lbp_8",
+              "raw_value": 0.1442,
+              "standardised_value": -0.645,
+              "coefficient": -0.127,
+              "contribution": 0.082
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.2019,
+              "standardised_value": 0.303,
+              "coefficient": 0.244,
+              "contribution": 0.074
+            },
+            {
+              "feature": "mean_sat",
+              "raw_value": 0.1638,
+              "standardised_value": 0.584,
+              "coefficient": -0.102,
+              "contribution": -0.059
+            },
+            {
+              "feature": "gabor_energy_std",
+              "raw_value": 0.0003,
+              "standardised_value": -0.628,
+              "coefficient": -0.087,
+              "contribution": 0.055
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0,
+              "standardised_value": -0.652,
+              "coefficient": -0.069,
+              "contribution": 0.045
+            },
+            {
+              "feature": "mean_hue",
+              "raw_value": 166.8521,
+              "standardised_value": 0.706,
+              "coefficient": 0.056,
+              "contribution": 0.039
+            },
+            {
+              "feature": "lbp_4",
+              "raw_value": 0.111,
+              "standardised_value": 0.421,
+              "coefficient": 0.035,
+              "contribution": 0.015
+            },
+            {
+              "feature": "gabor_energy_mean",
+              "raw_value": 0.0017,
+              "standardised_value": -0.437,
+              "coefficient": 0.033,
+              "contribution": -0.014
+            },
+            {
+              "feature": "frac_flat_gloss",
+              "raw_value": 0.2,
+              "standardised_value": 0.282,
+              "coefficient": -0.031,
+              "contribution": -0.009
+            },
+            {
+              "feature": "lesion_circularity",
+              "raw_value": 0.3077,
+              "standardised_value": 0.057,
+              "coefficient": -0.153,
+              "contribution": -0.009
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0072,
+              "standardised_value": -0.081,
+              "coefficient": 0.08,
+              "contribution": -0.006
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.7977,
+              "standardised_value": 0.108,
+              "coefficient": 0.035,
+              "contribution": 0.004
+            },
+            {
+              "feature": "lbp_7",
+              "raw_value": 0.1026,
+              "standardised_value": -0.032,
+              "coefficient": 0.105,
+              "contribution": -0.003
+            },
+            {
+              "feature": "lesion_eccentricity",
+              "raw_value": 0.8602,
+              "standardised_value": -0.052,
+              "coefficient": 0.037,
+              "contribution": -0.002
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "contribution": 3.802
+          },
+          {
+            "feature": "v_local_var_std",
+            "contribution": 1.381
+          },
+          {
+            "feature": "s_local_var_mean",
+            "contribution": 1.313
+          },
+          {
+            "feature": "frac_green",
+            "contribution": 0.97
+          },
+          {
+            "feature": "std_sat",
+            "contribution": 0.953
+          },
+          {
+            "feature": "edge_mean",
+            "contribution": 0.818
+          }
+        ]
+      },
+      {
+        "file": "test/aculus_olearius/IMG_20190729_193526.jpg",
+        "path": "../compression/data/prepared/images/test/aculus_olearius/IMG_20190729_193526.jpg",
+        "true_class": "aculus_olearius",
+        "predicted_class": "aculus_olearius",
+        "confidence": 0.999840042351689,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.0001,
+          "frac_yellow": 0.0122,
+          "frac_brown": 0.0048,
+          "frac_dark": 0.0036,
+          "frac_gray": 0.9733,
+          "mean_hue": 212.1681,
+          "std_hue": 61.3492,
+          "mean_sat": 0.0505,
+          "std_sat": 0.0546,
+          "mean_val": 0.7211,
+          "std_val": 0.0943,
+          "excess_green": -0.0039,
+          "green_minus_red": 0.0022,
+          "lesion_area_frac": 0.0126,
+          "n_lesions": 2.0,
+          "lesion_mean_area": 0.0054,
+          "lesion_max_area": 0.0102,
+          "lesion_area_std": 0.0048,
+          "lesion_circularity": 0.4046,
+          "lesion_eccentricity": 0.872,
+          "glcm_contrast": 6.4559,
+          "glcm_homogeneity": 0.7223,
+          "glcm_energy": 0.1907,
+          "glcm_correlation": 0.9105,
+          "lbp_0": 0.0509,
+          "lbp_1": 0.0811,
+          "lbp_2": 0.0408,
+          "lbp_3": 0.0829,
+          "lbp_4": 0.1182,
+          "lbp_5": 0.1254,
+          "lbp_6": 0.0897,
+          "lbp_7": 0.0969,
+          "lbp_8": 0.1434,
+          "lbp_9": 0.1706,
+          "lbp_uniform_frac": 0.8294,
+          "edge_mean": 0.0158,
+          "edge_frac_strong": 0.042,
+          "v_local_var_mean": 0.001,
+          "v_local_var_std": 0.0045,
+          "frac_flat_gloss": 0.1999,
+          "s_local_var_mean": 0.0004,
+          "entropy_mean": 2.7923,
+          "entropy_std": 0.7437,
+          "gabor_energy_mean": 0.002,
+          "gabor_energy_std": 0.0005,
+          "glcm_sat_contrast": 1.0981,
+          "glcm_sat_homogeneity": 0.9056
+        },
+        "linear_explanation": {
+          "intercept": 0.07495332547430066,
+          "decision_score": 6.4247353122704,
+          "contributions": [
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9105,
+              "standardised_value": -5.136,
+              "coefficient": -0.493,
+              "contribution": 2.532
+            },
+            {
+              "feature": "std_val",
+              "raw_value": 0.0943,
+              "standardised_value": -1.055,
+              "coefficient": -1.841,
+              "contribution": 1.943
+            },
+            {
+              "feature": "lesion_area_frac",
+              "raw_value": 0.0126,
+              "standardised_value": -0.939,
+              "coefficient": 1.689,
+              "contribution": -1.587
+            },
+            {
+              "feature": "std_sat",
+              "raw_value": 0.0546,
+              "standardised_value": -1.224,
+              "coefficient": -0.63,
+              "contribution": 0.772
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0001,
+              "standardised_value": -0.994,
+              "coefficient": 0.758,
+              "contribution": -0.754
+            },
+            {
+              "feature": "mean_hue",
+              "raw_value": 212.1681,
+              "standardised_value": 1.468,
+              "coefficient": 0.511,
+              "contribution": 0.75
+            },
+            {
+              "feature": "edge_frac_strong",
+              "raw_value": 0.042,
+              "standardised_value": 0.658,
+              "coefficient": 0.739,
+              "contribution": 0.487
+            },
+            {
+              "feature": "edge_mean",
+              "raw_value": 0.0158,
+              "standardised_value": 0.324,
+              "coefficient": 1.426,
+              "contribution": 0.462
+            },
+            {
+              "feature": "lesion_max_area",
+              "raw_value": 0.0102,
+              "standardised_value": -0.823,
+              "coefficient": -0.547,
+              "contribution": 0.45
+            },
+            {
+              "feature": "lbp_8",
+              "raw_value": 0.1434,
+              "standardised_value": -0.663,
+              "coefficient": -0.628,
+              "contribution": 0.416
+            },
+            {
+              "feature": "lbp_7",
+              "raw_value": 0.0969,
+              "standardised_value": -0.861,
+              "coefficient": 0.426,
+              "contribution": -0.367
+            },
+            {
+              "feature": "v_local_var_std",
+              "raw_value": 0.0045,
+              "standardised_value": 0.354,
+              "coefficient": 0.95,
+              "contribution": 0.336
+            },
+            {
+              "feature": "excess_green",
+              "raw_value": -0.0039,
+              "standardised_value": -0.662,
+              "coefficient": -0.495,
+              "contribution": 0.328
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 6.4559,
+              "standardised_value": 1.149,
+              "coefficient": 0.263,
+              "contribution": 0.302
+            },
+            {
+              "feature": "mean_sat",
+              "raw_value": 0.0505,
+              "standardised_value": -1.065,
+              "coefficient": -0.242,
+              "contribution": 0.258
+            },
+            {
+              "feature": "entropy_std",
+              "raw_value": 0.7437,
+              "standardised_value": 0.15,
+              "coefficient": 1.351,
+              "contribution": 0.203
+            },
+            {
+              "feature": "v_local_var_mean",
+              "raw_value": 0.001,
+              "standardised_value": 0.129,
+              "coefficient": -1.504,
+              "contribution": -0.193
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.9733,
+              "standardised_value": 0.82,
+              "coefficient": -0.217,
+              "contribution": -0.178
+            },
+            {
+              "feature": "lesion_area_std",
+              "raw_value": 0.0048,
+              "standardised_value": -0.495,
+              "coefficient": -0.326,
+              "contribution": 0.161
+            },
+            {
+              "feature": "lbp_5",
+              "raw_value": 0.1254,
+              "standardised_value": -0.21,
+              "coefficient": 0.707,
+              "contribution": -0.148
+            },
+            {
+              "feature": "lesion_circularity",
+              "raw_value": 0.4046,
+              "standardised_value": 0.612,
+              "coefficient": 0.237,
+              "contribution": 0.145
+            },
+            {
+              "feature": "glcm_sat_homogeneity",
+              "raw_value": 0.9056,
+              "standardised_value": 0.791,
+              "coefficient": 0.182,
+              "contribution": 0.144
+            },
+            {
+              "feature": "lesion_mean_area",
+              "raw_value": 0.0054,
+              "standardised_value": -0.657,
+              "coefficient": -0.21,
+              "contribution": 0.138
+            },
+            {
+              "feature": "entropy_mean",
+              "raw_value": 2.7923,
+              "standardised_value": 0.296,
+              "coefficient": -0.446,
+              "contribution": -0.132
+            },
+            {
+              "feature": "lbp_1",
+              "raw_value": 0.0811,
+              "standardised_value": 0.454,
+              "coefficient": 0.272,
+              "contribution": 0.124
+            },
+            {
+              "feature": "n_lesions",
+              "raw_value": 2.0,
+              "standardised_value": -0.494,
+              "coefficient": 0.21,
+              "contribution": -0.104
+            },
+            {
+              "feature": "gabor_energy_std",
+              "raw_value": 0.0005,
+              "standardised_value": 0.651,
+              "coefficient": -0.149,
+              "contribution": -0.097
+            },
+            {
+              "feature": "green_minus_red",
+              "raw_value": 0.0022,
+              "standardised_value": 0.108,
+              "coefficient": 0.775,
+              "contribution": 0.084
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0048,
+              "standardised_value": -0.19,
+              "coefficient": -0.349,
+              "contribution": 0.066
+            },
+            {
+              "feature": "gabor_energy_mean",
+              "raw_value": 0.002,
+              "standardised_value": 0.196,
+              "coefficient": -0.292,
+              "contribution": -0.057
+            },
+            {
+              "feature": "lbp_4",
+              "raw_value": 0.1182,
+              "standardised_value": 0.729,
+              "coefficient": -0.072,
+              "contribution": -0.053
+            },
+            {
+              "feature": "s_local_var_mean",
+              "raw_value": 0.0004,
+              "standardised_value": -0.664,
+              "coefficient": 0.077,
+              "contribution": -0.051
+            },
+            {
+              "feature": "lbp_2",
+              "raw_value": 0.0408,
+              "standardised_value": 0.422,
+              "coefficient": 0.118,
+              "contribution": 0.05
+            },
+            {
+              "feature": "lbp_uniform_frac",
+              "raw_value": 0.8294,
+              "standardised_value": -0.272,
+              "coefficient": 0.179,
+              "contribution": -0.049
+            },
+            {
+              "feature": "lbp_9",
+              "raw_value": 0.1706,
+              "standardised_value": 0.272,
+              "coefficient": -0.179,
+              "contribution": -0.049
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7223,
+              "standardised_value": -0.893,
+              "coefficient": -0.052,
+              "contribution": 0.046
+            },
+            {
+              "feature": "std_hue",
+              "raw_value": 61.3492,
+              "standardised_value": 0.144,
+              "coefficient": 0.272,
+              "contribution": 0.039
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1907,
+              "standardised_value": 0.058,
+              "coefficient": -0.516,
+              "contribution": -0.03
+            },
+            {
+              "feature": "glcm_sat_contrast",
+              "raw_value": 1.0981,
+              "standardised_value": -0.666,
+              "coefficient": 0.043,
+              "contribution": -0.029
+            },
+            {
+              "feature": "mean_val",
+              "raw_value": 0.7211,
+              "standardised_value": 0.452,
+              "coefficient": -0.063,
+              "contribution": -0.028
+            },
+            {
+              "feature": "lbp_0",
+              "raw_value": 0.0509,
+              "standardised_value": 0.127,
+              "coefficient": 0.195,
+              "contribution": 0.025
+            },
+            {
+              "feature": "lesion_eccentricity",
+              "raw_value": 0.872,
+              "standardised_value": 0.015,
+              "coefficient": -0.414,
+              "contribution": -0.006
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0122,
+              "standardised_value": -0.408,
+              "coefficient": 0.011,
+              "contribution": -0.005
+            },
+            {
+              "feature": "lbp_6",
+              "raw_value": 0.0897,
+              "standardised_value": 0.514,
+              "coefficient": 0.008,
+              "contribution": 0.004
+            },
+            {
+              "feature": "lbp_3",
+              "raw_value": 0.0829,
+              "standardised_value": -0.073,
+              "coefficient": -0.025,
+              "contribution": 0.002
+            },
+            {
+              "feature": "frac_flat_gloss",
+              "raw_value": 0.1999,
+              "standardised_value": 0.006,
+              "coefficient": 0.086,
+              "contribution": 0.001
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0036,
+              "standardised_value": -0.507,
+              "coefficient": 0.0,
+              "contribution": -0.0
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "glcm_correlation",
+            "contribution": 2.532
+          },
+          {
+            "feature": "std_val",
+            "contribution": 1.943
+          },
+          {
+            "feature": "lesion_area_frac",
+            "contribution": -1.587
+          },
+          {
+            "feature": "std_sat",
+            "contribution": 0.772
+          },
+          {
+            "feature": "frac_green",
+            "contribution": -0.754
+          },
+          {
+            "feature": "mean_hue",
+            "contribution": 0.75
+          }
+        ]
+      },
+      {
+        "file": "test/aculus_olearius/DSC_0104.JPG",
+        "path": "../compression/data/prepared/images/test/aculus_olearius/DSC_0104.JPG",
+        "true_class": "aculus_olearius",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9946401096814346,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.092,
+          "frac_yellow": 0.1816,
+          "frac_brown": 0.0003,
+          "frac_dark": 0.063,
+          "frac_gray": 0.5711,
+          "mean_hue": 93.4847,
+          "std_hue": 84.7264,
+          "mean_sat": 0.2454,
+          "std_sat": 0.2102,
+          "mean_val": 0.6049,
+          "std_val": 0.1865,
+          "excess_green": 0.057,
+          "green_minus_red": -0.0099,
+          "lesion_area_frac": 0.1388,
+          "n_lesions": 3.0,
+          "lesion_mean_area": 0.0459,
+          "lesion_max_area": 0.1295,
+          "lesion_area_std": 0.0591,
+          "lesion_circularity": 0.3866,
+          "lesion_eccentricity": 0.8039,
+          "glcm_contrast": 3.2567,
+          "glcm_homogeneity": 0.7865,
+          "glcm_energy": 0.1762,
+          "glcm_correlation": 0.9908,
+          "lbp_0": 0.004,
+          "lbp_1": 0.0243,
+          "lbp_2": 0.0113,
+          "lbp_3": 0.1051,
+          "lbp_4": 0.264,
+          "lbp_5": 0.281,
+          "lbp_6": 0.0833,
+          "lbp_7": 0.0523,
+          "lbp_8": 0.1368,
+          "lbp_9": 0.0379,
+          "lbp_uniform_frac": 0.9621,
+          "edge_mean": 0.0169,
+          "edge_frac_strong": 0.0384,
+          "v_local_var_mean": 0.001,
+          "v_local_var_std": 0.0032,
+          "frac_flat_gloss": 0.2,
+          "s_local_var_mean": 0.0015,
+          "entropy_mean": 2.8791,
+          "entropy_std": 0.9594,
+          "gabor_energy_mean": 0.0011,
+          "gabor_energy_std": 0.0002,
+          "glcm_sat_contrast": 1.6692,
+          "glcm_sat_homogeneity": 0.8195
+        },
+        "linear_explanation": {
+          "intercept": 0.16131283652163644,
+          "decision_score": 4.744645430956418,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.1816,
+              "standardised_value": 4.12,
+              "coefficient": 1.018,
+              "contribution": 4.195
+            },
+            {
+              "feature": "lbp_0",
+              "raw_value": 0.004,
+              "standardised_value": -2.738,
+              "coefficient": -0.794,
+              "contribution": 2.174
+            },
+            {
+              "feature": "lbp_2",
+              "raw_value": 0.0113,
+              "standardised_value": -2.343,
+              "coefficient": 0.694,
+              "contribution": -1.626
+            },
+            {
+              "feature": "lbp_uniform_frac",
+              "raw_value": 0.9621,
+              "standardised_value": 4.069,
+              "coefficient": -0.286,
+              "contribution": -1.164
+            },
+            {
+              "feature": "lbp_9",
+              "raw_value": 0.0379,
+              "standardised_value": -4.069,
+              "coefficient": 0.286,
+              "contribution": -1.164
+            },
+            {
+              "feature": "lesion_area_frac",
+              "raw_value": 0.1388,
+              "standardised_value": 1.333,
+              "coefficient": -0.812,
+              "contribution": -1.082
+            },
+            {
+              "feature": "edge_mean",
+              "raw_value": 0.0169,
+              "standardised_value": 0.526,
+              "coefficient": -1.942,
+              "contribution": -1.021
+            },
+            {
+              "feature": "lbp_1",
+              "raw_value": 0.0243,
+              "standardised_value": -4.216,
+              "coefficient": -0.237,
+              "contribution": 0.997
+            },
+            {
+              "feature": "std_val",
+              "raw_value": 0.1865,
+              "standardised_value": 1.065,
+              "coefficient": 0.909,
+              "contribution": 0.968
+            },
+            {
+              "feature": "entropy_std",
+              "raw_value": 0.9594,
+              "standardised_value": 1.474,
+              "coefficient": -0.629,
+              "contribution": -0.927
+            },
+            {
+              "feature": "lbp_7",
+              "raw_value": 0.0523,
+              "standardised_value": -7.384,
+              "coefficient": 0.105,
+              "contribution": -0.773
+            },
+            {
+              "feature": "lesion_area_std",
+              "raw_value": 0.0591,
+              "standardised_value": 2.163,
+              "coefficient": 0.341,
+              "contribution": 0.737
+            },
+            {
+              "feature": "lbp_5",
+              "raw_value": 0.281,
+              "standardised_value": 4.625,
+              "coefficient": 0.149,
+              "contribution": 0.689
+            },
+            {
+              "feature": "s_local_var_mean",
+              "raw_value": 0.0015,
+              "standardised_value": 0.451,
+              "coefficient": 1.34,
+              "contribution": 0.604
+            },
+            {
+              "feature": "std_hue",
+              "raw_value": 84.7264,
+              "standardised_value": 1.076,
+              "coefficient": -0.501,
+              "contribution": -0.539
+            },
+            {
+              "feature": "std_sat",
+              "raw_value": 0.2102,
+              "standardised_value": 1.389,
+              "coefficient": 0.385,
+              "contribution": 0.535
+            },
+            {
+              "feature": "mean_val",
+              "raw_value": 0.6049,
+              "standardised_value": -1.794,
+              "coefficient": -0.269,
+              "contribution": 0.483
+            },
+            {
+              "feature": "lesion_max_area",
+              "raw_value": 0.1295,
+              "standardised_value": 1.576,
+              "coefficient": 0.284,
+              "contribution": 0.447
+            },
+            {
+              "feature": "glcm_sat_homogeneity",
+              "raw_value": 0.8195,
+              "standardised_value": -1.284,
+              "coefficient": -0.34,
+              "contribution": 0.437
+            },
+            {
+              "feature": "lbp_3",
+              "raw_value": 0.1051,
+              "standardised_value": 2.304,
+              "coefficient": 0.177,
+              "contribution": 0.407
+            },
+            {
+              "feature": "v_local_var_std",
+              "raw_value": 0.0032,
+              "standardised_value": -0.297,
+              "coefficient": -1.144,
+              "contribution": 0.339
+            },
+            {
+              "feature": "excess_green",
+              "raw_value": 0.057,
+              "standardised_value": 0.624,
+              "coefficient": -0.504,
+              "contribution": -0.314
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 3.2567,
+              "standardised_value": -0.436,
+              "coefficient": 0.686,
+              "contribution": -0.299
+            },
+            {
+              "feature": "lbp_4",
+              "raw_value": 0.264,
+              "standardised_value": 7.021,
+              "coefficient": 0.035,
+              "contribution": 0.243
+            },
+            {
+              "feature": "edge_frac_strong",
+              "raw_value": 0.0384,
+              "standardised_value": 0.483,
+              "coefficient": -0.466,
+              "contribution": -0.225
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9908,
+              "standardised_value": 1.516,
+              "coefficient": 0.136,
+              "contribution": 0.206
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7865,
+              "standardised_value": 0.463,
+              "coefficient": 0.415,
+              "contribution": 0.192
+            },
+            {
+              "feature": "entropy_mean",
+              "raw_value": 2.8791,
+              "standardised_value": 0.548,
+              "coefficient": 0.339,
+              "contribution": 0.186
+            },
+            {
+              "feature": "mean_sat",
+              "raw_value": 0.2454,
+              "standardised_value": 1.774,
+              "coefficient": -0.102,
+              "contribution": -0.18
+            },
+            {
+              "feature": "lbp_6",
+              "raw_value": 0.0833,
+              "standardised_value": -0.404,
+              "coefficient": -0.42,
+              "contribution": 0.17
+            },
+            {
+              "feature": "lesion_mean_area",
+              "raw_value": 0.0459,
+              "standardised_value": 0.413,
+              "coefficient": 0.411,
+              "contribution": 0.17
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.092,
+              "standardised_value": 0.1,
+              "coefficient": -1.363,
+              "contribution": -0.137
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.063,
+              "standardised_value": 1.881,
+              "coefficient": -0.069,
+              "contribution": -0.13
+            },
+            {
+              "feature": "glcm_sat_contrast",
+              "raw_value": 1.6692,
+              "standardised_value": -0.241,
+              "coefficient": -0.474,
+              "contribution": 0.114
+            },
+            {
+              "feature": "lbp_8",
+              "raw_value": 0.1368,
+              "standardised_value": -0.824,
+              "coefficient": -0.127,
+              "contribution": 0.104
+            },
+            {
+              "feature": "gabor_energy_std",
+              "raw_value": 0.0002,
+              "standardised_value": -1.129,
+              "coefficient": -0.087,
+              "contribution": 0.098
+            },
+            {
+              "feature": "v_local_var_mean",
+              "raw_value": 0.001,
+              "standardised_value": 0.117,
+              "coefficient": 0.796,
+              "contribution": 0.093
+            },
+            {
+              "feature": "green_minus_red",
+              "raw_value": -0.0099,
+              "standardised_value": -0.189,
+              "coefficient": 0.433,
+              "contribution": -0.082
+            },
+            {
+              "feature": "lesion_circularity",
+              "raw_value": 0.3866,
+              "standardised_value": 0.509,
+              "coefficient": -0.153,
+              "contribution": -0.078
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1762,
+              "standardised_value": -0.259,
+              "coefficient": 0.244,
+              "contribution": -0.063
+            },
+            {
+              "feature": "gabor_energy_mean",
+              "raw_value": 0.0011,
+              "standardised_value": -1.655,
+              "coefficient": 0.033,
+              "contribution": -0.055
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0003,
+              "standardised_value": -0.392,
+              "coefficient": 0.08,
+              "contribution": -0.031
+            },
+            {
+              "feature": "mean_hue",
+              "raw_value": 93.4847,
+              "standardised_value": -0.527,
+              "coefficient": 0.056,
+              "contribution": -0.029
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.5711,
+              "standardised_value": -0.812,
+              "coefficient": 0.035,
+              "contribution": -0.028
+            },
+            {
+              "feature": "n_lesions",
+              "raw_value": 3.0,
+              "standardised_value": -0.043,
+              "coefficient": 0.515,
+              "contribution": -0.022
+            },
+            {
+              "feature": "frac_flat_gloss",
+              "raw_value": 0.2,
+              "standardised_value": 0.641,
+              "coefficient": -0.031,
+              "contribution": -0.02
+            },
+            {
+              "feature": "lesion_eccentricity",
+              "raw_value": 0.8039,
+              "standardised_value": -0.375,
+              "coefficient": 0.037,
+              "contribution": -0.014
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "contribution": 4.195
+          },
+          {
+            "feature": "lbp_0",
+            "contribution": 2.174
+          },
+          {
+            "feature": "lbp_2",
+            "contribution": -1.626
+          },
+          {
+            "feature": "lbp_uniform_frac",
+            "contribution": -1.164
+          },
+          {
+            "feature": "lbp_9",
+            "contribution": -1.164
+          },
+          {
+            "feature": "lesion_area_frac",
+            "contribution": -1.082
+          }
+        ],
+        "true_class_explanation": {
+          "intercept": 0.07495332547430066,
+          "decision_score": -0.5022657508132851,
+          "contributions": [
+            {
+              "feature": "lbp_5",
+              "raw_value": 0.281,
+              "standardised_value": 4.625,
+              "coefficient": 0.707,
+              "contribution": 3.271
+            },
+            {
+              "feature": "lbp_7",
+              "raw_value": 0.0523,
+              "standardised_value": -7.384,
+              "coefficient": 0.426,
+              "contribution": -3.148
+            },
+            {
+              "feature": "lesion_area_frac",
+              "raw_value": 0.1388,
+              "standardised_value": 1.333,
+              "coefficient": 1.689,
+              "contribution": 2.251
+            },
+            {
+              "feature": "entropy_std",
+              "raw_value": 0.9594,
+              "standardised_value": 1.474,
+              "coefficient": 1.351,
+              "contribution": 1.992
+            },
+            {
+              "feature": "std_val",
+              "raw_value": 0.1865,
+              "standardised_value": 1.065,
+              "coefficient": -1.841,
+              "contribution": -1.961
+            },
+            {
+              "feature": "lbp_1",
+              "raw_value": 0.0243,
+              "standardised_value": -4.216,
+              "coefficient": 0.272,
+              "contribution": -1.148
+            },
+            {
+              "feature": "std_sat",
+              "raw_value": 0.2102,
+              "standardised_value": 1.389,
+              "coefficient": -0.63,
+              "contribution": -0.876
+            },
+            {
+              "feature": "lesion_max_area",
+              "raw_value": 0.1295,
+              "standardised_value": 1.576,
+              "coefficient": -0.547,
+              "contribution": -0.862
+            },
+            {
+              "feature": "edge_mean",
+              "raw_value": 0.0169,
+              "standardised_value": 0.526,
+              "coefficient": 1.426,
+              "contribution": 0.75
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9908,
+              "standardised_value": 1.516,
+              "coefficient": -0.493,
+              "contribution": -0.747
+            },
+            {
+              "feature": "lbp_uniform_frac",
+              "raw_value": 0.9621,
+              "standardised_value": 4.069,
+              "coefficient": 0.179,
+              "contribution": 0.728
+            },
+            {
+              "feature": "lbp_9",
+              "raw_value": 0.0379,
+              "standardised_value": -4.069,
+              "coefficient": -0.179,
+              "contribution": 0.728
+            },
+            {
+              "feature": "lesion_area_std",
+              "raw_value": 0.0591,
+              "standardised_value": 2.163,
+              "coefficient": -0.326,
+              "contribution": -0.705
+            },
+            {
+              "feature": "lbp_0",
+              "raw_value": 0.004,
+              "standardised_value": -2.738,
+              "coefficient": 0.195,
+              "contribution": -0.533
+            },
+            {
+              "feature": "lbp_8",
+              "raw_value": 0.1368,
+              "standardised_value": -0.824,
+              "coefficient": -0.628,
+              "contribution": 0.517
+            },
+            {
+              "feature": "lbp_4",
+              "raw_value": 0.264,
+              "standardised_value": 7.021,
+              "coefficient": -0.072,
+              "contribution": -0.508
+            },
+            {
+              "feature": "gabor_energy_mean",
+              "raw_value": 0.0011,
+              "standardised_value": -1.655,
+              "coefficient": -0.292,
+              "contribution": 0.483
+            },
+            {
+              "feature": "mean_sat",
+              "raw_value": 0.2454,
+              "standardised_value": 1.774,
+              "coefficient": -0.242,
+              "contribution": -0.43
+            },
+            {
+              "feature": "edge_frac_strong",
+              "raw_value": 0.0384,
+              "standardised_value": 0.483,
+              "coefficient": 0.739,
+              "contribution": 0.357
+            },
+            {
+              "feature": "excess_green",
+              "raw_value": 0.057,
+              "standardised_value": 0.624,
+              "coefficient": -0.495,
+              "contribution": -0.309
+            },
+            {
+              "feature": "std_hue",
+              "raw_value": 84.7264,
+              "standardised_value": 1.076,
+              "coefficient": 0.272,
+              "contribution": 0.293
+            },
+            {
+              "feature": "v_local_var_std",
+              "raw_value": 0.0032,
+              "standardised_value": -0.297,
+              "coefficient": 0.95,
+              "contribution": -0.282
+            },
+            {
+              "feature": "lbp_2",
+              "raw_value": 0.0113,
+              "standardised_value": -2.343,
+              "coefficient": 0.118,
+              "contribution": -0.277
+            },
+            {
+              "feature": "mean_hue",
+              "raw_value": 93.4847,
+              "standardised_value": -0.527,
+              "coefficient": 0.511,
+              "contribution": -0.269
+            },
+            {
+              "feature": "entropy_mean",
+              "raw_value": 2.8791,
+              "standardised_value": 0.548,
+              "coefficient": -0.446,
+              "contribution": -0.245
+            },
+            {
+              "feature": "glcm_sat_homogeneity",
+              "raw_value": 0.8195,
+              "standardised_value": -1.284,
+              "coefficient": 0.182,
+              "contribution": -0.234
+            },
+            {
+              "feature": "v_local_var_mean",
+              "raw_value": 0.001,
+              "standardised_value": 0.117,
+              "coefficient": -1.504,
+              "contribution": -0.176
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.5711,
+              "standardised_value": -0.812,
+              "coefficient": -0.217,
+              "contribution": 0.176
+            },
+            {
+              "feature": "gabor_energy_std",
+              "raw_value": 0.0002,
+              "standardised_value": -1.129,
+              "coefficient": -0.149,
+              "contribution": 0.168
+            },
+            {
+              "feature": "lesion_eccentricity",
+              "raw_value": 0.8039,
+              "standardised_value": -0.375,
+              "coefficient": -0.414,
+              "contribution": 0.156
+            },
+            {
+              "feature": "green_minus_red",
+              "raw_value": -0.0099,
+              "standardised_value": -0.189,
+              "coefficient": 0.775,
+              "contribution": -0.147
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0003,
+              "standardised_value": -0.392,
+              "coefficient": -0.349,
+              "contribution": 0.137
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1762,
+              "standardised_value": -0.259,
+              "coefficient": -0.516,
+              "contribution": 0.134
+            },
+            {
+              "feature": "lesion_circularity",
+              "raw_value": 0.3866,
+              "standardised_value": 0.509,
+              "coefficient": 0.237,
+              "contribution": 0.121
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 3.2567,
+              "standardised_value": -0.436,
+              "coefficient": 0.263,
+              "contribution": -0.115
+            },
+            {
+              "feature": "mean_val",
+              "raw_value": 0.6049,
+              "standardised_value": -1.794,
+              "coefficient": -0.063,
+              "contribution": 0.113
+            },
+            {
+              "feature": "lesion_mean_area",
+              "raw_value": 0.0459,
+              "standardised_value": 0.413,
+              "coefficient": -0.21,
+              "contribution": -0.087
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.092,
+              "standardised_value": 0.1,
+              "coefficient": 0.758,
+              "contribution": 0.076
+            },
+            {
+              "feature": "lbp_3",
+              "raw_value": 0.1051,
+              "standardised_value": 2.304,
+              "coefficient": -0.025,
+              "contribution": -0.058
+            },
+            {
+              "feature": "frac_flat_gloss",
+              "raw_value": 0.2,
+              "standardised_value": 0.641,
+              "coefficient": 0.086,
+              "contribution": 0.055
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.1816,
+              "standardised_value": 4.12,
+              "coefficient": 0.011,
+              "contribution": 0.047
+            },
+            {
+              "feature": "s_local_var_mean",
+              "raw_value": 0.0015,
+              "standardised_value": 0.451,
+              "coefficient": 0.077,
+              "contribution": 0.035
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7865,
+              "standardised_value": 0.463,
+              "coefficient": -0.052,
+              "contribution": -0.024
+            },
+            {
+              "feature": "glcm_sat_contrast",
+              "raw_value": 1.6692,
+              "standardised_value": -0.241,
+              "coefficient": 0.043,
+              "contribution": -0.01
+            },
+            {
+              "feature": "n_lesions",
+              "raw_value": 3.0,
+              "standardised_value": -0.043,
+              "coefficient": 0.21,
+              "contribution": -0.009
+            },
+            {
+              "feature": "lbp_6",
+              "raw_value": 0.0833,
+              "standardised_value": -0.404,
+              "coefficient": 0.008,
+              "contribution": -0.003
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.063,
+              "standardised_value": 1.881,
+              "coefficient": 0.0,
+              "contribution": 0.001
+            }
+          ]
+        }
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_202018.jpg",
+        "path": "../compression/data/prepared/images/test/olive_peacock_spot/IMG_20190729_202018.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "aculus_olearius",
+        "confidence": 0.9881235347869706,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.0386,
+          "frac_yellow": 0.0061,
+          "frac_brown": 0.0005,
+          "frac_dark": 0.0273,
+          "frac_gray": 0.9501,
+          "mean_hue": 217.9857,
+          "std_hue": 60.9558,
+          "mean_sat": 0.0472,
+          "std_sat": 0.0865,
+          "mean_val": 0.7189,
+          "std_val": 0.133,
+          "excess_green": -0.0064,
+          "green_minus_red": 0.0018,
+          "lesion_area_frac": 0.0417,
+          "n_lesions": 2.0,
+          "lesion_mean_area": 0.0193,
+          "lesion_max_area": 0.0379,
+          "lesion_area_std": 0.0186,
+          "lesion_circularity": 0.6023,
+          "lesion_eccentricity": 0.9626,
+          "glcm_contrast": 7.9802,
+          "glcm_homogeneity": 0.7792,
+          "glcm_energy": 0.1729,
+          "glcm_correlation": 0.983,
+          "lbp_0": 0.0258,
+          "lbp_1": 0.062,
+          "lbp_2": 0.0273,
+          "lbp_3": 0.0995,
+          "lbp_4": 0.129,
+          "lbp_5": 0.1814,
+          "lbp_6": 0.0978,
+          "lbp_7": 0.095,
+          "lbp_8": 0.1599,
+          "lbp_9": 0.1223,
+          "lbp_uniform_frac": 0.8777,
+          "edge_mean": 0.0148,
+          "edge_frac_strong": 0.0341,
+          "v_local_var_mean": 0.0016,
+          "v_local_var_std": 0.0079,
+          "frac_flat_gloss": 0.1997,
+          "s_local_var_mean": 0.0007,
+          "entropy_mean": 2.5386,
+          "entropy_std": 0.7564,
+          "gabor_energy_mean": 0.0017,
+          "gabor_energy_std": 0.0003,
+          "glcm_sat_contrast": 2.399,
+          "glcm_sat_homogeneity": 0.882
+        },
+        "linear_explanation": {
+          "intercept": 0.07495332547430066,
+          "decision_score": 3.418729200675469,
+          "contributions": [
+            {
+              "feature": "v_local_var_std",
+              "raw_value": 0.0079,
+              "standardised_value": 1.973,
+              "coefficient": 0.95,
+              "contribution": 1.874
+            },
+            {
+              "feature": "v_local_var_mean",
+              "raw_value": 0.0016,
+              "standardised_value": 0.978,
+              "coefficient": -1.504,
+              "contribution": -1.472
+            },
+            {
+              "feature": "lbp_5",
+              "raw_value": 0.1814,
+              "standardised_value": 1.532,
+              "coefficient": 0.707,
+              "contribution": 1.083
+            },
+            {
+              "feature": "mean_hue",
+              "raw_value": 217.9857,
+              "standardised_value": 1.566,
+              "coefficient": 0.511,
+              "contribution": 0.8
+            },
+            {
+              "feature": "lesion_area_frac",
+              "raw_value": 0.0417,
+              "standardised_value": -0.417,
+              "coefficient": 1.689,
+              "contribution": -0.704
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 7.9802,
+              "standardised_value": 1.904,
+              "coefficient": 0.263,
+              "contribution": 0.5
+            },
+            {
+              "feature": "lbp_7",
+              "raw_value": 0.095,
+              "standardised_value": -1.144,
+              "coefficient": 0.426,
+              "contribution": -0.488
+            },
+            {
+              "feature": "std_sat",
+              "raw_value": 0.0865,
+              "standardised_value": -0.688,
+              "coefficient": -0.63,
+              "contribution": 0.434
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.983,
+              "standardised_value": 0.865,
+              "coefficient": -0.493,
+              "contribution": -0.426
+            },
+            {
+              "feature": "lesion_circularity",
+              "raw_value": 0.6023,
+              "standardised_value": 1.745,
+              "coefficient": 0.237,
+              "contribution": 0.413
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0386,
+              "standardised_value": -0.536,
+              "coefficient": 0.758,
+              "contribution": -0.406
+            },
+            {
+              "feature": "excess_green",
+              "raw_value": -0.0064,
+              "standardised_value": -0.716,
+              "coefficient": -0.495,
+              "contribution": 0.354
+            },
+            {
+              "feature": "entropy_std",
+              "raw_value": 0.7564,
+              "standardised_value": 0.228,
+              "coefficient": 1.351,
+              "contribution": 0.308
+            },
+            {
+              "feature": "std_val",
+              "raw_value": 0.133,
+              "standardised_value": -0.165,
+              "coefficient": -1.841,
+              "contribution": 0.303
+            },
+            {
+              "feature": "lbp_1",
+              "raw_value": 0.062,
+              "standardised_value": -1.112,
+              "coefficient": 0.272,
+              "contribution": -0.303
+            },
+            {
+              "feature": "lbp_0",
+              "raw_value": 0.0258,
+              "standardised_value": -1.404,
+              "coefficient": 0.195,
+              "contribution": -0.273
+            },
+            {
+              "feature": "mean_sat",
+              "raw_value": 0.0472,
+              "standardised_value": -1.113,
+              "coefficient": -0.242,
+              "contribution": 0.27
+            },
+            {
+              "feature": "lbp_uniform_frac",
+              "raw_value": 0.8777,
+              "standardised_value": 1.308,
+              "coefficient": 0.179,
+              "contribution": 0.234
+            },
+            {
+              "feature": "lbp_9",
+              "raw_value": 0.1223,
+              "standardised_value": -1.308,
+              "coefficient": -0.179,
+              "contribution": 0.234
+            },
+            {
+              "feature": "lesion_eccentricity",
+              "raw_value": 0.9626,
+              "standardised_value": 0.535,
+              "coefficient": -0.414,
+              "contribution": -0.222
+            },
+            {
+              "feature": "edge_mean",
+              "raw_value": 0.0148,
+              "standardised_value": 0.153,
+              "coefficient": 1.426,
+              "contribution": 0.218
+            },
+            {
+              "feature": "edge_frac_strong",
+              "raw_value": 0.0341,
+              "standardised_value": 0.274,
+              "coefficient": 0.739,
+              "contribution": 0.202
+            },
+            {
+              "feature": "entropy_mean",
+              "raw_value": 2.5386,
+              "standardised_value": -0.442,
+              "coefficient": -0.446,
+              "contribution": 0.197
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1729,
+              "standardised_value": -0.332,
+              "coefficient": -0.516,
+              "contribution": 0.171
+            },
+            {
+              "feature": "lbp_8",
+              "raw_value": 0.1599,
+              "standardised_value": -0.269,
+              "coefficient": -0.628,
+              "contribution": 0.169
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.9501,
+              "standardised_value": 0.726,
+              "coefficient": -0.217,
+              "contribution": -0.157
+            },
+            {
+              "feature": "frac_flat_gloss",
+              "raw_value": 0.1997,
+              "standardised_value": -1.819,
+              "coefficient": 0.086,
+              "contribution": -0.157
+            },
+            {
+              "feature": "lesion_max_area",
+              "raw_value": 0.0379,
+              "standardised_value": -0.266,
+              "coefficient": -0.547,
+              "contribution": 0.146
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0005,
+              "standardised_value": -0.383,
+              "coefficient": -0.349,
+              "contribution": 0.134
+            },
+            {
+              "feature": "n_lesions",
+              "raw_value": 2.0,
+              "standardised_value": -0.494,
+              "coefficient": 0.21,
+              "contribution": -0.104
+            },
+            {
+              "feature": "lbp_2",
+              "raw_value": 0.0273,
+              "standardised_value": -0.845,
+              "coefficient": 0.118,
+              "contribution": -0.1
+            },
+            {
+              "feature": "lbp_4",
+              "raw_value": 0.129,
+              "standardised_value": 1.196,
+              "coefficient": -0.072,
+              "contribution": -0.087
+            },
+            {
+              "feature": "gabor_energy_mean",
+              "raw_value": 0.0017,
+              "standardised_value": -0.287,
+              "coefficient": -0.292,
+              "contribution": 0.084
+            },
+            {
+              "feature": "green_minus_red",
+              "raw_value": 0.0018,
+              "standardised_value": 0.097,
+              "coefficient": 0.775,
+              "contribution": 0.075
+            },
+            {
+              "feature": "lesion_mean_area",
+              "raw_value": 0.0193,
+              "standardised_value": -0.291,
+              "coefficient": -0.21,
+              "contribution": 0.061
+            },
+            {
+              "feature": "lesion_area_std",
+              "raw_value": 0.0186,
+              "standardised_value": 0.181,
+              "coefficient": -0.326,
+              "contribution": -0.059
+            },
+            {
+              "feature": "gabor_energy_std",
+              "raw_value": 0.0003,
+              "standardised_value": -0.347,
+              "coefficient": -0.149,
+              "contribution": 0.052
+            },
+            {
+              "feature": "lbp_3",
+              "raw_value": 0.0995,
+              "standardised_value": 1.704,
+              "coefficient": -0.025,
+              "contribution": -0.043
+            },
+            {
+              "feature": "glcm_sat_homogeneity",
+              "raw_value": 0.882,
+              "standardised_value": 0.222,
+              "coefficient": 0.182,
+              "contribution": 0.04
+            },
+            {
+              "feature": "std_hue",
+              "raw_value": 60.9558,
+              "standardised_value": 0.128,
+              "coefficient": 0.272,
+              "contribution": 0.035
+            },
+            {
+              "feature": "s_local_var_mean",
+              "raw_value": 0.0007,
+              "standardised_value": -0.367,
+              "coefficient": 0.077,
+              "contribution": -0.028
+            },
+            {
+              "feature": "mean_val",
+              "raw_value": 0.7189,
+              "standardised_value": 0.408,
+              "coefficient": -0.063,
+              "contribution": -0.026
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7792,
+              "standardised_value": 0.308,
+              "coefficient": -0.052,
+              "contribution": -0.016
+            },
+            {
+              "feature": "lbp_6",
+              "raw_value": 0.0978,
+              "standardised_value": 1.67,
+              "coefficient": 0.008,
+              "contribution": 0.014
+            },
+            {
+              "feature": "glcm_sat_contrast",
+              "raw_value": 2.399,
+              "standardised_value": 0.303,
+              "coefficient": 0.043,
+              "contribution": 0.013
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0061,
+              "standardised_value": -0.573,
+              "coefficient": 0.011,
+              "contribution": -0.007
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0273,
+              "standardised_value": 0.447,
+              "coefficient": 0.0,
+              "contribution": 0.0
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "v_local_var_std",
+            "contribution": 1.874
+          },
+          {
+            "feature": "v_local_var_mean",
+            "contribution": -1.472
+          },
+          {
+            "feature": "lbp_5",
+            "contribution": 1.083
+          },
+          {
+            "feature": "mean_hue",
+            "contribution": 0.8
+          },
+          {
+            "feature": "lesion_area_frac",
+            "contribution": -0.704
+          },
+          {
+            "feature": "glcm_contrast",
+            "contribution": 0.5
+          }
+        ],
+        "true_class_explanation": {
+          "intercept": 0.16131283652163644,
+          "decision_score": -1.5434713833184535,
+          "contributions": [
+            {
+              "feature": "v_local_var_std",
+              "raw_value": 0.0079,
+              "standardised_value": 1.973,
+              "coefficient": -1.144,
+              "contribution": -2.256
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 7.9802,
+              "standardised_value": 1.904,
+              "coefficient": 0.686,
+              "contribution": 1.306
+            },
+            {
+              "feature": "lbp_0",
+              "raw_value": 0.0258,
+              "standardised_value": -1.404,
+              "coefficient": -0.794,
+              "contribution": 1.115
+            },
+            {
+              "feature": "v_local_var_mean",
+              "raw_value": 0.0016,
+              "standardised_value": 0.978,
+              "coefficient": 0.796,
+              "contribution": 0.778
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0386,
+              "standardised_value": -0.536,
+              "coefficient": -1.363,
+              "contribution": 0.73
+            },
+            {
+              "feature": "lbp_6",
+              "raw_value": 0.0978,
+              "standardised_value": 1.67,
+              "coefficient": -0.42,
+              "contribution": -0.701
+            },
+            {
+              "feature": "lbp_2",
+              "raw_value": 0.0273,
+              "standardised_value": -0.845,
+              "coefficient": 0.694,
+              "contribution": -0.587
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0061,
+              "standardised_value": -0.573,
+              "coefficient": 1.018,
+              "contribution": -0.584
+            },
+            {
+              "feature": "s_local_var_mean",
+              "raw_value": 0.0007,
+              "standardised_value": -0.367,
+              "coefficient": 1.34,
+              "contribution": -0.492
+            },
+            {
+              "feature": "lbp_uniform_frac",
+              "raw_value": 0.8777,
+              "standardised_value": 1.308,
+              "coefficient": -0.286,
+              "contribution": -0.374
+            },
+            {
+              "feature": "lbp_9",
+              "raw_value": 0.1223,
+              "standardised_value": -1.308,
+              "coefficient": 0.286,
+              "contribution": -0.374
+            },
+            {
+              "feature": "excess_green",
+              "raw_value": -0.0064,
+              "standardised_value": -0.716,
+              "coefficient": -0.504,
+              "contribution": 0.361
+            },
+            {
+              "feature": "lesion_area_frac",
+              "raw_value": 0.0417,
+              "standardised_value": -0.417,
+              "coefficient": -0.812,
+              "contribution": 0.338
+            },
+            {
+              "feature": "lbp_3",
+              "raw_value": 0.0995,
+              "standardised_value": 1.704,
+              "coefficient": 0.177,
+              "contribution": 0.301
+            },
+            {
+              "feature": "edge_mean",
+              "raw_value": 0.0148,
+              "standardised_value": 0.153,
+              "coefficient": -1.942,
+              "contribution": -0.297
+            },
+            {
+              "feature": "lesion_circularity",
+              "raw_value": 0.6023,
+              "standardised_value": 1.745,
+              "coefficient": -0.153,
+              "contribution": -0.267
+            },
+            {
+              "feature": "std_sat",
+              "raw_value": 0.0865,
+              "standardised_value": -0.688,
+              "coefficient": 0.385,
+              "contribution": -0.265
+            },
+            {
+              "feature": "lbp_1",
+              "raw_value": 0.062,
+              "standardised_value": -1.112,
+              "coefficient": -0.237,
+              "contribution": 0.263
+            },
+            {
+              "feature": "n_lesions",
+              "raw_value": 2.0,
+              "standardised_value": -0.494,
+              "coefficient": 0.515,
+              "contribution": -0.254
+            },
+            {
+              "feature": "lbp_5",
+              "raw_value": 0.1814,
+              "standardised_value": 1.532,
+              "coefficient": 0.149,
+              "contribution": 0.228
+            },
+            {
+              "feature": "entropy_mean",
+              "raw_value": 2.5386,
+              "standardised_value": -0.442,
+              "coefficient": 0.339,
+              "contribution": -0.15
+            },
+            {
+              "feature": "std_val",
+              "raw_value": 0.133,
+              "standardised_value": -0.165,
+              "coefficient": 0.909,
+              "contribution": -0.15
+            },
+            {
+              "feature": "glcm_sat_contrast",
+              "raw_value": 2.399,
+              "standardised_value": 0.303,
+              "coefficient": -0.474,
+              "contribution": -0.144
+            },
+            {
+              "feature": "entropy_std",
+              "raw_value": 0.7564,
+              "standardised_value": 0.228,
+              "coefficient": -0.629,
+              "contribution": -0.143
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7792,
+              "standardised_value": 0.308,
+              "coefficient": 0.415,
+              "contribution": 0.128
+            },
+            {
+              "feature": "edge_frac_strong",
+              "raw_value": 0.0341,
+              "standardised_value": 0.274,
+              "coefficient": -0.466,
+              "contribution": -0.128
+            },
+            {
+              "feature": "lbp_7",
+              "raw_value": 0.095,
+              "standardised_value": -1.144,
+              "coefficient": 0.105,
+              "contribution": -0.12
+            },
+            {
+              "feature": "lesion_mean_area",
+              "raw_value": 0.0193,
+              "standardised_value": -0.291,
+              "coefficient": 0.411,
+              "contribution": -0.119
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.983,
+              "standardised_value": 0.865,
+              "coefficient": 0.136,
+              "contribution": 0.117
+            },
+            {
+              "feature": "mean_sat",
+              "raw_value": 0.0472,
+              "standardised_value": -1.113,
+              "coefficient": -0.102,
+              "contribution": 0.113
+            },
+            {
+              "feature": "mean_val",
+              "raw_value": 0.7189,
+              "standardised_value": 0.408,
+              "coefficient": -0.269,
+              "contribution": -0.11
+            },
+            {
+              "feature": "mean_hue",
+              "raw_value": 217.9857,
+              "standardised_value": 1.566,
+              "coefficient": 0.056,
+              "contribution": 0.087
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1729,
+              "standardised_value": -0.332,
+              "coefficient": 0.244,
+              "contribution": -0.081
+            },
+            {
+              "feature": "lesion_max_area",
+              "raw_value": 0.0379,
+              "standardised_value": -0.266,
+              "coefficient": 0.284,
+              "contribution": -0.076
+            },
+            {
+              "feature": "glcm_sat_homogeneity",
+              "raw_value": 0.882,
+              "standardised_value": 0.222,
+              "coefficient": -0.34,
+              "contribution": -0.075
+            },
+            {
+              "feature": "std_hue",
+              "raw_value": 60.9558,
+              "standardised_value": 0.128,
+              "coefficient": -0.501,
+              "contribution": -0.064
+            },
+            {
+              "feature": "lesion_area_std",
+              "raw_value": 0.0186,
+              "standardised_value": 0.181,
+              "coefficient": 0.341,
+              "contribution": 0.062
+            },
+            {
+              "feature": "frac_flat_gloss",
+              "raw_value": 0.1997,
+              "standardised_value": -1.819,
+              "coefficient": -0.031,
+              "contribution": 0.057
+            },
+            {
+              "feature": "green_minus_red",
+              "raw_value": 0.0018,
+              "standardised_value": 0.097,
+              "coefficient": 0.433,
+              "contribution": 0.042
+            },
+            {
+              "feature": "lbp_4",
+              "raw_value": 0.129,
+              "standardised_value": 1.196,
+              "coefficient": 0.035,
+              "contribution": 0.041
+            },
+            {
+              "feature": "lbp_8",
+              "raw_value": 0.1599,
+              "standardised_value": -0.269,
+              "coefficient": -0.127,
+              "contribution": 0.034
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0273,
+              "standardised_value": 0.447,
+              "coefficient": -0.069,
+              "contribution": -0.031
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0005,
+              "standardised_value": -0.383,
+              "coefficient": 0.08,
+              "contribution": -0.031
+            },
+            {
+              "feature": "gabor_energy_std",
+              "raw_value": 0.0003,
+              "standardised_value": -0.347,
+              "coefficient": -0.087,
+              "contribution": 0.03
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.9501,
+              "standardised_value": 0.726,
+              "coefficient": 0.035,
+              "contribution": 0.025
+            },
+            {
+              "feature": "lesion_eccentricity",
+              "raw_value": 0.9626,
+              "standardised_value": 0.535,
+              "coefficient": 0.037,
+              "contribution": 0.02
+            },
+            {
+              "feature": "gabor_energy_mean",
+              "raw_value": 0.0017,
+              "standardised_value": -0.287,
+              "coefficient": 0.033,
+              "contribution": -0.01
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "split": {
+    "protocol": "common",
+    "feature_set": "extended",
+    "train": 2361,
+    "test": 680,
+    "grouped_by": "source photograph",
+    "shared_groups": 0,
+    "n_splits": null,
+    "note": "official test split from compression/data/prepared manifests"
+  },
+  "features": [
+    "frac_green",
+    "frac_yellow",
+    "frac_brown",
+    "frac_dark",
+    "frac_gray",
+    "mean_hue",
+    "std_hue",
+    "mean_sat",
+    "std_sat",
+    "mean_val",
+    "std_val",
+    "excess_green",
+    "green_minus_red",
+    "lesion_area_frac",
+    "n_lesions",
+    "lesion_mean_area",
+    "lesion_max_area",
+    "lesion_area_std",
+    "lesion_circularity",
+    "lesion_eccentricity",
+    "glcm_contrast",
+    "glcm_homogeneity",
+    "glcm_energy",
+    "glcm_correlation",
+    "lbp_0",
+    "lbp_1",
+    "lbp_2",
+    "lbp_3",
+    "lbp_4",
+    "lbp_5",
+    "lbp_6",
+    "lbp_7",
+    "lbp_8",
+    "lbp_9",
+    "lbp_uniform_frac",
+    "edge_mean",
+    "edge_frac_strong",
+    "v_local_var_mean",
+    "v_local_var_std",
+    "frac_flat_gloss",
+    "s_local_var_mean",
+    "entropy_mean",
+    "entropy_std",
+    "gabor_energy_mean",
+    "gabor_energy_std",
+    "glcm_sat_contrast",
+    "glcm_sat_homogeneity"
+  ]
+}

@@ -95,8 +95,8 @@ route by which background can drive an interpretable model's prediction.
 | MobileNetV2 (ImageNet) | 2.3M | 0.930 |
 | Scratch CNN, redesigned | 0.59M | 0.871 |
 | Scratch CNN, original architecture | 5.8M | 0.810 |
+| Logistic regression (47 features) | — | 0.742 |
 | Decision tree (9 features) | — | 0.667 |
-| Logistic regression (9 features) | — | 0.600 |
 
 `SAY:` Three points, in this order.
 (1) Transfer wins by **six points**, not by a collapse — and what it mainly buys
@@ -105,9 +105,11 @@ is time: 1,175 s vs 2,632 s.
 architecture together** — the same architecture on the corrected split gives
 0.810, and the remaining gap is that it spends 5.75M of 5.77M parameters on one
 `Flatten` into `Dense(64)`.
-(3) Interpretability costs **27 points**. Quote it only from the common protocol:
-the glass-box models scored on segmented crops give 0.692, but that is a
-different test set.
+(3) Interpretability costs **20 points** — 0.939 against 0.742. Two things must be
+named when quoting it: the protocol (segmented crops give 0.831, a different test
+set) and the feature set (the original nine features reach only 0.667). The
+47-feature set comes from the `pooja-glassbox-1` work, re-evaluated under a
+grouped split.
 
 ---
 
@@ -198,6 +200,7 @@ capture-source confound bounds what any accuracy figure on this dataset means.
 | Question | Answer |
 |---|---|
 | Why is the glass-box comparison fair now? | Same features, same manifests, same official 680 test images. The earlier 0.692 was on crops derived from *training* photographs. |
+| Why does the tree get *worse* with more features? | Depth 3 means it uses three features whatever it is offered. With 47 candidates it picks worse ones than it did from 9. Logistic regression uses all of them, so it gains. |
 | Why not use TFMOT for pruning? | Not in the course image. Pruning is written directly against Keras weights, which also makes the masking explicit. |
 | Why LIME and not Grad-CAM for the compressed models? | A `.tflite` graph exposes no gradients. LIME needs only inputs→probabilities, so the identical procedure runs on every variant. |
 | Why did the redesigned scratch CNN score *lower* on test than validation? | Validation is carved from the training photographs; the test split is the dataset's own. A model whose features come entirely from these photographs can lean on what they share. |

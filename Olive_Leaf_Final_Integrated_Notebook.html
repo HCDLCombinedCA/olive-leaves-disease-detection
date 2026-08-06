@@ -14718,7 +14718,7 @@ stage consumes the previous stage's output:</p>
 <tr>
   <td>2</td>
   <td><code>RUN_SEGMENTATION</code></td>
-  <td><code>yolo_segmenter_weights.pt</code> (<strong>not in the repository</strong>)</td>
+  <td>weights at <code>runs/segment/train/weights/best.pt</code></td>
   <td><code>olive_leaf_dataset/segmented/</code></td>
   <td>GPU-dependent</td>
 </tr>
@@ -14757,10 +14757,14 @@ reproduced in the table in section 3. Stage 5 was never timed end to end — it 
 dominated by the recovery training inside the pruning sweeps, eight fine-tuning
 runs in total, so it is the longest of the six. Stages 1 and 6 are quoted from
 observation rather than instrumentation.</p>
-<p>Stage 2 is the one gap in reproducibility from this repository alone: the
-segmenter weights are a fine-tuning artefact that is not version-controlled, so
-its crops are treated as a fixed input. Stages 3-6 do not depend on re-running
-it, because the crops themselves are committed.</p>
+<p>Stage 2 has one snag that is worth stating precisely, because it is a naming
+mismatch rather than a missing artefact. The fine-tuned segmenter weights <em>are</em>
+in the repository, at <code>runs/segment/train/weights/best.pt</code> -- YOLO11n-seg trained
+for 100 epochs on the olive dataset. But <code>leaf_segmenter/Leaf_Segmenter.ipynb</code>
+loads a file called <code>yolo_segmenter_weights.pt</code>, which does not exist under that
+name, so the notebook needs its <code>WEIGHTS</code> constant repointed before it will run.
+Stages 3-6 do not depend on re-running it either way, because the 3,003 crops are
+themselves committed.</p>
 
 </div>
 </div>
@@ -14801,7 +14805,7 @@ it, because the crops themselves are committed.</p>
 <span class="n">SCRATCH_ARCHS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;original&#39;</span><span class="p">,</span> <span class="s1">&#39;improved&#39;</span><span class="p">)</span>
 
 <span class="n">RUN_DATA_PREPARATION</span> <span class="o">=</span> <span class="kc">False</span>   <span class="c1"># about one minute</span>
-<span class="n">RUN_SEGMENTATION</span> <span class="o">=</span> <span class="kc">False</span>       <span class="c1"># needs YOLO weights that are not in the repository</span>
+<span class="n">RUN_SEGMENTATION</span> <span class="o">=</span> <span class="kc">False</span>       <span class="c1"># weights are committed; see section 2 on the path</span>
 <span class="n">RUN_SCRATCH_TRAINING</span> <span class="o">=</span> <span class="kc">False</span>   <span class="c1"># roughly 45 minutes per architecture on CPU</span>
 <span class="n">RUN_TRAINING</span> <span class="o">=</span> <span class="kc">False</span>           <span class="c1"># roughly 1-3 hours per backbone on CPU</span>
 <span class="n">RUN_COMPRESSION</span> <span class="o">=</span> <span class="kc">False</span>        <span class="c1"># conversion, pruning sweeps, and measurement</span>
@@ -15425,10 +15429,13 @@ cannot drift from the evaluation that produced it.</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">RUN_SEGMENTATION</span><span class="p">:</span>
-    <span class="c1"># Left off by default: Leaf_Segmenter.ipynb loads yolo_segmenter_weights.pt,</span>
-    <span class="c1"># which is a fine-tuning artefact that is not in the repository. The crops it</span>
-    <span class="c1"># produced are the durable output and are what section 4 consumes.</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Run leaf_segmenter/Leaf_Segmenter.ipynb with yolo_segmenter_weights.pt present.&#39;</span><span class="p">)</span>
+    <span class="c1"># Left off by default because the crops are committed and re-segmenting</span>
+    <span class="c1"># changes nothing downstream. Note that Leaf_Segmenter.ipynb loads a file</span>
+    <span class="c1"># named &#39;yolo_segmenter_weights.pt&#39;, which does not exist; the trained</span>
+    <span class="c1"># weights are at runs/segment/train/weights/best.pt, so WEIGHTS has to be</span>
+    <span class="c1"># repointed there first.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Repoint WEIGHTS in leaf_segmenter/Leaf_Segmenter.ipynb to&#39;</span><span class="p">,</span>
+          <span class="n">REPO_ROOT</span> <span class="o">/</span> <span class="s1">&#39;runs/segment/train/weights/best.pt&#39;</span><span class="p">)</span>
 
 <span class="n">found</span> <span class="o">=</span> <span class="n">needs</span><span class="p">(</span><span class="n">SEGMENTER_DIR</span> <span class="o">/</span> <span class="s1">&#39;seg_result.csv&#39;</span><span class="p">,</span>
               <span class="n">hint</span><span class="o">=</span><span class="s1">&#39;enable RUN_SEGMENTATION, or use the committed crops&#39;</span><span class="p">)</span>
@@ -15638,9 +15645,12 @@ dataset (section 8), that is a route by which background rather than leaf
 condition can drive a glass-box prediction -- and it is visible in the
 individual explanations, where GLCM texture features computed over the whole
 crop carry weight.</p>
-<p>Third, the segmenter was fine-tuned on labelled data and its weights
-(<code>yolo_segmenter_weights.pt</code>) are not in the repository, so the crops are
-treated as a fixed input here rather than something this notebook regenerates.</p>
+<p>Third, the crops are treated as a fixed input here rather than something this
+notebook regenerates. The fine-tuned weights are committed at
+<code>runs/segment/train/weights/best.pt</code> (YOLO11n-seg, 100 epochs on the olive
+dataset), but <code>leaf_segmenter/Leaf_Segmenter.ipynb</code> loads them under the name
+<code>yolo_segmenter_weights.pt</code>, which exists nowhere in the repository -- a
+one-line fix in that notebook, not a missing artefact.</p>
 
 </div>
 </div>
@@ -15750,17 +15760,17 @@ the edge-oriented primary model; DenseNet121 is the heavier comparison.</p>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
 </style>
-<table id="T_76f6a">
+<table id="T_454df">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_76f6a_level0_col0" class="col_heading level0 col0" >initialisation</th>
-      <th id="T_76f6a_level0_col1" class="col_heading level0 col1" >parameters</th>
-      <th id="T_76f6a_level0_col2" class="col_heading level0 col2" >train seconds</th>
-      <th id="T_76f6a_level0_col3" class="col_heading level0 col3" >validation macro-F1</th>
-      <th id="T_76f6a_level0_col4" class="col_heading level0 col4" >test accuracy</th>
-      <th id="T_76f6a_level0_col5" class="col_heading level0 col5" >test macro-F1</th>
-      <th id="T_76f6a_level0_col6" class="col_heading level0 col6" >Aculus recall</th>
+      <th id="T_454df_level0_col0" class="col_heading level0 col0" >initialisation</th>
+      <th id="T_454df_level0_col1" class="col_heading level0 col1" >parameters</th>
+      <th id="T_454df_level0_col2" class="col_heading level0 col2" >train seconds</th>
+      <th id="T_454df_level0_col3" class="col_heading level0 col3" >validation macro-F1</th>
+      <th id="T_454df_level0_col4" class="col_heading level0 col4" >test accuracy</th>
+      <th id="T_454df_level0_col5" class="col_heading level0 col5" >test macro-F1</th>
+      <th id="T_454df_level0_col6" class="col_heading level0 col6" >Aculus recall</th>
     </tr>
     <tr>
       <th class="index_name level0" >model</th>
@@ -15775,44 +15785,44 @@ the edge-oriented primary model; DenseNet121 is the heavier comparison.</p>
   </thead>
   <tbody>
     <tr>
-      <th id="T_76f6a_level0_row0" class="row_heading level0 row0" >scratch CNN (notebook architecture)</th>
-      <td id="T_76f6a_row0_col0" class="data row0 col0" >from scratch</td>
-      <td id="T_76f6a_row0_col1" class="data row0 col1" >5767139</td>
-      <td id="T_76f6a_row0_col2" class="data row0 col2" >2687.3000</td>
-      <td id="T_76f6a_row0_col3" class="data row0 col3" >0.7765</td>
-      <td id="T_76f6a_row0_col4" class="data row0 col4" >0.8118</td>
-      <td id="T_76f6a_row0_col5" class="data row0 col5" >0.8095</td>
-      <td id="T_76f6a_row0_col6" class="data row0 col6" >0.7350</td>
+      <th id="T_454df_level0_row0" class="row_heading level0 row0" >scratch CNN (notebook architecture)</th>
+      <td id="T_454df_row0_col0" class="data row0 col0" >from scratch</td>
+      <td id="T_454df_row0_col1" class="data row0 col1" >5767139</td>
+      <td id="T_454df_row0_col2" class="data row0 col2" >2687.3000</td>
+      <td id="T_454df_row0_col3" class="data row0 col3" >0.7765</td>
+      <td id="T_454df_row0_col4" class="data row0 col4" >0.8118</td>
+      <td id="T_454df_row0_col5" class="data row0 col5" >0.8095</td>
+      <td id="T_454df_row0_col6" class="data row0 col6" >0.7350</td>
     </tr>
     <tr>
-      <th id="T_76f6a_level0_row1" class="row_heading level0 row1" >scratch CNN (redesigned)</th>
-      <td id="T_76f6a_row1_col0" class="data row1 col0" >from scratch</td>
-      <td id="T_76f6a_row1_col1" class="data row1 col1" >585059</td>
-      <td id="T_76f6a_row1_col2" class="data row1 col2" >2632.5000</td>
-      <td id="T_76f6a_row1_col3" class="data row1 col3" >0.9162</td>
-      <td id="T_76f6a_row1_col4" class="data row1 col4" >0.8706</td>
-      <td id="T_76f6a_row1_col5" class="data row1 col5" >0.8712</td>
-      <td id="T_76f6a_row1_col6" class="data row1 col6" >0.8300</td>
+      <th id="T_454df_level0_row1" class="row_heading level0 row1" >scratch CNN (redesigned)</th>
+      <td id="T_454df_row1_col0" class="data row1 col0" >from scratch</td>
+      <td id="T_454df_row1_col1" class="data row1 col1" >585059</td>
+      <td id="T_454df_row1_col2" class="data row1 col2" >2632.5000</td>
+      <td id="T_454df_row1_col3" class="data row1 col3" >0.9162</td>
+      <td id="T_454df_row1_col4" class="data row1 col4" >0.8706</td>
+      <td id="T_454df_row1_col5" class="data row1 col5" >0.8712</td>
+      <td id="T_454df_row1_col6" class="data row1 col6" >0.8300</td>
     </tr>
     <tr>
-      <th id="T_76f6a_level0_row2" class="row_heading level0 row2" >MobileNetV2</th>
-      <td id="T_76f6a_row2_col0" class="data row2 col0" >ImageNet transfer</td>
-      <td id="T_76f6a_row2_col1" class="data row2 col1" >2261827</td>
-      <td id="T_76f6a_row2_col2" class="data row2 col2" >1175.2000</td>
-      <td id="T_76f6a_row2_col3" class="data row2 col3" >0.9142</td>
-      <td id="T_76f6a_row2_col4" class="data row2 col4" >0.9309</td>
-      <td id="T_76f6a_row2_col5" class="data row2 col5" >0.9296</td>
-      <td id="T_76f6a_row2_col6" class="data row2 col6" >0.8850</td>
+      <th id="T_454df_level0_row2" class="row_heading level0 row2" >MobileNetV2</th>
+      <td id="T_454df_row2_col0" class="data row2 col0" >ImageNet transfer</td>
+      <td id="T_454df_row2_col1" class="data row2 col1" >2261827</td>
+      <td id="T_454df_row2_col2" class="data row2 col2" >1175.2000</td>
+      <td id="T_454df_row2_col3" class="data row2 col3" >0.9142</td>
+      <td id="T_454df_row2_col4" class="data row2 col4" >0.9309</td>
+      <td id="T_454df_row2_col5" class="data row2 col5" >0.9296</td>
+      <td id="T_454df_row2_col6" class="data row2 col6" >0.8850</td>
     </tr>
     <tr>
-      <th id="T_76f6a_level0_row3" class="row_heading level0 row3" >DenseNet121</th>
-      <td id="T_76f6a_row3_col0" class="data row3 col0" >ImageNet transfer</td>
-      <td id="T_76f6a_row3_col1" class="data row3 col1" >7040579</td>
-      <td id="T_76f6a_row3_col2" class="data row3 col2" >3459.6000</td>
-      <td id="T_76f6a_row3_col3" class="data row3 col3" >0.9237</td>
-      <td id="T_76f6a_row3_col4" class="data row3 col4" >0.9397</td>
-      <td id="T_76f6a_row3_col5" class="data row3 col5" >0.9387</td>
-      <td id="T_76f6a_row3_col6" class="data row3 col6" >0.9700</td>
+      <th id="T_454df_level0_row3" class="row_heading level0 row3" >DenseNet121</th>
+      <td id="T_454df_row3_col0" class="data row3 col0" >ImageNet transfer</td>
+      <td id="T_454df_row3_col1" class="data row3 col1" >7040579</td>
+      <td id="T_454df_row3_col2" class="data row3 col2" >3459.6000</td>
+      <td id="T_454df_row3_col3" class="data row3 col3" >0.9237</td>
+      <td id="T_454df_row3_col4" class="data row3 col4" >0.9397</td>
+      <td id="T_454df_row3_col5" class="data row3 col5" >0.9387</td>
+      <td id="T_454df_row3_col6" class="data row3 col6" >0.9700</td>
     </tr>
   </tbody>
 </table>
@@ -15837,8 +15847,17 @@ fits both a Decision Tree and a Logistic Regression. It replaces the original
 glass-box notebook, whose exported filenames are misaligned with shuffled labels
 and whose random crop split leaks source photographs across the train/test
 boundary.</p>
-<p>It runs under two protocols, and the difference between them is a result, not
-bookkeeping:</p>
+<p>It runs under two protocols and two feature sets, and the differences between
+them are results rather than bookkeeping.</p>
+<p>The feature sets: the <strong>base</strong> nine (five colour fractions inside a leaf mask,
+four GLCM texture descriptors) and an <strong>extended</strong> 47, adding colour statistics,
+lesion morphology, LBP, edge, local-variance, entropy, Gabor and
+saturation-GLCM descriptors. The extended set is reproduced from the
+<code>pooja-glassbox-1</code> notebook, which is worth having -- it lifts logistic
+regression from 0.600 to 0.742 on the common protocol -- but which splits with
+<code>train_test_split</code> and no <code>groups=</code>, so it is evaluated here under the grouped
+split instead.</p>
+<p>The protocols:</p>
 <ul>
 <li><strong>segmented</strong> -- the setting the features were designed for: one crop per
 detected leaf, held out with <code>StratifiedGroupKFold</code> grouped on the source
@@ -15860,8 +15879,10 @@ that makes section 5's comparison like-for-like.</li>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">RUN_ANALYSIS</span><span class="p">:</span>
-    <span class="n">run_source</span><span class="p">(</span><span class="n">ANALYSIS_DIR</span><span class="p">,</span> <span class="s1">&#39;glassbox_fixed.py&#39;</span><span class="p">)</span>
-    <span class="n">run_source</span><span class="p">(</span><span class="n">ANALYSIS_DIR</span><span class="p">,</span> <span class="s1">&#39;glassbox_fixed.py&#39;</span><span class="p">,</span> <span class="s1">&#39;--protocol&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">protocol</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;segmented&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">features</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;extended&#39;</span><span class="p">):</span>
+            <span class="n">run_source</span><span class="p">(</span><span class="n">ANALYSIS_DIR</span><span class="p">,</span> <span class="s1">&#39;glassbox_fixed.py&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;--protocol&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="s1">&#39;--features&#39;</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15877,31 +15898,38 @@ that makes section 5's comparison like-for-like.</li>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GLASSBOX_FILES</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;segmented&#39;</span><span class="p">:</span> <span class="s1">&#39;glassbox_fixed.json&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;common&#39;</span><span class="p">:</span> <span class="s1">&#39;glassbox_common_protocol.json&#39;</span><span class="p">}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GLASSBOX_FILES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s1">&#39;segmented&#39;</span><span class="p">,</span> <span class="s1">&#39;base&#39;</span><span class="p">):</span> <span class="s1">&#39;glassbox_fixed.json&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;segmented&#39;</span><span class="p">,</span> <span class="s1">&#39;extended&#39;</span><span class="p">):</span> <span class="s1">&#39;glassbox_fixed_extended.json&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;base&#39;</span><span class="p">):</span> <span class="s1">&#39;glassbox_common_protocol.json&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;extended&#39;</span><span class="p">):</span> <span class="s1">&#39;glassbox_common_protocol_extended.json&#39;</span><span class="p">,</span>
+<span class="p">}</span>
 
 <span class="n">glassbox</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">GLASSBOX_FILES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">GLASSBOX_FILES</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="n">found</span> <span class="o">=</span> <span class="n">needs</span><span class="p">(</span><span class="n">ANALYSIS_RESULTS</span> <span class="o">/</span> <span class="n">filename</span><span class="p">,</span> <span class="n">hint</span><span class="o">=</span><span class="s1">&#39;enable RUN_ANALYSIS&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
-        <span class="n">glassbox</span><span class="p">[</span><span class="n">protocol</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">glassbox</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_json</span><span class="p">(</span><span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="n">glassbox_rows</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">features</span><span class="p">),</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;decision_tree&#39;</span><span class="p">,</span> <span class="s1">&#39;logistic_regression&#39;</span><span class="p">):</span>
         <span class="n">glassbox_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
             <span class="s1">&#39;protocol&#39;</span><span class="p">:</span> <span class="n">protocol</span><span class="p">,</span>
+            <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> (</span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">])),</span>
             <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span>
             <span class="s1">&#39;test images&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">][</span><span class="s1">&#39;test&#39;</span><span class="p">],</span>
             <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
             <span class="s1">&#39;macro-F1&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;macro_f1&#39;</span><span class="p">],</span>
         <span class="p">})</span>
-<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">glassbox_rows</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;protocol&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">glassbox_rows</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;protocol&#39;</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">])</span>
         <span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
 
-<span class="k">for</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> protocol: </span><span class="si">%s</span><span class="s1">, source photographs shared across the split: </span><span class="si">%d</span><span class="s1">&#39;</span>
-          <span class="o">%</span> <span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">][</span><span class="s1">&#39;note&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">][</span><span class="s1">&#39;shared_groups&#39;</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">protocol</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;segmented&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">glassbox</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">protocol</span><span class="p">,</span> <span class="s1">&#39;base&#39;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> protocol: </span><span class="si">%s</span><span class="s1">, source photographs shared across the split: </span><span class="si">%d</span><span class="s1">&#39;</span>
+              <span class="o">%</span> <span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">][</span><span class="s1">&#39;note&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;split&#39;</span><span class="p">][</span><span class="s1">&#39;shared_groups&#39;</span><span class="p">]))</span>
 </pre></div>
 
      </div>
@@ -15924,18 +15952,20 @@ that makes section 5's comparison like-for-like.</li>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
 </style>
-<table id="T_78de3">
+<table id="T_9c1a9">
   <thead>
     <tr>
       <th class="blank" >&nbsp;</th>
+      <th class="blank" >&nbsp;</th>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_78de3_level0_col0" class="col_heading level0 col0" >test images</th>
-      <th id="T_78de3_level0_col1" class="col_heading level0 col1" >accuracy</th>
-      <th id="T_78de3_level0_col2" class="col_heading level0 col2" >macro-F1</th>
+      <th id="T_9c1a9_level0_col0" class="col_heading level0 col0" >test images</th>
+      <th id="T_9c1a9_level0_col1" class="col_heading level0 col1" >accuracy</th>
+      <th id="T_9c1a9_level0_col2" class="col_heading level0 col2" >macro-F1</th>
     </tr>
     <tr>
       <th class="index_name level0" >protocol</th>
-      <th class="index_name level1" >model</th>
+      <th class="index_name level1" >features</th>
+      <th class="index_name level2" >model</th>
       <th class="blank col0" >&nbsp;</th>
       <th class="blank col1" >&nbsp;</th>
       <th class="blank col2" >&nbsp;</th>
@@ -15943,30 +15973,58 @@ that makes section 5's comparison like-for-like.</li>
   </thead>
   <tbody>
     <tr>
-      <th id="T_78de3_level0_row0" class="row_heading level0 row0" rowspan="2">segmented</th>
-      <th id="T_78de3_level1_row0" class="row_heading level1 row0" >decision tree</th>
-      <td id="T_78de3_row0_col0" class="data row0 col0" >995</td>
-      <td id="T_78de3_row0_col1" class="data row0 col1" >0.6241</td>
-      <td id="T_78de3_row0_col2" class="data row0 col2" >0.6208</td>
+      <th id="T_9c1a9_level0_row0" class="row_heading level0 row0" rowspan="4">segmented</th>
+      <th id="T_9c1a9_level1_row0" class="row_heading level1 row0" rowspan="2">base (9)</th>
+      <th id="T_9c1a9_level2_row0" class="row_heading level2 row0" >decision tree</th>
+      <td id="T_9c1a9_row0_col0" class="data row0 col0" >995</td>
+      <td id="T_9c1a9_row0_col1" class="data row0 col1" >0.6241</td>
+      <td id="T_9c1a9_row0_col2" class="data row0 col2" >0.6208</td>
     </tr>
     <tr>
-      <th id="T_78de3_level1_row1" class="row_heading level1 row1" >logistic regression</th>
-      <td id="T_78de3_row1_col0" class="data row1 col0" >995</td>
-      <td id="T_78de3_row1_col1" class="data row1 col1" >0.7106</td>
-      <td id="T_78de3_row1_col2" class="data row1 col2" >0.6924</td>
+      <th id="T_9c1a9_level2_row1" class="row_heading level2 row1" >logistic regression</th>
+      <td id="T_9c1a9_row1_col0" class="data row1 col0" >995</td>
+      <td id="T_9c1a9_row1_col1" class="data row1 col1" >0.7106</td>
+      <td id="T_9c1a9_row1_col2" class="data row1 col2" >0.6924</td>
     </tr>
     <tr>
-      <th id="T_78de3_level0_row2" class="row_heading level0 row2" rowspan="2">common</th>
-      <th id="T_78de3_level1_row2" class="row_heading level1 row2" >decision tree</th>
-      <td id="T_78de3_row2_col0" class="data row2 col0" >680</td>
-      <td id="T_78de3_row2_col1" class="data row2 col1" >0.6838</td>
-      <td id="T_78de3_row2_col2" class="data row2 col2" >0.6674</td>
+      <th id="T_9c1a9_level1_row2" class="row_heading level1 row2" rowspan="2">extended (47)</th>
+      <th id="T_9c1a9_level2_row2" class="row_heading level2 row2" >decision tree</th>
+      <td id="T_9c1a9_row2_col0" class="data row2 col0" >995</td>
+      <td id="T_9c1a9_row2_col1" class="data row2 col1" >0.6935</td>
+      <td id="T_9c1a9_row2_col2" class="data row2 col2" >0.6790</td>
     </tr>
     <tr>
-      <th id="T_78de3_level1_row3" class="row_heading level1 row3" >logistic regression</th>
-      <td id="T_78de3_row3_col0" class="data row3 col0" >680</td>
-      <td id="T_78de3_row3_col1" class="data row3 col1" >0.6206</td>
-      <td id="T_78de3_row3_col2" class="data row3 col2" >0.5999</td>
+      <th id="T_9c1a9_level2_row3" class="row_heading level2 row3" >logistic regression</th>
+      <td id="T_9c1a9_row3_col0" class="data row3 col0" >995</td>
+      <td id="T_9c1a9_row3_col1" class="data row3 col1" >0.8372</td>
+      <td id="T_9c1a9_row3_col2" class="data row3 col2" >0.8306</td>
+    </tr>
+    <tr>
+      <th id="T_9c1a9_level0_row4" class="row_heading level0 row4" rowspan="4">common</th>
+      <th id="T_9c1a9_level1_row4" class="row_heading level1 row4" rowspan="2">base (9)</th>
+      <th id="T_9c1a9_level2_row4" class="row_heading level2 row4" >decision tree</th>
+      <td id="T_9c1a9_row4_col0" class="data row4 col0" >680</td>
+      <td id="T_9c1a9_row4_col1" class="data row4 col1" >0.6838</td>
+      <td id="T_9c1a9_row4_col2" class="data row4 col2" >0.6674</td>
+    </tr>
+    <tr>
+      <th id="T_9c1a9_level2_row5" class="row_heading level2 row5" >logistic regression</th>
+      <td id="T_9c1a9_row5_col0" class="data row5 col0" >680</td>
+      <td id="T_9c1a9_row5_col1" class="data row5 col1" >0.6206</td>
+      <td id="T_9c1a9_row5_col2" class="data row5 col2" >0.5999</td>
+    </tr>
+    <tr>
+      <th id="T_9c1a9_level1_row6" class="row_heading level1 row6" rowspan="2">extended (47)</th>
+      <th id="T_9c1a9_level2_row6" class="row_heading level2 row6" >decision tree</th>
+      <td id="T_9c1a9_row6_col0" class="data row6 col0" >680</td>
+      <td id="T_9c1a9_row6_col1" class="data row6 col1" >0.6000</td>
+      <td id="T_9c1a9_row6_col2" class="data row6 col2" >0.5524</td>
+    </tr>
+    <tr>
+      <th id="T_9c1a9_level2_row7" class="row_heading level2 row7" >logistic regression</th>
+      <td id="T_9c1a9_row7_col0" class="data row7 col0" >680</td>
+      <td id="T_9c1a9_row7_col1" class="data row7 col1" >0.7456</td>
+      <td id="T_9c1a9_row7_col2" class="data row7 col2" >0.7421</td>
     </tr>
   </tbody>
 </table>
@@ -15999,11 +16057,14 @@ common protocol: official test split from compression/data/prepared manifests, s
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># The global glass-box explanation: what each feature is worth to each class.</span>
-<span class="k">if</span> <span class="s1">&#39;common&#39;</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="p">:</span>
-    <span class="n">coefficients</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">glassbox</span><span class="p">[</span><span class="s1">&#39;common&#39;</span><span class="p">][</span><span class="s1">&#39;logistic_regression_coefficients&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+<span class="c1"># Shown for the nine base features, which fit on a page; the 47-feature</span>
+<span class="c1"># coefficients are in the JSON.</span>
+<span class="k">if</span> <span class="p">(</span><span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;base&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="p">:</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">glassbox</span><span class="p">[(</span><span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;base&#39;</span><span class="p">)]</span>
+    <span class="n">coefficients</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">base</span><span class="p">[</span><span class="s1">&#39;logistic_regression_coefficients&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
     <span class="n">coefficients</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;feature&#39;</span>
     <span class="n">display</span><span class="p">(</span><span class="n">coefficients</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">glassbox</span><span class="p">[</span><span class="s1">&#39;common&#39;</span><span class="p">][</span><span class="s1">&#39;decision_tree_rules&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">base</span><span class="p">[</span><span class="s1">&#39;decision_tree_rules&#39;</span><span class="p">])</span>
 </pre></div>
 
      </div>
@@ -16025,110 +16086,110 @@ common protocol: official test split from compression/data/prepared manifests, s
 
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
-#T_d2554_row0_col0 {
+#T_48c7b_row0_col0 {
   background-color: #5ca3cb;
   color: #f1f1f1;
 }
-#T_d2554_row0_col1 {
+#T_48c7b_row0_col1 {
   background-color: #2369ad;
   color: #f1f1f1;
 }
-#T_d2554_row0_col2, #T_d2554_row1_col0 {
+#T_48c7b_row0_col2, #T_48c7b_row1_col0 {
   background-color: #67001f;
   color: #f1f1f1;
 }
-#T_d2554_row1_col1 {
+#T_48c7b_row1_col1 {
   background-color: #aed3e6;
   color: #000000;
 }
-#T_d2554_row1_col2 {
+#T_48c7b_row1_col2 {
   background-color: #053061;
   color: #f1f1f1;
 }
-#T_d2554_row2_col0, #T_d2554_row5_col1 {
+#T_48c7b_row2_col0, #T_48c7b_row5_col1 {
   background-color: #b1d5e7;
   color: #000000;
 }
-#T_d2554_row2_col1, #T_d2554_row4_col0 {
+#T_48c7b_row2_col1, #T_48c7b_row4_col0 {
   background-color: #f7b99c;
   color: #000000;
 }
-#T_d2554_row2_col2 {
+#T_48c7b_row2_col2 {
   background-color: #a5cee3;
   color: #000000;
 }
-#T_d2554_row3_col0 {
+#T_48c7b_row3_col0 {
   background-color: #cce2ef;
   color: #000000;
 }
-#T_d2554_row3_col1 {
+#T_48c7b_row3_col1 {
   background-color: #fbe6da;
   color: #000000;
 }
-#T_d2554_row3_col2 {
+#T_48c7b_row3_col2 {
   background-color: #cae1ee;
   color: #000000;
 }
-#T_d2554_row4_col1 {
+#T_48c7b_row4_col1 {
   background-color: #62a7ce;
   color: #f1f1f1;
 }
-#T_d2554_row4_col2 {
+#T_48c7b_row4_col2 {
   background-color: #deebf2;
   color: #000000;
 }
-#T_d2554_row5_col0 {
+#T_48c7b_row5_col0 {
   background-color: #fbe3d4;
   color: #000000;
 }
-#T_d2554_row5_col2 {
+#T_48c7b_row5_col2 {
   background-color: #d8e9f1;
   color: #000000;
 }
-#T_d2554_row6_col0 {
+#T_48c7b_row6_col0 {
   background-color: #eff3f5;
   color: #000000;
 }
-#T_d2554_row6_col1 {
+#T_48c7b_row6_col1 {
   background-color: #fddcc9;
   color: #000000;
 }
-#T_d2554_row6_col2 {
+#T_48c7b_row6_col2 {
   background-color: #78b4d5;
   color: #000000;
 }
-#T_d2554_row7_col0 {
+#T_48c7b_row7_col0 {
   background-color: #a0cce2;
   color: #000000;
 }
-#T_d2554_row7_col1 {
+#T_48c7b_row7_col1 {
   background-color: #f0f4f6;
   color: #000000;
 }
-#T_d2554_row7_col2 {
+#T_48c7b_row7_col2 {
   background-color: #f9eee7;
   color: #000000;
 }
-#T_d2554_row8_col0 {
+#T_48c7b_row8_col0 {
   background-color: #e3edf3;
   color: #000000;
 }
-#T_d2554_row8_col1 {
+#T_48c7b_row8_col1 {
   background-color: #f8f2ef;
   color: #000000;
 }
-#T_d2554_row8_col2 {
+#T_48c7b_row8_col2 {
   background-color: #c2ddec;
   color: #000000;
 }
 </style>
-<table id="T_d2554">
+<table id="T_48c7b">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_d2554_level0_col0" class="col_heading level0 col0" >Healthy</th>
-      <th id="T_d2554_level0_col1" class="col_heading level0 col1" >aculus_olearius</th>
-      <th id="T_d2554_level0_col2" class="col_heading level0 col2" >olive_peacock_spot</th>
+      <th id="T_48c7b_level0_col0" class="col_heading level0 col0" >Healthy</th>
+      <th id="T_48c7b_level0_col1" class="col_heading level0 col1" >aculus_olearius</th>
+      <th id="T_48c7b_level0_col2" class="col_heading level0 col2" >olive_peacock_spot</th>
     </tr>
     <tr>
       <th class="index_name level0" >feature</th>
@@ -16139,58 +16200,58 @@ common protocol: official test split from compression/data/prepared manifests, s
   </thead>
   <tbody>
     <tr>
-      <th id="T_d2554_level0_row0" class="row_heading level0 row0" >frac_green</th>
-      <td id="T_d2554_row0_col0" class="data row0 col0" >0.506</td>
-      <td id="T_d2554_row0_col1" class="data row0 col1" >0.808</td>
-      <td id="T_d2554_row0_col2" class="data row0 col2" >-1.314</td>
+      <th id="T_48c7b_level0_row0" class="row_heading level0 row0" >frac_green</th>
+      <td id="T_48c7b_row0_col0" class="data row0 col0" >0.506</td>
+      <td id="T_48c7b_row0_col1" class="data row0 col1" >0.808</td>
+      <td id="T_48c7b_row0_col2" class="data row0 col2" >-1.314</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row1" class="row_heading level0 row1" >frac_yellow</th>
-      <td id="T_d2554_row1_col0" class="data row1 col0" >-1.305</td>
-      <td id="T_d2554_row1_col1" class="data row1 col1" >0.242</td>
-      <td id="T_d2554_row1_col2" class="data row1 col2" >1.063</td>
+      <th id="T_48c7b_level0_row1" class="row_heading level0 row1" >frac_yellow</th>
+      <td id="T_48c7b_row1_col0" class="data row1 col0" >-1.305</td>
+      <td id="T_48c7b_row1_col1" class="data row1 col1" >0.242</td>
+      <td id="T_48c7b_row1_col2" class="data row1 col2" >1.063</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row2" class="row_heading level0 row2" >frac_brown</th>
-      <td id="T_d2554_row2_col0" class="data row2 col0" >0.234</td>
-      <td id="T_d2554_row2_col1" class="data row2 col1" >-0.511</td>
-      <td id="T_d2554_row2_col2" class="data row2 col2" >0.277</td>
+      <th id="T_48c7b_level0_row2" class="row_heading level0 row2" >frac_brown</th>
+      <td id="T_48c7b_row2_col0" class="data row2 col0" >0.234</td>
+      <td id="T_48c7b_row2_col1" class="data row2 col1" >-0.511</td>
+      <td id="T_48c7b_row2_col2" class="data row2 col2" >0.277</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row3" class="row_heading level0 row3" >frac_dark</th>
-      <td id="T_d2554_row3_col0" class="data row3 col0" >0.126</td>
-      <td id="T_d2554_row3_col1" class="data row3 col1" >-0.267</td>
-      <td id="T_d2554_row3_col2" class="data row3 col2" >0.141</td>
+      <th id="T_48c7b_level0_row3" class="row_heading level0 row3" >frac_dark</th>
+      <td id="T_48c7b_row3_col0" class="data row3 col0" >0.126</td>
+      <td id="T_48c7b_row3_col1" class="data row3 col1" >-0.267</td>
+      <td id="T_48c7b_row3_col2" class="data row3 col2" >0.141</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row4" class="row_heading level0 row4" >frac_gray</th>
-      <td id="T_d2554_row4_col0" class="data row4 col0" >-0.514</td>
-      <td id="T_d2554_row4_col1" class="data row4 col1" >0.489</td>
-      <td id="T_d2554_row4_col2" class="data row4 col2" >0.025</td>
+      <th id="T_48c7b_level0_row4" class="row_heading level0 row4" >frac_gray</th>
+      <td id="T_48c7b_row4_col0" class="data row4 col0" >-0.514</td>
+      <td id="T_48c7b_row4_col1" class="data row4 col1" >0.489</td>
+      <td id="T_48c7b_row4_col2" class="data row4 col2" >0.025</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row5" class="row_heading level0 row5" >glcm_contrast</th>
-      <td id="T_d2554_row5_col0" class="data row5 col0" >-0.293</td>
-      <td id="T_d2554_row5_col1" class="data row5 col1" >0.229</td>
-      <td id="T_d2554_row5_col2" class="data row5 col2" >0.064</td>
+      <th id="T_48c7b_level0_row5" class="row_heading level0 row5" >glcm_contrast</th>
+      <td id="T_48c7b_row5_col0" class="data row5 col0" >-0.293</td>
+      <td id="T_48c7b_row5_col1" class="data row5 col1" >0.229</td>
+      <td id="T_48c7b_row5_col2" class="data row5 col2" >0.064</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row6" class="row_heading level0 row6" >glcm_homogeneity</th>
-      <td id="T_d2554_row6_col0" class="data row6 col0" >-0.075</td>
-      <td id="T_d2554_row6_col1" class="data row6 col1" >-0.349</td>
-      <td id="T_d2554_row6_col2" class="data row6 col2" >0.424</td>
+      <th id="T_48c7b_level0_row6" class="row_heading level0 row6" >glcm_homogeneity</th>
+      <td id="T_48c7b_row6_col0" class="data row6 col0" >-0.075</td>
+      <td id="T_48c7b_row6_col1" class="data row6 col1" >-0.349</td>
+      <td id="T_48c7b_row6_col2" class="data row6 col2" >0.424</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row7" class="row_heading level0 row7" >glcm_energy</th>
-      <td id="T_d2554_row7_col0" class="data row7 col0" >0.295</td>
-      <td id="T_d2554_row7_col1" class="data row7 col1" >-0.087</td>
-      <td id="T_d2554_row7_col2" class="data row7 col2" >-0.208</td>
+      <th id="T_48c7b_level0_row7" class="row_heading level0 row7" >glcm_energy</th>
+      <td id="T_48c7b_row7_col0" class="data row7 col0" >0.295</td>
+      <td id="T_48c7b_row7_col1" class="data row7 col1" >-0.087</td>
+      <td id="T_48c7b_row7_col2" class="data row7 col2" >-0.208</td>
     </tr>
     <tr>
-      <th id="T_d2554_level0_row8" class="row_heading level0 row8" >glcm_correlation</th>
-      <td id="T_d2554_row8_col0" class="data row8 col0" >0.001</td>
-      <td id="T_d2554_row8_col1" class="data row8 col1" >-0.169</td>
-      <td id="T_d2554_row8_col2" class="data row8 col2" >0.168</td>
+      <th id="T_48c7b_level0_row8" class="row_heading level0 row8" >glcm_correlation</th>
+      <td id="T_48c7b_row8_col0" class="data row8 col0" >0.001</td>
+      <td id="T_48c7b_row8_col1" class="data row8 col1" >-0.169</td>
+      <td id="T_48c7b_row8_col2" class="data row8 col2" >0.168</td>
     </tr>
   </tbody>
 </table>
@@ -16271,13 +16332,13 @@ alongside the like-for-like comparison.</p>
     <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
         <span class="n">display</span><span class="p">(</span><span class="n">DisplayImage</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
 
-<span class="k">if</span> <span class="s1">&#39;segmented&#39;</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="p">:</span>
+<span class="k">if</span> <span class="p">(</span><span class="s1">&#39;segmented&#39;</span><span class="p">,</span> <span class="s1">&#39;base&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="p">:</span>
     <span class="n">errors</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span>
         <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">case</span><span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">],</span>
          <span class="s1">&#39;true&#39;</span><span class="p">:</span> <span class="n">case</span><span class="p">[</span><span class="s1">&#39;true_class&#39;</span><span class="p">],</span> <span class="s1">&#39;predicted&#39;</span><span class="p">:</span> <span class="n">case</span><span class="p">[</span><span class="s1">&#39;predicted_class&#39;</span><span class="p">],</span>
          <span class="s1">&#39;confidence&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">case</span><span class="p">[</span><span class="s1">&#39;confidence&#39;</span><span class="p">],</span> <span class="mi">3</span><span class="p">),</span>
          <span class="s1">&#39;correct&#39;</span><span class="p">:</span> <span class="n">case</span><span class="p">[</span><span class="s1">&#39;correct&#39;</span><span class="p">]}</span>
-        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">cases</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="p">[</span><span class="s1">&#39;segmented&#39;</span><span class="p">][</span><span class="s1">&#39;explanations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">model</span><span class="p">,</span> <span class="n">cases</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="p">[(</span><span class="s1">&#39;segmented&#39;</span><span class="p">,</span> <span class="s1">&#39;base&#39;</span><span class="p">)][</span><span class="s1">&#39;explanations&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">case</span> <span class="ow">in</span> <span class="n">cases</span>
     <span class="p">])</span>
     <span class="n">display</span><span class="p">(</span><span class="n">errors</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;file&#39;</span><span class="p">]))</span>
@@ -16446,6 +16507,11 @@ restricts every model to the official 680-image test split: the deep models are
 scored there by construction, and the glass-box models are scored there through
 the <code>common</code> protocol. The segmented-crop glass-box numbers from section 4 are
 <em>not</em> comparable to these and are excluded on purpose.</p>
+<p>The interpretability cost is the gap between the best model in each family, so
+it is <strong>0.939 against 0.742 -- roughly 20 points</strong>, not the 27 that the nine
+base features alone would suggest. Which glass-box model is best depends on the
+feature set: the 47 features carry logistic regression well clear, and cost the
+depth-3 tree, which can consult only three features however many it is offered.</p>
 
 </div>
 </div>
@@ -16472,17 +16538,20 @@ the <code>common</code> protocol. The segmented-crop glass-box numbers from sect
         <span class="s1">&#39;interpretability&#39;</span><span class="p">:</span> <span class="s1">&#39;post-hoc (Grad-CAM / LIME)&#39;</span><span class="p">,</span>
     <span class="p">})</span>
 
-<span class="k">if</span> <span class="s1">&#39;common&#39;</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="p">:</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">features</span><span class="p">),</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">glassbox</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">protocol</span> <span class="o">!=</span> <span class="s1">&#39;common&#39;</span><span class="p">:</span>
+        <span class="k">continue</span>
     <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;decision_tree&#39;</span><span class="p">,</span> <span class="s1">&#39;logistic_regression&#39;</span><span class="p">):</span>
         <span class="n">comparison</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; (engineered features)&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">, </span><span class="si">%d</span><span class="s1"> features&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">])),</span>
             <span class="s1">&#39;family&#39;</span><span class="p">:</span> <span class="s1">&#39;glass-box&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">glassbox</span><span class="p">[</span><span class="s1">&#39;common&#39;</span><span class="p">][</span><span class="s1">&#39;features&#39;</span><span class="p">]),</span>
-            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">glassbox</span><span class="p">[</span><span class="s1">&#39;common&#39;</span><span class="p">][</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;macro-F1&#39;</span><span class="p">:</span> <span class="n">glassbox</span><span class="p">[</span><span class="s1">&#39;common&#39;</span><span class="p">][</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;macro_f1&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;macro-F1&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="n">model</span><span class="p">][</span><span class="s1">&#39;macro_f1&#39;</span><span class="p">],</span>
             <span class="s1">&#39;interpretability&#39;</span><span class="p">:</span> <span class="s1">&#39;intrinsic (exact)&#39;</span><span class="p">,</span>
         <span class="p">})</span>
 
+<span class="n">comparison</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">comparison</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;macro-F1&#39;</span><span class="p">])</span>
 <span class="n">comparison_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">comparison</span><span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">comparison_table</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="p">{</span><span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;macro-F1&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:,.0f}</span><span class="s1">&#39;</span><span class="p">}))</span>
@@ -16508,15 +16577,15 @@ the <code>common</code> protocol. The segmented-crop glass-box numbers from sect
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
 </style>
-<table id="T_1b1a9">
+<table id="T_4cc2b">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_1b1a9_level0_col0" class="col_heading level0 col0" >family</th>
-      <th id="T_1b1a9_level0_col1" class="col_heading level0 col1" >parameters</th>
-      <th id="T_1b1a9_level0_col2" class="col_heading level0 col2" >accuracy</th>
-      <th id="T_1b1a9_level0_col3" class="col_heading level0 col3" >macro-F1</th>
-      <th id="T_1b1a9_level0_col4" class="col_heading level0 col4" >interpretability</th>
+      <th id="T_4cc2b_level0_col0" class="col_heading level0 col0" >family</th>
+      <th id="T_4cc2b_level0_col1" class="col_heading level0 col1" >parameters</th>
+      <th id="T_4cc2b_level0_col2" class="col_heading level0 col2" >accuracy</th>
+      <th id="T_4cc2b_level0_col3" class="col_heading level0 col3" >macro-F1</th>
+      <th id="T_4cc2b_level0_col4" class="col_heading level0 col4" >interpretability</th>
     </tr>
     <tr>
       <th class="index_name level0" >model</th>
@@ -16529,52 +16598,68 @@ the <code>common</code> protocol. The segmented-crop glass-box numbers from sect
   </thead>
   <tbody>
     <tr>
-      <th id="T_1b1a9_level0_row0" class="row_heading level0 row0" >scratch CNN (notebook architecture)</th>
-      <td id="T_1b1a9_row0_col0" class="data row0 col0" >from scratch</td>
-      <td id="T_1b1a9_row0_col1" class="data row0 col1" >5,767,139</td>
-      <td id="T_1b1a9_row0_col2" class="data row0 col2" >0.8118</td>
-      <td id="T_1b1a9_row0_col3" class="data row0 col3" >0.8095</td>
-      <td id="T_1b1a9_row0_col4" class="data row0 col4" >post-hoc (Grad-CAM / LIME)</td>
+      <th id="T_4cc2b_level0_row0" class="row_heading level0 row0" >DenseNet121</th>
+      <td id="T_4cc2b_row0_col0" class="data row0 col0" >ImageNet transfer</td>
+      <td id="T_4cc2b_row0_col1" class="data row0 col1" >7,040,579</td>
+      <td id="T_4cc2b_row0_col2" class="data row0 col2" >0.9397</td>
+      <td id="T_4cc2b_row0_col3" class="data row0 col3" >0.9387</td>
+      <td id="T_4cc2b_row0_col4" class="data row0 col4" >post-hoc (Grad-CAM / LIME)</td>
     </tr>
     <tr>
-      <th id="T_1b1a9_level0_row1" class="row_heading level0 row1" >scratch CNN (redesigned)</th>
-      <td id="T_1b1a9_row1_col0" class="data row1 col0" >from scratch</td>
-      <td id="T_1b1a9_row1_col1" class="data row1 col1" >585,059</td>
-      <td id="T_1b1a9_row1_col2" class="data row1 col2" >0.8706</td>
-      <td id="T_1b1a9_row1_col3" class="data row1 col3" >0.8712</td>
-      <td id="T_1b1a9_row1_col4" class="data row1 col4" >post-hoc (Grad-CAM / LIME)</td>
+      <th id="T_4cc2b_level0_row1" class="row_heading level0 row1" >MobileNetV2</th>
+      <td id="T_4cc2b_row1_col0" class="data row1 col0" >ImageNet transfer</td>
+      <td id="T_4cc2b_row1_col1" class="data row1 col1" >2,261,827</td>
+      <td id="T_4cc2b_row1_col2" class="data row1 col2" >0.9309</td>
+      <td id="T_4cc2b_row1_col3" class="data row1 col3" >0.9296</td>
+      <td id="T_4cc2b_row1_col4" class="data row1 col4" >post-hoc (Grad-CAM / LIME)</td>
     </tr>
     <tr>
-      <th id="T_1b1a9_level0_row2" class="row_heading level0 row2" >MobileNetV2</th>
-      <td id="T_1b1a9_row2_col0" class="data row2 col0" >ImageNet transfer</td>
-      <td id="T_1b1a9_row2_col1" class="data row2 col1" >2,261,827</td>
-      <td id="T_1b1a9_row2_col2" class="data row2 col2" >0.9309</td>
-      <td id="T_1b1a9_row2_col3" class="data row2 col3" >0.9296</td>
-      <td id="T_1b1a9_row2_col4" class="data row2 col4" >post-hoc (Grad-CAM / LIME)</td>
+      <th id="T_4cc2b_level0_row2" class="row_heading level0 row2" >scratch CNN (redesigned)</th>
+      <td id="T_4cc2b_row2_col0" class="data row2 col0" >from scratch</td>
+      <td id="T_4cc2b_row2_col1" class="data row2 col1" >585,059</td>
+      <td id="T_4cc2b_row2_col2" class="data row2 col2" >0.8706</td>
+      <td id="T_4cc2b_row2_col3" class="data row2 col3" >0.8712</td>
+      <td id="T_4cc2b_row2_col4" class="data row2 col4" >post-hoc (Grad-CAM / LIME)</td>
     </tr>
     <tr>
-      <th id="T_1b1a9_level0_row3" class="row_heading level0 row3" >DenseNet121</th>
-      <td id="T_1b1a9_row3_col0" class="data row3 col0" >ImageNet transfer</td>
-      <td id="T_1b1a9_row3_col1" class="data row3 col1" >7,040,579</td>
-      <td id="T_1b1a9_row3_col2" class="data row3 col2" >0.9397</td>
-      <td id="T_1b1a9_row3_col3" class="data row3 col3" >0.9387</td>
-      <td id="T_1b1a9_row3_col4" class="data row3 col4" >post-hoc (Grad-CAM / LIME)</td>
+      <th id="T_4cc2b_level0_row3" class="row_heading level0 row3" >scratch CNN (notebook architecture)</th>
+      <td id="T_4cc2b_row3_col0" class="data row3 col0" >from scratch</td>
+      <td id="T_4cc2b_row3_col1" class="data row3 col1" >5,767,139</td>
+      <td id="T_4cc2b_row3_col2" class="data row3 col2" >0.8118</td>
+      <td id="T_4cc2b_row3_col3" class="data row3 col3" >0.8095</td>
+      <td id="T_4cc2b_row3_col4" class="data row3 col4" >post-hoc (Grad-CAM / LIME)</td>
     </tr>
     <tr>
-      <th id="T_1b1a9_level0_row4" class="row_heading level0 row4" >decision tree (engineered features)</th>
-      <td id="T_1b1a9_row4_col0" class="data row4 col0" >glass-box</td>
-      <td id="T_1b1a9_row4_col1" class="data row4 col1" >9</td>
-      <td id="T_1b1a9_row4_col2" class="data row4 col2" >0.6838</td>
-      <td id="T_1b1a9_row4_col3" class="data row4 col3" >0.6674</td>
-      <td id="T_1b1a9_row4_col4" class="data row4 col4" >intrinsic (exact)</td>
+      <th id="T_4cc2b_level0_row4" class="row_heading level0 row4" >logistic regression, 47 features</th>
+      <td id="T_4cc2b_row4_col0" class="data row4 col0" >glass-box</td>
+      <td id="T_4cc2b_row4_col1" class="data row4 col1" >47</td>
+      <td id="T_4cc2b_row4_col2" class="data row4 col2" >0.7456</td>
+      <td id="T_4cc2b_row4_col3" class="data row4 col3" >0.7421</td>
+      <td id="T_4cc2b_row4_col4" class="data row4 col4" >intrinsic (exact)</td>
     </tr>
     <tr>
-      <th id="T_1b1a9_level0_row5" class="row_heading level0 row5" >logistic regression (engineered features)</th>
-      <td id="T_1b1a9_row5_col0" class="data row5 col0" >glass-box</td>
-      <td id="T_1b1a9_row5_col1" class="data row5 col1" >9</td>
-      <td id="T_1b1a9_row5_col2" class="data row5 col2" >0.6206</td>
-      <td id="T_1b1a9_row5_col3" class="data row5 col3" >0.5999</td>
-      <td id="T_1b1a9_row5_col4" class="data row5 col4" >intrinsic (exact)</td>
+      <th id="T_4cc2b_level0_row5" class="row_heading level0 row5" >decision tree, 9 features</th>
+      <td id="T_4cc2b_row5_col0" class="data row5 col0" >glass-box</td>
+      <td id="T_4cc2b_row5_col1" class="data row5 col1" >9</td>
+      <td id="T_4cc2b_row5_col2" class="data row5 col2" >0.6838</td>
+      <td id="T_4cc2b_row5_col3" class="data row5 col3" >0.6674</td>
+      <td id="T_4cc2b_row5_col4" class="data row5 col4" >intrinsic (exact)</td>
+    </tr>
+    <tr>
+      <th id="T_4cc2b_level0_row6" class="row_heading level0 row6" >logistic regression, 9 features</th>
+      <td id="T_4cc2b_row6_col0" class="data row6 col0" >glass-box</td>
+      <td id="T_4cc2b_row6_col1" class="data row6 col1" >9</td>
+      <td id="T_4cc2b_row6_col2" class="data row6 col2" >0.6206</td>
+      <td id="T_4cc2b_row6_col3" class="data row6 col3" >0.5999</td>
+      <td id="T_4cc2b_row6_col4" class="data row6 col4" >intrinsic (exact)</td>
+    </tr>
+    <tr>
+      <th id="T_4cc2b_level0_row7" class="row_heading level0 row7" >decision tree, 47 features</th>
+      <td id="T_4cc2b_row7_col0" class="data row7 col0" >glass-box</td>
+      <td id="T_4cc2b_row7_col1" class="data row7 col1" >47</td>
+      <td id="T_4cc2b_row7_col2" class="data row7 col2" >0.6000</td>
+      <td id="T_4cc2b_row7_col3" class="data row7 col3" >0.5524</td>
+      <td id="T_4cc2b_row7_col4" class="data row7 col4" >intrinsic (exact)</td>
     </tr>
   </tbody>
 </table>
@@ -16660,7 +16745,7 @@ class="
 <p><strong>To write up.</strong> Interpret this table rather than restating it: what the
 from-scratch/transfer gap costs, what the glass-box models give up for an exact
 explanation, and whether the <code>parameters</code> column is even a fair axis to compare
-nine engineered features against millions of weights.</p>
+engineered features against millions of weights.</p>
 </blockquote>
 
 </div>
@@ -16771,139 +16856,139 @@ evaluation, and single-thread CPU latency measurement.</p>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
 </style>
-<table id="T_78c3d">
+<table id="T_7a5ab">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_78c3d_level0_col0" class="col_heading level0 col0" >variant</th>
-      <th id="T_78c3d_level0_col1" class="col_heading level0 col1" >size_mb</th>
-      <th id="T_78c3d_level0_col2" class="col_heading level0 col2" >gzip_mb</th>
-      <th id="T_78c3d_level0_col3" class="col_heading level0 col3" >latency_median_ms</th>
-      <th id="T_78c3d_level0_col4" class="col_heading level0 col4" >throughput_img_s</th>
-      <th id="T_78c3d_level0_col5" class="col_heading level0 col5" >test_macro_f1</th>
-      <th id="T_78c3d_level0_col6" class="col_heading level0 col6" >test_recall_aculus</th>
+      <th id="T_7a5ab_level0_col0" class="col_heading level0 col0" >variant</th>
+      <th id="T_7a5ab_level0_col1" class="col_heading level0 col1" >size_mb</th>
+      <th id="T_7a5ab_level0_col2" class="col_heading level0 col2" >gzip_mb</th>
+      <th id="T_7a5ab_level0_col3" class="col_heading level0 col3" >latency_median_ms</th>
+      <th id="T_7a5ab_level0_col4" class="col_heading level0 col4" >throughput_img_s</th>
+      <th id="T_7a5ab_level0_col5" class="col_heading level0 col5" >test_macro_f1</th>
+      <th id="T_7a5ab_level0_col6" class="col_heading level0 col6" >test_recall_aculus</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_78c3d_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_78c3d_row0_col0" class="data row0 col0" >mobilenetv2_baseline</td>
-      <td id="T_78c3d_row0_col1" class="data row0 col1" >13.211</td>
-      <td id="T_78c3d_row0_col2" class="data row0 col2" >8.738</td>
-      <td id="T_78c3d_row0_col3" class="data row0 col3" >53.550</td>
-      <td id="T_78c3d_row0_col4" class="data row0 col4" >18.700</td>
-      <td id="T_78c3d_row0_col5" class="data row0 col5" >0.930</td>
-      <td id="T_78c3d_row0_col6" class="data row0 col6" >0.885</td>
+      <th id="T_7a5ab_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_7a5ab_row0_col0" class="data row0 col0" >mobilenetv2_baseline</td>
+      <td id="T_7a5ab_row0_col1" class="data row0 col1" >13.211</td>
+      <td id="T_7a5ab_row0_col2" class="data row0 col2" >8.738</td>
+      <td id="T_7a5ab_row0_col3" class="data row0 col3" >53.550</td>
+      <td id="T_7a5ab_row0_col4" class="data row0 col4" >18.700</td>
+      <td id="T_7a5ab_row0_col5" class="data row0 col5" >0.930</td>
+      <td id="T_7a5ab_row0_col6" class="data row0 col6" >0.885</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_78c3d_row1_col0" class="data row1 col0" >mobilenetv2_pruned50</td>
-      <td id="T_78c3d_row1_col1" class="data row1 col1" >13.240</td>
-      <td id="T_78c3d_row1_col2" class="data row1 col2" >5.540</td>
-      <td id="T_78c3d_row1_col3" class="data row1 col3" >51.690</td>
-      <td id="T_78c3d_row1_col4" class="data row1 col4" >19.300</td>
-      <td id="T_78c3d_row1_col5" class="data row1 col5" >0.706</td>
-      <td id="T_78c3d_row1_col6" class="data row1 col6" >0.690</td>
+      <th id="T_7a5ab_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_7a5ab_row1_col0" class="data row1 col0" >mobilenetv2_pruned50</td>
+      <td id="T_7a5ab_row1_col1" class="data row1 col1" >13.240</td>
+      <td id="T_7a5ab_row1_col2" class="data row1 col2" >5.540</td>
+      <td id="T_7a5ab_row1_col3" class="data row1 col3" >51.690</td>
+      <td id="T_7a5ab_row1_col4" class="data row1 col4" >19.300</td>
+      <td id="T_7a5ab_row1_col5" class="data row1 col5" >0.706</td>
+      <td id="T_7a5ab_row1_col6" class="data row1 col6" >0.690</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_78c3d_row2_col0" class="data row2 col0" >mobilenetv2_sweep20</td>
-      <td id="T_78c3d_row2_col1" class="data row2 col1" >13.240</td>
-      <td id="T_78c3d_row2_col2" class="data row2 col2" >7.619</td>
-      <td id="T_78c3d_row2_col3" class="data row2 col3" >51.980</td>
-      <td id="T_78c3d_row2_col4" class="data row2 col4" >19.200</td>
-      <td id="T_78c3d_row2_col5" class="data row2 col5" >0.920</td>
-      <td id="T_78c3d_row2_col6" class="data row2 col6" >0.860</td>
+      <th id="T_7a5ab_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_7a5ab_row2_col0" class="data row2 col0" >mobilenetv2_sweep20</td>
+      <td id="T_7a5ab_row2_col1" class="data row2 col1" >13.240</td>
+      <td id="T_7a5ab_row2_col2" class="data row2 col2" >7.619</td>
+      <td id="T_7a5ab_row2_col3" class="data row2 col3" >51.980</td>
+      <td id="T_7a5ab_row2_col4" class="data row2 col4" >19.200</td>
+      <td id="T_7a5ab_row2_col5" class="data row2 col5" >0.920</td>
+      <td id="T_7a5ab_row2_col6" class="data row2 col6" >0.860</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_78c3d_row3_col0" class="data row3 col0" >mobilenetv2_sweep35</td>
-      <td id="T_78c3d_row3_col1" class="data row3 col1" >13.240</td>
-      <td id="T_78c3d_row3_col2" class="data row3 col2" >6.636</td>
-      <td id="T_78c3d_row3_col3" class="data row3 col3" >51.930</td>
-      <td id="T_78c3d_row3_col4" class="data row3 col4" >19.300</td>
-      <td id="T_78c3d_row3_col5" class="data row3 col5" >0.889</td>
-      <td id="T_78c3d_row3_col6" class="data row3 col6" >0.895</td>
+      <th id="T_7a5ab_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_7a5ab_row3_col0" class="data row3 col0" >mobilenetv2_sweep35</td>
+      <td id="T_7a5ab_row3_col1" class="data row3 col1" >13.240</td>
+      <td id="T_7a5ab_row3_col2" class="data row3 col2" >6.636</td>
+      <td id="T_7a5ab_row3_col3" class="data row3 col3" >51.930</td>
+      <td id="T_7a5ab_row3_col4" class="data row3 col4" >19.300</td>
+      <td id="T_7a5ab_row3_col5" class="data row3 col5" >0.889</td>
+      <td id="T_7a5ab_row3_col6" class="data row3 col6" >0.895</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_78c3d_row4_col0" class="data row4 col0" >mobilenetv2_sweep50</td>
-      <td id="T_78c3d_row4_col1" class="data row4 col1" >13.240</td>
-      <td id="T_78c3d_row4_col2" class="data row4 col2" >5.545</td>
-      <td id="T_78c3d_row4_col3" class="data row4 col3" >52.100</td>
-      <td id="T_78c3d_row4_col4" class="data row4 col4" >19.200</td>
-      <td id="T_78c3d_row4_col5" class="data row4 col5" >0.833</td>
-      <td id="T_78c3d_row4_col6" class="data row4 col6" >0.770</td>
+      <th id="T_7a5ab_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_7a5ab_row4_col0" class="data row4 col0" >mobilenetv2_sweep50</td>
+      <td id="T_7a5ab_row4_col1" class="data row4 col1" >13.240</td>
+      <td id="T_7a5ab_row4_col2" class="data row4 col2" >5.545</td>
+      <td id="T_7a5ab_row4_col3" class="data row4 col3" >52.100</td>
+      <td id="T_7a5ab_row4_col4" class="data row4 col4" >19.200</td>
+      <td id="T_7a5ab_row4_col5" class="data row4 col5" >0.833</td>
+      <td id="T_7a5ab_row4_col6" class="data row4 col6" >0.770</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_78c3d_row5_col0" class="data row5 col0" >mobilenetv2_sweep65</td>
-      <td id="T_78c3d_row5_col1" class="data row5 col1" >13.240</td>
-      <td id="T_78c3d_row5_col2" class="data row5 col2" >4.397</td>
-      <td id="T_78c3d_row5_col3" class="data row5 col3" >52.750</td>
-      <td id="T_78c3d_row5_col4" class="data row5 col4" >19.000</td>
-      <td id="T_78c3d_row5_col5" class="data row5 col5" >0.534</td>
-      <td id="T_78c3d_row5_col6" class="data row5 col6" >0.725</td>
+      <th id="T_7a5ab_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_7a5ab_row5_col0" class="data row5 col0" >mobilenetv2_sweep65</td>
+      <td id="T_7a5ab_row5_col1" class="data row5 col1" >13.240</td>
+      <td id="T_7a5ab_row5_col2" class="data row5 col2" >4.397</td>
+      <td id="T_7a5ab_row5_col3" class="data row5 col3" >52.750</td>
+      <td id="T_7a5ab_row5_col4" class="data row5 col4" >19.000</td>
+      <td id="T_7a5ab_row5_col5" class="data row5 col5" >0.534</td>
+      <td id="T_7a5ab_row5_col6" class="data row5 col6" >0.725</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row6" class="row_heading level0 row6" >6</th>
-      <td id="T_78c3d_row6_col0" class="data row6 col0" >mobilenetv2_baseline_dynamic_range</td>
-      <td id="T_78c3d_row6_col1" class="data row6 col1" >2.512</td>
-      <td id="T_78c3d_row6_col2" class="data row6 col2" >2.159</td>
-      <td id="T_78c3d_row6_col3" class="data row6 col3" >18.630</td>
-      <td id="T_78c3d_row6_col4" class="data row6 col4" >53.700</td>
-      <td id="T_78c3d_row6_col5" class="data row6 col5" >0.934</td>
-      <td id="T_78c3d_row6_col6" class="data row6 col6" >0.890</td>
+      <th id="T_7a5ab_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_7a5ab_row6_col0" class="data row6 col0" >mobilenetv2_baseline_dynamic_range</td>
+      <td id="T_7a5ab_row6_col1" class="data row6 col1" >2.512</td>
+      <td id="T_7a5ab_row6_col2" class="data row6 col2" >2.159</td>
+      <td id="T_7a5ab_row6_col3" class="data row6 col3" >18.630</td>
+      <td id="T_7a5ab_row6_col4" class="data row6 col4" >53.700</td>
+      <td id="T_7a5ab_row6_col5" class="data row6 col5" >0.934</td>
+      <td id="T_7a5ab_row6_col6" class="data row6 col6" >0.890</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row7" class="row_heading level0 row7" >7</th>
-      <td id="T_78c3d_row7_col0" class="data row7 col0" >mobilenetv2_baseline_float16</td>
-      <td id="T_78c3d_row7_col1" class="data row7 col1" >4.479</td>
-      <td id="T_78c3d_row7_col2" class="data row7 col2" >4.113</td>
-      <td id="T_78c3d_row7_col3" class="data row7 col3" >11.160</td>
-      <td id="T_78c3d_row7_col4" class="data row7 col4" >89.600</td>
-      <td id="T_78c3d_row7_col5" class="data row7 col5" >0.928</td>
-      <td id="T_78c3d_row7_col6" class="data row7 col6" >0.885</td>
+      <th id="T_7a5ab_level0_row7" class="row_heading level0 row7" >7</th>
+      <td id="T_7a5ab_row7_col0" class="data row7 col0" >mobilenetv2_baseline_float16</td>
+      <td id="T_7a5ab_row7_col1" class="data row7 col1" >4.479</td>
+      <td id="T_7a5ab_row7_col2" class="data row7 col2" >4.113</td>
+      <td id="T_7a5ab_row7_col3" class="data row7 col3" >11.160</td>
+      <td id="T_7a5ab_row7_col4" class="data row7 col4" >89.600</td>
+      <td id="T_7a5ab_row7_col5" class="data row7 col5" >0.928</td>
+      <td id="T_7a5ab_row7_col6" class="data row7 col6" >0.885</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row8" class="row_heading level0 row8" >8</th>
-      <td id="T_78c3d_row8_col0" class="data row8 col0" >mobilenetv2_baseline_float32</td>
-      <td id="T_78c3d_row8_col1" class="data row8 col1" >8.882</td>
-      <td id="T_78c3d_row8_col2" class="data row8 col2" >8.234</td>
-      <td id="T_78c3d_row8_col3" class="data row8 col3" >11.560</td>
-      <td id="T_78c3d_row8_col4" class="data row8 col4" >86.500</td>
-      <td id="T_78c3d_row8_col5" class="data row8 col5" >0.930</td>
-      <td id="T_78c3d_row8_col6" class="data row8 col6" >0.885</td>
+      <th id="T_7a5ab_level0_row8" class="row_heading level0 row8" >8</th>
+      <td id="T_7a5ab_row8_col0" class="data row8 col0" >mobilenetv2_baseline_float32</td>
+      <td id="T_7a5ab_row8_col1" class="data row8 col1" >8.882</td>
+      <td id="T_7a5ab_row8_col2" class="data row8 col2" >8.234</td>
+      <td id="T_7a5ab_row8_col3" class="data row8 col3" >11.560</td>
+      <td id="T_7a5ab_row8_col4" class="data row8 col4" >86.500</td>
+      <td id="T_7a5ab_row8_col5" class="data row8 col5" >0.930</td>
+      <td id="T_7a5ab_row8_col6" class="data row8 col6" >0.885</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row9" class="row_heading level0 row9" >9</th>
-      <td id="T_78c3d_row9_col0" class="data row9 col0" >mobilenetv2_baseline_full_integer</td>
-      <td id="T_78c3d_row9_col1" class="data row9 col1" >2.715</td>
-      <td id="T_78c3d_row9_col2" class="data row9 col2" >2.210</td>
-      <td id="T_78c3d_row9_col3" class="data row9 col3" >9.480</td>
-      <td id="T_78c3d_row9_col4" class="data row9 col4" >105.500</td>
-      <td id="T_78c3d_row9_col5" class="data row9 col5" >0.924</td>
-      <td id="T_78c3d_row9_col6" class="data row9 col6" >0.875</td>
+      <th id="T_7a5ab_level0_row9" class="row_heading level0 row9" >9</th>
+      <td id="T_7a5ab_row9_col0" class="data row9 col0" >mobilenetv2_baseline_full_integer</td>
+      <td id="T_7a5ab_row9_col1" class="data row9 col1" >2.715</td>
+      <td id="T_7a5ab_row9_col2" class="data row9 col2" >2.210</td>
+      <td id="T_7a5ab_row9_col3" class="data row9 col3" >9.480</td>
+      <td id="T_7a5ab_row9_col4" class="data row9 col4" >105.500</td>
+      <td id="T_7a5ab_row9_col5" class="data row9 col5" >0.924</td>
+      <td id="T_7a5ab_row9_col6" class="data row9 col6" >0.875</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row10" class="row_heading level0 row10" >10</th>
-      <td id="T_78c3d_row10_col0" class="data row10 col0" >mobilenetv2_pruned50_dynamic_range</td>
-      <td id="T_78c3d_row10_col1" class="data row10 col1" >2.512</td>
-      <td id="T_78c3d_row10_col2" class="data row10 col2" >1.606</td>
-      <td id="T_78c3d_row10_col3" class="data row10 col3" >18.720</td>
-      <td id="T_78c3d_row10_col4" class="data row10 col4" >53.400</td>
-      <td id="T_78c3d_row10_col5" class="data row10 col5" >0.706</td>
-      <td id="T_78c3d_row10_col6" class="data row10 col6" >0.635</td>
+      <th id="T_7a5ab_level0_row10" class="row_heading level0 row10" >10</th>
+      <td id="T_7a5ab_row10_col0" class="data row10 col0" >mobilenetv2_pruned50_dynamic_range</td>
+      <td id="T_7a5ab_row10_col1" class="data row10 col1" >2.512</td>
+      <td id="T_7a5ab_row10_col2" class="data row10 col2" >1.606</td>
+      <td id="T_7a5ab_row10_col3" class="data row10 col3" >18.720</td>
+      <td id="T_7a5ab_row10_col4" class="data row10 col4" >53.400</td>
+      <td id="T_7a5ab_row10_col5" class="data row10 col5" >0.706</td>
+      <td id="T_7a5ab_row10_col6" class="data row10 col6" >0.635</td>
     </tr>
     <tr>
-      <th id="T_78c3d_level0_row11" class="row_heading level0 row11" >11</th>
-      <td id="T_78c3d_row11_col0" class="data row11 col0" >mobilenetv2_pruned50_float16</td>
-      <td id="T_78c3d_row11_col1" class="data row11 col1" >4.479</td>
-      <td id="T_78c3d_row11_col2" class="data row11 col2" >2.809</td>
-      <td id="T_78c3d_row11_col3" class="data row11 col3" >11.520</td>
-      <td id="T_78c3d_row11_col4" class="data row11 col4" >86.800</td>
-      <td id="T_78c3d_row11_col5" class="data row11 col5" >0.706</td>
-      <td id="T_78c3d_row11_col6" class="data row11 col6" >0.690</td>
+      <th id="T_7a5ab_level0_row11" class="row_heading level0 row11" >11</th>
+      <td id="T_7a5ab_row11_col0" class="data row11 col0" >mobilenetv2_pruned50_float16</td>
+      <td id="T_7a5ab_row11_col1" class="data row11 col1" >4.479</td>
+      <td id="T_7a5ab_row11_col2" class="data row11 col2" >2.809</td>
+      <td id="T_7a5ab_row11_col3" class="data row11 col3" >11.520</td>
+      <td id="T_7a5ab_row11_col4" class="data row11 col4" >86.800</td>
+      <td id="T_7a5ab_row11_col5" class="data row11 col5" >0.706</td>
+      <td id="T_7a5ab_row11_col6" class="data row11 col6" >0.690</td>
     </tr>
   </tbody>
 </table>
@@ -16930,139 +17015,139 @@ evaluation, and single-thread CPU latency measurement.</p>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
 </style>
-<table id="T_ae8e5">
+<table id="T_fe981">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_ae8e5_level0_col0" class="col_heading level0 col0" >variant</th>
-      <th id="T_ae8e5_level0_col1" class="col_heading level0 col1" >size_mb</th>
-      <th id="T_ae8e5_level0_col2" class="col_heading level0 col2" >gzip_mb</th>
-      <th id="T_ae8e5_level0_col3" class="col_heading level0 col3" >latency_median_ms</th>
-      <th id="T_ae8e5_level0_col4" class="col_heading level0 col4" >throughput_img_s</th>
-      <th id="T_ae8e5_level0_col5" class="col_heading level0 col5" >test_macro_f1</th>
-      <th id="T_ae8e5_level0_col6" class="col_heading level0 col6" >test_recall_aculus</th>
+      <th id="T_fe981_level0_col0" class="col_heading level0 col0" >variant</th>
+      <th id="T_fe981_level0_col1" class="col_heading level0 col1" >size_mb</th>
+      <th id="T_fe981_level0_col2" class="col_heading level0 col2" >gzip_mb</th>
+      <th id="T_fe981_level0_col3" class="col_heading level0 col3" >latency_median_ms</th>
+      <th id="T_fe981_level0_col4" class="col_heading level0 col4" >throughput_img_s</th>
+      <th id="T_fe981_level0_col5" class="col_heading level0 col5" >test_macro_f1</th>
+      <th id="T_fe981_level0_col6" class="col_heading level0 col6" >test_recall_aculus</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_ae8e5_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_ae8e5_row0_col0" class="data row0 col0" >densenet121_baseline</td>
-      <td id="T_ae8e5_row0_col1" class="data row0 col1" >38.148</td>
-      <td id="T_ae8e5_row0_col2" class="data row0 col2" >27.061</td>
-      <td id="T_ae8e5_row0_col3" class="data row0 col3" >119.580</td>
-      <td id="T_ae8e5_row0_col4" class="data row0 col4" >8.400</td>
-      <td id="T_ae8e5_row0_col5" class="data row0 col5" >0.939</td>
-      <td id="T_ae8e5_row0_col6" class="data row0 col6" >0.970</td>
+      <th id="T_fe981_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_fe981_row0_col0" class="data row0 col0" >densenet121_baseline</td>
+      <td id="T_fe981_row0_col1" class="data row0 col1" >38.148</td>
+      <td id="T_fe981_row0_col2" class="data row0 col2" >27.061</td>
+      <td id="T_fe981_row0_col3" class="data row0 col3" >119.580</td>
+      <td id="T_fe981_row0_col4" class="data row0 col4" >8.400</td>
+      <td id="T_fe981_row0_col5" class="data row0 col5" >0.939</td>
+      <td id="T_fe981_row0_col6" class="data row0 col6" >0.970</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_ae8e5_row1_col0" class="data row1 col0" >densenet121_pruned50</td>
-      <td id="T_ae8e5_row1_col1" class="data row1 col1" >38.212</td>
-      <td id="T_ae8e5_row1_col2" class="data row1 col2" >16.519</td>
-      <td id="T_ae8e5_row1_col3" class="data row1 col3" >118.320</td>
-      <td id="T_ae8e5_row1_col4" class="data row1 col4" >8.500</td>
-      <td id="T_ae8e5_row1_col5" class="data row1 col5" >0.947</td>
-      <td id="T_ae8e5_row1_col6" class="data row1 col6" >0.965</td>
+      <th id="T_fe981_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_fe981_row1_col0" class="data row1 col0" >densenet121_pruned50</td>
+      <td id="T_fe981_row1_col1" class="data row1 col1" >38.212</td>
+      <td id="T_fe981_row1_col2" class="data row1 col2" >16.519</td>
+      <td id="T_fe981_row1_col3" class="data row1 col3" >118.320</td>
+      <td id="T_fe981_row1_col4" class="data row1 col4" >8.500</td>
+      <td id="T_fe981_row1_col5" class="data row1 col5" >0.947</td>
+      <td id="T_fe981_row1_col6" class="data row1 col6" >0.965</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_ae8e5_row2_col0" class="data row2 col0" >densenet121_sweep50</td>
-      <td id="T_ae8e5_row2_col1" class="data row2 col1" >38.212</td>
-      <td id="T_ae8e5_row2_col2" class="data row2 col2" >16.526</td>
-      <td id="T_ae8e5_row2_col3" class="data row2 col3" >119.100</td>
-      <td id="T_ae8e5_row2_col4" class="data row2 col4" >8.400</td>
-      <td id="T_ae8e5_row2_col5" class="data row2 col5" >0.945</td>
-      <td id="T_ae8e5_row2_col6" class="data row2 col6" >0.990</td>
+      <th id="T_fe981_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_fe981_row2_col0" class="data row2 col0" >densenet121_sweep50</td>
+      <td id="T_fe981_row2_col1" class="data row2 col1" >38.212</td>
+      <td id="T_fe981_row2_col2" class="data row2 col2" >16.526</td>
+      <td id="T_fe981_row2_col3" class="data row2 col3" >119.100</td>
+      <td id="T_fe981_row2_col4" class="data row2 col4" >8.400</td>
+      <td id="T_fe981_row2_col5" class="data row2 col5" >0.945</td>
+      <td id="T_fe981_row2_col6" class="data row2 col6" >0.990</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_ae8e5_row3_col0" class="data row3 col0" >densenet121_sweep65</td>
-      <td id="T_ae8e5_row3_col1" class="data row3 col1" >38.229</td>
-      <td id="T_ae8e5_row3_col2" class="data row3 col2" >12.924</td>
-      <td id="T_ae8e5_row3_col3" class="data row3 col3" >119.200</td>
-      <td id="T_ae8e5_row3_col4" class="data row3 col4" >8.400</td>
-      <td id="T_ae8e5_row3_col5" class="data row3 col5" >0.934</td>
-      <td id="T_ae8e5_row3_col6" class="data row3 col6" >0.955</td>
+      <th id="T_fe981_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_fe981_row3_col0" class="data row3 col0" >densenet121_sweep65</td>
+      <td id="T_fe981_row3_col1" class="data row3 col1" >38.229</td>
+      <td id="T_fe981_row3_col2" class="data row3 col2" >12.924</td>
+      <td id="T_fe981_row3_col3" class="data row3 col3" >119.200</td>
+      <td id="T_fe981_row3_col4" class="data row3 col4" >8.400</td>
+      <td id="T_fe981_row3_col5" class="data row3 col5" >0.934</td>
+      <td id="T_fe981_row3_col6" class="data row3 col6" >0.955</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_ae8e5_row4_col0" class="data row4 col0" >densenet121_sweep80</td>
-      <td id="T_ae8e5_row4_col1" class="data row4 col1" >38.229</td>
-      <td id="T_ae8e5_row4_col2" class="data row4 col2" >8.971</td>
-      <td id="T_ae8e5_row4_col3" class="data row4 col3" >118.310</td>
-      <td id="T_ae8e5_row4_col4" class="data row4 col4" >8.500</td>
-      <td id="T_ae8e5_row4_col5" class="data row4 col5" >0.829</td>
-      <td id="T_ae8e5_row4_col6" class="data row4 col6" >0.810</td>
+      <th id="T_fe981_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_fe981_row4_col0" class="data row4 col0" >densenet121_sweep80</td>
+      <td id="T_fe981_row4_col1" class="data row4 col1" >38.229</td>
+      <td id="T_fe981_row4_col2" class="data row4 col2" >8.971</td>
+      <td id="T_fe981_row4_col3" class="data row4 col3" >118.310</td>
+      <td id="T_fe981_row4_col4" class="data row4 col4" >8.500</td>
+      <td id="T_fe981_row4_col5" class="data row4 col5" >0.829</td>
+      <td id="T_fe981_row4_col6" class="data row4 col6" >0.810</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_ae8e5_row5_col0" class="data row5 col0" >densenet121_sweep90</td>
-      <td id="T_ae8e5_row5_col1" class="data row5 col1" >38.229</td>
-      <td id="T_ae8e5_row5_col2" class="data row5 col2" >6.139</td>
-      <td id="T_ae8e5_row5_col3" class="data row5 col3" >119.470</td>
-      <td id="T_ae8e5_row5_col4" class="data row5 col4" >8.400</td>
-      <td id="T_ae8e5_row5_col5" class="data row5 col5" >0.667</td>
-      <td id="T_ae8e5_row5_col6" class="data row5 col6" >0.745</td>
+      <th id="T_fe981_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_fe981_row5_col0" class="data row5 col0" >densenet121_sweep90</td>
+      <td id="T_fe981_row5_col1" class="data row5 col1" >38.229</td>
+      <td id="T_fe981_row5_col2" class="data row5 col2" >6.139</td>
+      <td id="T_fe981_row5_col3" class="data row5 col3" >119.470</td>
+      <td id="T_fe981_row5_col4" class="data row5 col4" >8.400</td>
+      <td id="T_fe981_row5_col5" class="data row5 col5" >0.667</td>
+      <td id="T_fe981_row5_col6" class="data row5 col6" >0.745</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row6" class="row_heading level0 row6" >6</th>
-      <td id="T_ae8e5_row6_col0" class="data row6 col0" >densenet121_baseline_dynamic_range</td>
-      <td id="T_ae8e5_row6_col1" class="data row6 col1" >7.421</td>
-      <td id="T_ae8e5_row6_col2" class="data row6 col2" >6.009</td>
-      <td id="T_ae8e5_row6_col3" class="data row6 col3" >106.660</td>
-      <td id="T_ae8e5_row6_col4" class="data row6 col4" >9.400</td>
-      <td id="T_ae8e5_row6_col5" class="data row6 col5" >0.931</td>
-      <td id="T_ae8e5_row6_col6" class="data row6 col6" >0.970</td>
+      <th id="T_fe981_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_fe981_row6_col0" class="data row6 col0" >densenet121_baseline_dynamic_range</td>
+      <td id="T_fe981_row6_col1" class="data row6 col1" >7.421</td>
+      <td id="T_fe981_row6_col2" class="data row6 col2" >6.009</td>
+      <td id="T_fe981_row6_col3" class="data row6 col3" >106.660</td>
+      <td id="T_fe981_row6_col4" class="data row6 col4" >9.400</td>
+      <td id="T_fe981_row6_col5" class="data row6 col5" >0.931</td>
+      <td id="T_fe981_row6_col6" class="data row6 col6" >0.970</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row7" class="row_heading level0 row7" >7</th>
-      <td id="T_ae8e5_row7_col0" class="data row7 col0" >densenet121_baseline_float16</td>
-      <td id="T_ae8e5_row7_col1" class="data row7 col1" >14.061</td>
-      <td id="T_ae8e5_row7_col2" class="data row7 col2" >12.943</td>
-      <td id="T_ae8e5_row7_col3" class="data row7 col3" >109.720</td>
-      <td id="T_ae8e5_row7_col4" class="data row7 col4" >9.100</td>
-      <td id="T_ae8e5_row7_col5" class="data row7 col5" >0.939</td>
-      <td id="T_ae8e5_row7_col6" class="data row7 col6" >0.970</td>
+      <th id="T_fe981_level0_row7" class="row_heading level0 row7" >7</th>
+      <td id="T_fe981_row7_col0" class="data row7 col0" >densenet121_baseline_float16</td>
+      <td id="T_fe981_row7_col1" class="data row7 col1" >14.061</td>
+      <td id="T_fe981_row7_col2" class="data row7 col2" >12.943</td>
+      <td id="T_fe981_row7_col3" class="data row7 col3" >109.720</td>
+      <td id="T_fe981_row7_col4" class="data row7 col4" >9.100</td>
+      <td id="T_fe981_row7_col5" class="data row7 col5" >0.939</td>
+      <td id="T_fe981_row7_col6" class="data row7 col6" >0.970</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row8" class="row_heading level0 row8" >8</th>
-      <td id="T_ae8e5_row8_col0" class="data row8 col0" >densenet121_baseline_float32</td>
-      <td id="T_ae8e5_row8_col1" class="data row8 col1" >27.915</td>
-      <td id="T_ae8e5_row8_col2" class="data row8 col2" >26.080</td>
-      <td id="T_ae8e5_row8_col3" class="data row8 col3" >110.280</td>
-      <td id="T_ae8e5_row8_col4" class="data row8 col4" >9.100</td>
-      <td id="T_ae8e5_row8_col5" class="data row8 col5" >0.939</td>
-      <td id="T_ae8e5_row8_col6" class="data row8 col6" >0.970</td>
+      <th id="T_fe981_level0_row8" class="row_heading level0 row8" >8</th>
+      <td id="T_fe981_row8_col0" class="data row8 col0" >densenet121_baseline_float32</td>
+      <td id="T_fe981_row8_col1" class="data row8 col1" >27.915</td>
+      <td id="T_fe981_row8_col2" class="data row8 col2" >26.080</td>
+      <td id="T_fe981_row8_col3" class="data row8 col3" >110.280</td>
+      <td id="T_fe981_row8_col4" class="data row8 col4" >9.100</td>
+      <td id="T_fe981_row8_col5" class="data row8 col5" >0.939</td>
+      <td id="T_fe981_row8_col6" class="data row8 col6" >0.970</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row9" class="row_heading level0 row9" >9</th>
-      <td id="T_ae8e5_row9_col0" class="data row9 col0" >densenet121_baseline_full_integer</td>
-      <td id="T_ae8e5_row9_col1" class="data row9 col1" >7.362</td>
-      <td id="T_ae8e5_row9_col2" class="data row9 col2" >5.858</td>
-      <td id="T_ae8e5_row9_col3" class="data row9 col3" >57.470</td>
-      <td id="T_ae8e5_row9_col4" class="data row9 col4" >17.400</td>
-      <td id="T_ae8e5_row9_col5" class="data row9 col5" >0.868</td>
-      <td id="T_ae8e5_row9_col6" class="data row9 col6" >0.855</td>
+      <th id="T_fe981_level0_row9" class="row_heading level0 row9" >9</th>
+      <td id="T_fe981_row9_col0" class="data row9 col0" >densenet121_baseline_full_integer</td>
+      <td id="T_fe981_row9_col1" class="data row9 col1" >7.362</td>
+      <td id="T_fe981_row9_col2" class="data row9 col2" >5.858</td>
+      <td id="T_fe981_row9_col3" class="data row9 col3" >57.470</td>
+      <td id="T_fe981_row9_col4" class="data row9 col4" >17.400</td>
+      <td id="T_fe981_row9_col5" class="data row9 col5" >0.868</td>
+      <td id="T_fe981_row9_col6" class="data row9 col6" >0.855</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row10" class="row_heading level0 row10" >10</th>
-      <td id="T_ae8e5_row10_col0" class="data row10 col0" >densenet121_pruned50_dynamic_range</td>
-      <td id="T_ae8e5_row10_col1" class="data row10 col1" >7.421</td>
-      <td id="T_ae8e5_row10_col2" class="data row10 col2" >4.667</td>
-      <td id="T_ae8e5_row10_col3" class="data row10 col3" >106.570</td>
-      <td id="T_ae8e5_row10_col4" class="data row10 col4" >9.400</td>
-      <td id="T_ae8e5_row10_col5" class="data row10 col5" >0.949</td>
-      <td id="T_ae8e5_row10_col6" class="data row10 col6" >0.975</td>
+      <th id="T_fe981_level0_row10" class="row_heading level0 row10" >10</th>
+      <td id="T_fe981_row10_col0" class="data row10 col0" >densenet121_pruned50_dynamic_range</td>
+      <td id="T_fe981_row10_col1" class="data row10 col1" >7.421</td>
+      <td id="T_fe981_row10_col2" class="data row10 col2" >4.667</td>
+      <td id="T_fe981_row10_col3" class="data row10 col3" >106.570</td>
+      <td id="T_fe981_row10_col4" class="data row10 col4" >9.400</td>
+      <td id="T_fe981_row10_col5" class="data row10 col5" >0.949</td>
+      <td id="T_fe981_row10_col6" class="data row10 col6" >0.975</td>
     </tr>
     <tr>
-      <th id="T_ae8e5_level0_row11" class="row_heading level0 row11" >11</th>
-      <td id="T_ae8e5_row11_col0" class="data row11 col0" >densenet121_pruned50_float16</td>
-      <td id="T_ae8e5_row11_col1" class="data row11 col1" >14.061</td>
-      <td id="T_ae8e5_row11_col2" class="data row11 col2" >8.683</td>
-      <td id="T_ae8e5_row11_col3" class="data row11 col3" >111.730</td>
-      <td id="T_ae8e5_row11_col4" class="data row11 col4" >8.900</td>
-      <td id="T_ae8e5_row11_col5" class="data row11 col5" >0.947</td>
-      <td id="T_ae8e5_row11_col6" class="data row11 col6" >0.965</td>
+      <th id="T_fe981_level0_row11" class="row_heading level0 row11" >11</th>
+      <td id="T_fe981_row11_col0" class="data row11 col0" >densenet121_pruned50_float16</td>
+      <td id="T_fe981_row11_col1" class="data row11 col1" >14.061</td>
+      <td id="T_fe981_row11_col2" class="data row11 col2" >8.683</td>
+      <td id="T_fe981_row11_col3" class="data row11 col3" >111.730</td>
+      <td id="T_fe981_row11_col4" class="data row11 col4" >8.900</td>
+      <td id="T_fe981_row11_col5" class="data row11 col5" >0.947</td>
+      <td id="T_fe981_row11_col6" class="data row11 col6" >0.965</td>
     </tr>
   </tbody>
 </table>
@@ -17325,14 +17410,14 @@ class="
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
 </style>
-<table id="T_1589b">
+<table id="T_68034">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_1589b_level0_col0" class="col_heading level0 col0" >images</th>
-      <th id="T_1589b_level0_col1" class="col_heading level0 col1" >mean_spearman</th>
-      <th id="T_1589b_level0_col2" class="col_heading level0 col2" >mean_top5_jaccard</th>
-      <th id="T_1589b_level0_col3" class="col_heading level0 col3" >label_agreement_rate</th>
+      <th id="T_68034_level0_col0" class="col_heading level0 col0" >images</th>
+      <th id="T_68034_level0_col1" class="col_heading level0 col1" >mean_spearman</th>
+      <th id="T_68034_level0_col2" class="col_heading level0 col2" >mean_top5_jaccard</th>
+      <th id="T_68034_level0_col3" class="col_heading level0 col3" >label_agreement_rate</th>
     </tr>
     <tr>
       <th class="index_name level0" >quantisation variant</th>
@@ -17344,25 +17429,25 @@ class="
   </thead>
   <tbody>
     <tr>
-      <th id="T_1589b_level0_row0" class="row_heading level0 row0" >dynamic_range</th>
-      <td id="T_1589b_row0_col0" class="data row0 col0" >6.000</td>
-      <td id="T_1589b_row0_col1" class="data row0 col1" >0.556</td>
-      <td id="T_1589b_row0_col2" class="data row0 col2" >0.548</td>
-      <td id="T_1589b_row0_col3" class="data row0 col3" >0.833</td>
+      <th id="T_68034_level0_row0" class="row_heading level0 row0" >dynamic_range</th>
+      <td id="T_68034_row0_col0" class="data row0 col0" >6.000</td>
+      <td id="T_68034_row0_col1" class="data row0 col1" >0.556</td>
+      <td id="T_68034_row0_col2" class="data row0 col2" >0.548</td>
+      <td id="T_68034_row0_col3" class="data row0 col3" >0.833</td>
     </tr>
     <tr>
-      <th id="T_1589b_level0_row1" class="row_heading level0 row1" >float16</th>
-      <td id="T_1589b_row1_col0" class="data row1 col0" >6.000</td>
-      <td id="T_1589b_row1_col1" class="data row1 col1" >0.599</td>
-      <td id="T_1589b_row1_col2" class="data row1 col2" >0.833</td>
-      <td id="T_1589b_row1_col3" class="data row1 col3" >1.000</td>
+      <th id="T_68034_level0_row1" class="row_heading level0 row1" >float16</th>
+      <td id="T_68034_row1_col0" class="data row1 col0" >6.000</td>
+      <td id="T_68034_row1_col1" class="data row1 col1" >0.599</td>
+      <td id="T_68034_row1_col2" class="data row1 col2" >0.833</td>
+      <td id="T_68034_row1_col3" class="data row1 col3" >1.000</td>
     </tr>
     <tr>
-      <th id="T_1589b_level0_row2" class="row_heading level0 row2" >full_integer</th>
-      <td id="T_1589b_row2_col0" class="data row2 col0" >6.000</td>
-      <td id="T_1589b_row2_col1" class="data row2 col1" >0.407</td>
-      <td id="T_1589b_row2_col2" class="data row2 col2" >0.627</td>
-      <td id="T_1589b_row2_col3" class="data row2 col3" >1.000</td>
+      <th id="T_68034_level0_row2" class="row_heading level0 row2" >full_integer</th>
+      <td id="T_68034_row2_col0" class="data row2 col0" >6.000</td>
+      <td id="T_68034_row2_col1" class="data row2 col1" >0.407</td>
+      <td id="T_68034_row2_col2" class="data row2 col2" >0.627</td>
+      <td id="T_68034_row2_col3" class="data row2 col3" >1.000</td>
     </tr>
   </tbody>
 </table>
@@ -17519,29 +17604,29 @@ actually falls outside the leaf.</p>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
 <style type="text/css">
 </style>
-<table id="T_4b325">
+<table id="T_9b59b">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_4b325_level0_col0" class="col_heading level0 col0" >model</th>
-      <th id="T_4b325_level0_col1" class="col_heading level0 col1" >images</th>
-      <th id="T_4b325_level0_col2" class="col_heading level0 col2" >attention outside leaf</th>
-      <th id="T_4b325_level0_col3" class="col_heading level0 col3" >background area</th>
-      <th id="T_4b325_level0_col4" class="col_heading level0 col4" >all ratio</th>
-      <th id="T_4b325_level0_col5" class="col_heading level0 col5" >correct ratio</th>
-      <th id="T_4b325_level0_col6" class="col_heading level0 col6" >incorrect ratio</th>
+      <th id="T_9b59b_level0_col0" class="col_heading level0 col0" >model</th>
+      <th id="T_9b59b_level0_col1" class="col_heading level0 col1" >images</th>
+      <th id="T_9b59b_level0_col2" class="col_heading level0 col2" >attention outside leaf</th>
+      <th id="T_9b59b_level0_col3" class="col_heading level0 col3" >background area</th>
+      <th id="T_9b59b_level0_col4" class="col_heading level0 col4" >all ratio</th>
+      <th id="T_9b59b_level0_col5" class="col_heading level0 col5" >correct ratio</th>
+      <th id="T_9b59b_level0_col6" class="col_heading level0 col6" >incorrect ratio</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_4b325_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_4b325_row0_col0" class="data row0 col0" >../compression/artifacts/mobilenetv2_baseline</td>
-      <td id="T_4b325_row0_col1" class="data row0 col1" >75</td>
-      <td id="T_4b325_row0_col2" class="data row0 col2" >0.109</td>
-      <td id="T_4b325_row0_col3" class="data row0 col3" >0.155</td>
-      <td id="T_4b325_row0_col4" class="data row0 col4" >0.704</td>
-      <td id="T_4b325_row0_col5" class="data row0 col5" >0.706</td>
-      <td id="T_4b325_row0_col6" class="data row0 col6" >0.671</td>
+      <th id="T_9b59b_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_9b59b_row0_col0" class="data row0 col0" >../compression/artifacts/mobilenetv2_baseline</td>
+      <td id="T_9b59b_row0_col1" class="data row0 col1" >75</td>
+      <td id="T_9b59b_row0_col2" class="data row0 col2" >0.109</td>
+      <td id="T_9b59b_row0_col3" class="data row0 col3" >0.155</td>
+      <td id="T_9b59b_row0_col4" class="data row0 col4" >0.704</td>
+      <td id="T_9b59b_row0_col5" class="data row0 col5" >0.706</td>
+      <td id="T_9b59b_row0_col6" class="data row0 col6" >0.671</td>
     </tr>
   </tbody>
 </table>
@@ -17630,7 +17715,7 @@ was chosen over a diagnostic claim.</p>
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="9.-Conclusions">9. Conclusions<a class="anchor-link" href="#9.-Conclusions">&#182;</a></h2><p><strong>RQ a — transfer learning wins, by less than expected.</strong> On the same official
 680-image test split, DenseNet121 reaches 0.939 macro-F1 and MobileNetV2 0.930,
-against 0.871 for a redesigned network trained from scratch and 0.667 for the
+against 0.871 for a redesigned network trained from scratch and 0.742 for the
 best intrinsically interpretable model. The transfer margin over a competent
 scratch network is six points, not the collapse the project's earlier work
 implied, and it expresses itself as much in training time (1,175 s against
@@ -17655,8 +17740,9 @@ be read against that confound, which is why section 8 measures whether the model
 exploits it (it does not: attention ratio 0.70) rather than assuming either way.</p>
 <p><strong>Limitations</strong>, stated where they arise above: LIME fidelity rests on six
 images; Grad-CAM++ at a 7x7 grid cannot localise individual lesions; three
-pruning sweep points did not converge; the segmenter's weights are not in the
-repository; and about 11% of the crops feeding the glass-box features are
+pruning sweep points did not converge; <code>Leaf_Segmenter.ipynb</code> looks for its
+weights under a filename that does not exist, though the weights themselves are
+committed; and about 11% of the crops feeding the glass-box features are
 unsegmented photographs.</p>
 <h3 id="Declaration-of-AI-usage">Declaration of AI usage<a class="anchor-link" href="#Declaration-of-AI-usage">&#182;</a></h3><blockquote>
 <p><strong>[TEAM]</strong> Signed declaration, required by the submission rules under the TU

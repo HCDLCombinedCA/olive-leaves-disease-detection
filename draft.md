@@ -316,8 +316,10 @@ glass-box numbers that can be placed beside a CNN:
 
 | model | accuracy | macro-F1 |
 |---|---|---|
-| **Decision tree (depth 3)** | **0.684** | **0.667** |
-| Logistic regression | 0.621 | 0.600 |
+| **Logistic regression, 47 features** | **0.746** | **0.742** |
+| Decision tree (depth 3), 9 features | 0.684 | 0.667 |
+| Logistic regression, 9 features | 0.621 | 0.600 |
+| Decision tree (depth 3), 47 features | 0.600 | 0.552 |
 
 The **segmented** protocol is the setting the features were designed for: one
 crop per detected leaf, held out with a split stratified and grouped by source
@@ -327,15 +329,20 @@ as a comparison against the CNNs:
 
 | model | accuracy | macro-F1 |
 |---|---|---|
-| Decision tree (depth 3) | 0.624 | 0.621 |
-| **Logistic regression** | **0.711** | **0.692** |
+| **Logistic regression, 47 features** | **0.837** | **0.831** |
+| Decision tree (depth 3), 47 features | 0.693 | 0.679 |
+| Logistic regression, 9 features | 0.711 | 0.692 |
+| Decision tree (depth 3), 9 features | 0.624 | 0.621 |
 
-The two protocols reverse the ranking, and that is the more interesting finding
-of the pair. The colour fractions are measured inside a leaf mask that a tight
-crop makes reliable and a whole photograph does not; logistic regression has no
-way to compensate for the shift, while a depth-3 tree's thresholds partly can.
-Any claim about *which* glass-box model is better therefore has to name its
-protocol. Coefficients still read directly in agronomic terms: `frac_yellow`, the
+Two things move the ranking, and both matter. On the nine base features the
+protocol reverses it: the colour fractions are measured inside a leaf mask that a
+tight crop makes reliable and a whole photograph does not, so logistic regression
+loses on full photographs while a depth-3 tree's thresholds absorb some of the
+shift. The 47-feature set then reverses it back, because logistic regression has
+texture and morphology descriptors to fall back on. It also costs the tree, which
+consults three features however many it is offered and picks worse ones from 47.
+Any claim about *which* glass-box model is better has to name both the protocol
+and the feature set. Coefficients still read directly in agronomic terms: `frac_yellow`, the
 chlorosis proxy, is the largest positive weight for `olive_peacock_spot` and the
 largest negative one for `Healthy`.
 
@@ -393,8 +400,8 @@ on the same official 680-image split:
 | MobileNetV2 (ImageNet) | 0.930 | 2,261,827 |
 | Scratch CNN, redesigned | 0.871 | 585,059 |
 | Scratch CNN, notebook architecture | 0.810 | 5,767,139 |
+| Logistic regression, engineered features | 0.742 | 47 features |
 | Decision tree, engineered features | 0.667 | 9 features |
-| Logistic regression, engineered features | 0.600 | 9 features |
 
 Three things follow, and only the first is the expected one.
 
@@ -412,10 +419,12 @@ architectural: that design spends 5.75M of its 5.77M parameters on a single
 BatchNorm and global average pooling beats it outright. Both causes have to be
 named; attributing the 0.401 to either alone would be wrong.
 
-**The glass-box gap is 27 points, not 24.** The comparison must be quoted from
-the common protocol. Note also that the ranking of the two interpretable models
-reverses between protocols (section 6), so any claim about which glass-box model
-is stronger has to name the evaluation protocol it came from.
+**The glass-box gap is 20 points.** The comparison must be quoted from the common
+protocol *and* from the best feature set: the nine base features reach only 0.667,
+and the segmented-crop figure of 0.831 is measured on a different population. Note
+also that the ranking of the two interpretable models reverses between protocols
+and between feature sets (section 6), so any claim about which glass-box model is
+stronger has to name both.
 
 One caveat belongs with this table: the redesigned scratch CNN is the only model
 whose validation score (0.916) overstates its test score (0.871). Validation is

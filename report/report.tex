@@ -64,9 +64,9 @@ On the corrected data, DenseNet121 and MobileNetV2 reach 0.939 and 0.930 test
 macro-F1. A CNN trained from scratch reaches 0.871, and reproducing the
 architecture originally chosen for this dataset reaches 0.810 --- against 0.401
 reported before the correction, showing that figure was a product of leakage and
-architecture jointly rather than evidence that scratch training fails here. Two
-glass-box models on nine engineered features reach 0.667 and 0.600 when evaluated
-on the same test images, quantifying a 27-point cost of intrinsic
+architecture jointly rather than evidence that scratch training fails here. The
+best intrinsically interpretable model, logistic regression over 47 engineered
+features, reaches 0.742 on the same test images, quantifying a 20-point cost of
 interpretability.
 
 Compression is effective but asymmetric. Full-integer quantisation makes
@@ -249,8 +249,8 @@ DenseNet121 (ImageNet)   & 7{,}040{,}579 & 0.939 & post-hoc \\
 MobileNetV2 (ImageNet)   & 2{,}261{,}827 & 0.930 & post-hoc \\
 Scratch CNN, redesigned  &   585{,}059 & 0.871 & post-hoc \\
 Scratch CNN, original    & 5{,}767{,}139 & 0.810 & post-hoc \\
+Logistic regression      &  47 features & 0.742 & intrinsic \\
 Decision tree            &   9 features & 0.667 & intrinsic \\
-Logistic regression      &   9 features & 0.600 & intrinsic \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -313,12 +313,15 @@ showed that both of the tree's errors turn on its very first split
 standard deviations. The errors are not diffuse; they are a knife-edge on a
 single feature. No post-hoc method could establish that.
 
-The interpretability cost is 27 points of macro-F1 (0.939 against 0.667). It must
-be quoted from the common protocol: evaluating the glass-box models on segmented
-crops from training photographs instead gives 0.692, and pairing that with 0.939
-would compare two different test sets. Notably, the two protocols \emph{reverse}
-the ranking of the two interpretable models, so any claim about which is stronger
-has to name its protocol.
+The interpretability cost is 20 points of macro-F1 (0.939 against 0.742). Two
+qualifications travel with that figure. It must be quoted from the common
+protocol: the same models on segmented crops from training photographs reach
+0.831, and pairing that with 0.939 would compare two different test sets. And it
+depends on the feature set --- the nine base features reach only 0.667, while 47
+features carry logistic regression to 0.742 and simultaneously cost the depth-3
+tree, which can consult only three features however many it is offered. No claim
+about which glass-box model is stronger survives without naming both the protocol
+and the feature set.
 
 %==============================================================================
 \section{Emerging Techniques: Compression}
@@ -437,7 +440,7 @@ approximately in half in the opposite direction --- 0.401 becoming 0.810 once
 leakage and architecture were separated.
 
 On RQ~a, ImageNet transfer reaches 0.939 macro-F1 against 0.871 from scratch and
-0.667 from the best intrinsically interpretable model, all on the same test
+0.742 from the best intrinsically interpretable model, all on the same test
 split. The transfer advantage is real but smaller than expected, and expresses
 itself as much in training time as in final accuracy. On RQ~b, quantisation
 delivers a 4.9$\times$ size and 5.6$\times$ latency improvement for 0.005

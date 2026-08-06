@@ -64,15 +64,21 @@ Every model here shares `compression/src/common.py`: the same manifests, input s
 
 ## 4. Glass-box models
 
-| protocol | model | test images | accuracy | macro-F1 |
-|---|---|---|---|---|
-| segmented | Decision Tree (depth 3) | 995 | 0.624 | 0.621 |
-| segmented | Logistic Regression | 995 | 0.711 | 0.692 |
-| common | Decision Tree (depth 3) | 680 | 0.684 | 0.667 |
-| common | Logistic Regression | 680 | 0.621 | 0.600 |
+| protocol | features | model | test images | accuracy | macro-F1 |
+|---|---|---|---|---|---|
+| segmented | base (9) | Decision Tree (depth 3) | 995 | 0.624 | 0.621 |
+| segmented | base (9) | Logistic Regression | 995 | 0.711 | 0.692 |
+| segmented | extended (47) | Decision Tree (depth 3) | 995 | 0.693 | 0.679 |
+| segmented | extended (47) | Logistic Regression | 995 | 0.837 | 0.831 |
+| common | base (9) | Decision Tree (depth 3) | 680 | 0.684 | 0.667 |
+| common | base (9) | Logistic Regression | 680 | 0.621 | 0.600 |
+| common | extended (47) | Decision Tree (depth 3) | 680 | 0.600 | 0.552 |
+| common | extended (47) | Logistic Regression | 680 | 0.746 | 0.742 |
 
 - **segmented**: 2008 train / 995 test, StratifiedGroupKFold on the source photograph, 0 shared source photographs.
 - **common**: 2361 train / 680 test, official test split from compression/data/prepared manifests, 0 shared source photographs.
+
+The 47-feature set adds colour statistics, lesion morphology, LBP, edge, local-variance, entropy and Gabor descriptors to the original nine. It is worth having: on the common protocol it lifts logistic regression from 0.600 to 0.742. It does not help the depth-3 tree, which can only consult three features however many it is offered, and with 47 candidates it picks worse ones.
 
 The two protocols do not rank the models the same way, which is worth stating rather than smoothing over: the tree gains on whole photographs while logistic regression loses. The engineered colour fractions are computed inside a leaf mask that a tight crop makes reliable and a full photograph does not, and a linear model has no way to compensate for that where a depth-3 tree's thresholds partly can.
 
@@ -86,12 +92,16 @@ All rows below are scored on the **same official 680-image test split**. The seg
 
 | model | accuracy | macro-F1 | explanation |
 |---|---|---|---|
-| scratch CNN (notebook architecture) | 0.812 | 0.810 | post-hoc (Grad-CAM / LIME) |
-| scratch CNN (redesigned) | 0.871 | 0.871 | post-hoc (Grad-CAM / LIME) |
-| MobileNetV2 (ImageNet) | 0.931 | 0.930 | post-hoc (Grad-CAM / LIME) |
 | DenseNet121 (ImageNet) | 0.940 | 0.939 | post-hoc (Grad-CAM / LIME) |
-| Decision Tree (depth 3) (engineered features) | 0.684 | 0.667 | intrinsic (exact) |
-| Logistic Regression (engineered features) | 0.621 | 0.600 | intrinsic (exact) |
+| MobileNetV2 (ImageNet) | 0.931 | 0.930 | post-hoc (Grad-CAM / LIME) |
+| scratch CNN (redesigned) | 0.871 | 0.871 | post-hoc (Grad-CAM / LIME) |
+| scratch CNN (notebook architecture) | 0.812 | 0.810 | post-hoc (Grad-CAM / LIME) |
+| Logistic Regression, 47 features | 0.746 | 0.742 | intrinsic (exact) |
+| Decision Tree (depth 3), 9 features | 0.684 | 0.667 | intrinsic (exact) |
+| Logistic Regression, 9 features | 0.621 | 0.600 | intrinsic (exact) |
+| Decision Tree (depth 3), 47 features | 0.600 | 0.552 | intrinsic (exact) |
+
+The interpretability cost is the gap between the best deep model and the best intrinsically interpretable one: **0.939 against 0.742, 20 points**. That best glass-box is Logistic Regression on the extended 47-feature set -- not the nine features the pipeline started from, which reach only 0.667 here.
 
 ---
 
