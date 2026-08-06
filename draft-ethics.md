@@ -1,8 +1,9 @@
 # Ethical considerations
 
-Draft for the ethics section. Where a position is genuinely the team's to take
-rather than something the evidence settles, it is marked **[team decision]**
-rather than asserted.
+Draft for the ethics section. Positions that are the team's to take rather than
+something the evidence settles were marked **[team decision]** while open; all
+four have now been decided and are recorded below as **Decision**, with the
+evidence that supports each one kept alongside it.
 
 The aim is to ground each concern in something measured in this project. Generic
 ethics text — "AI systems may be biased", "human oversight is important" — is
@@ -64,12 +65,21 @@ Confidence is not calibrated, and the failures show it. `a245.jpg` is
 misclassified at **0.979 confidence**; a second error sits at 0.991. A user
 interface that displays a confidence score would present these as near-certain.
 
-This is a design obligation rather than an observation. **[team decision]** on
-how to handle it, but the defensible options are to suppress numeric confidence
-in favour of a coarse band, to require agreement between two models before
-showing a confident result, or to abstain below a threshold and say "unclear,
-consult an expert". Presenting a raw softmax output to a grower as a probability
-would be misleading given what was measured.
+This is a design obligation rather than an observation.
+
+**Decision.** No raw softmax output is presented to a grower as a probability,
+and the system abstains below a confidence threshold, returning "unclear —
+consult an expert" rather than a class. Any numeric confidence that is displayed
+must be calibrated first.
+
+That last clause is a commitment, not a description: no calibration was performed
+in this project, and the two errors above at 0.979 and 0.991 are the evidence
+that the uncalibrated scores cannot be shown as they stand. Until a calibration
+step exists — temperature scaling on a held-out split is the obvious candidate,
+and it is future work — the defensible interface shows a coarse band rather than
+a number, plus the abstention path. Stating it this way keeps the decision
+honest: the team has chosen what to display, and has not yet built the thing that
+would make a displayed probability meaningful.
 
 ## 4. Bias and the limits of generalisation
 
@@ -114,12 +124,17 @@ treatment**, not at the point of detection. A workflow where the model flags
 candidate leaves and an agronomist confirms the specific condition before
 treatment captures most of the value while bounding the realistic harm.
 
-**[team decision]**: whether to frame the system as (a) a triage tool that
-prioritises which trees an expert should inspect, or (b) a diagnostic aid that
-proposes a condition for expert confirmation. Option (a) is more defensible given
-the measured error profile and the closed label set; option (b) claims more and
-requires stronger evidence than this project has. The choice should be stated
-explicitly, because the rest of the ethics argument depends on it.
+**Decision.** The system is framed as a **triage and decision-support tool** that
+prioritises which trees an expert should inspect. It does not claim to diagnose,
+and no output is presented as a diagnosis.
+
+The alternative framing — a diagnostic aid proposing a condition for expert
+confirmation — claims more than this project can support. Two measurements rule
+it out. The label set is closed at three classes, so any condition outside it is
+silently mapped onto one of the three. And the errors that do occur are confident
+ones, between diseases rather than between diseased and healthy. A triage claim
+survives both facts; a diagnostic claim does not. The rest of the ethics argument
+below is built on this framing.
 
 ## 6. Environmental and resource considerations
 
@@ -142,10 +157,19 @@ what justify the training cost, and only if the model is actually used at volume
 
 **Privacy risk is low.** Leaf photographs contain no personal data. The residual
 risks are indirect: EXIF metadata could carry GPS coordinates identifying a
-grower's location — **[team decision]** whether to state that the pipeline strips
-metadata, which it currently does implicitly by re-encoding through PIL — and
-aggregated disease reports could reveal commercially sensitive information about
-a specific farm's health.
+grower's location, and aggregated disease reports could reveal commercially
+sensitive information about a specific farm's health.
+
+**Decision.** EXIF metadata is stripped by default from any image shared outside
+the project. Where provenance is needed for research — capture device and
+timestamp both matter to the bias analysis in section 4 — it is retained
+separately from the image rather than embedded in it.
+
+Note the current state accurately: the preparation pipeline already drops EXIF,
+but only as a side effect of re-encoding through PIL, not as a stated guarantee.
+The decision above turns an incidental behaviour into an intended one, which is
+the difference between a pipeline that happens to be safe today and one that can
+be relied on to stay safe.
 
 **Licensing is clean but attribution is owed.** The dataset is published on Kaggle
 under CC0 / public domain (Olive Leaf Image Dataset,
@@ -170,12 +194,27 @@ set produces a lower headline figure than the original split (0.9387 against
 0.946). Reporting the higher number without the correction would have been the
 easier choice and would have been wrong.
 
-**AI use declaration.** **[team decision]** — required by the submission rules
-under the TU Dublin Level 2 policy, and the team needs to state its own position.
-One fact that bears on it: the git history of the compression and analysis work
-carries `Co-Authored-By` trailers recording AI assistance. That record is
-permanent and public within the repository. Whatever the declaration says, it
-should be consistent with what the repository shows.
+**AI use declaration.**
+
+**Decision.** The declaration states the scope of AI assistance truthfully. Under
+the TU Dublin Level 2 policy the submitted text is the team's own: AI-drafted
+material is rewritten, its claims verified against the artefacts, and
+responsibility for the result rests with the team. No AI draft is submitted as
+final content.
+
+The verifiable facts the declaration has to be consistent with: all seven commits
+on `develop/model-compression` carry `Co-Authored-By` trailers recording AI
+assistance, covering the compression pipeline, the corrections and bias
+investigation, the dataset audit, the results tables, the report drafts, the
+scratch and common-protocol experiments, and the integration notebook. That
+record is permanent and public within the repository, so a declaration that
+understated the scope would be contradicted by the repository itself.
+
+Two things this does not settle, both of which the team must supply: the
+per-person account of who used what, and the rewriting itself. Every claim in
+these drafts points at a number in `RESULTS.md` or a file under `*/results/`, so
+verification is a matter of checking each against its artefact rather than taking
+it on trust — which is the form the Level 2 obligation takes here.
 
 ---
 

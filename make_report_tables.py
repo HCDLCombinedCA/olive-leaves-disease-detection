@@ -186,6 +186,9 @@ def section_compression(out):
     if not found:
         out.append(missing("Compression tables",
                            "compression/results/*_compression_table.csv"))
+    out.append("`gzip (MB)` is the sum of the individually gzipped files, which for a "
+               "SavedModel directory is marginally larger than one gzip stream over the whole "
+               "tree (about 0.06% on these artefacts).\n")
     out.append("Unstructured pruning zeroes weights without changing tensor shapes, so the raw "
                "file size is unchanged and the saving appears only in the gzipped column. "
                "Reporting both is what makes the pruning result readable.\n")

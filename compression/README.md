@@ -160,7 +160,8 @@ Headline findings:
   weights are dequantised at runtime. Full integer quantisation is both small and
   fastest.
 * **Explanation fidelity tracks accuracy.** Under LIME, the variant that costs
-  least accuracy perturbs the explanation least; every compressed variant agreed
-  with the baseline's predicted class on every image tested.
+  least accuracy perturbs the explanation least. Float16 and full-integer agreed
+  with the baseline's predicted class on all six images tested; dynamic range
+  agreed on five.
 
 See `../draft.md` sections 3 and 4 for the full argument and the limitations.

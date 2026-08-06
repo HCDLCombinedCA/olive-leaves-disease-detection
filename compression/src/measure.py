@@ -51,8 +51,16 @@ def directory_size(path):
 
 
 def gzipped_size(path):
-    """Size after gzip. For a SavedModel directory, the variables file dominates,
-    so the whole tree is compressed as a tar-free concatenation of its files."""
+    """Sum of the individually gzipped files, not one gzip stream over the whole tree.
+
+    For a single `.tflite` file the two are the same thing. For a SavedModel
+    directory they differ: compressing each file separately pays a fresh gzip
+    header per file and cannot exploit redundancy across them, so this slightly
+    overstates what a tarball would ship. Measured on these artefacts the gap is
+    about 0.06%, far below the differences the pruning result turns on, and the
+    per-file form is used because it needs no archive format in between. The
+    metric is named accordingly wherever it is reported.
+    """
     total = 0
     if os.path.isfile(path):
         paths = [path]

@@ -133,14 +133,18 @@ a fixed random seed so any difference is attributable to the models:
 
 | variant | mean Spearman ρ | mean top-5 Jaccard | label agreement |
 |---|---|---|---|
-| float16 | 0.599 | 0.833 | 100% |
-| dynamic range | 0.556 | 0.548 | 100% |
-| full integer | 0.407 | 0.627 | 100% |
+| float16 | 0.599 | 0.833 | 100% (6/6) |
+| dynamic range | 0.556 | 0.548 | 83% (5/6) |
+| full integer | 0.407 | 0.627 | 100% (6/6) |
 
 The ordering follows the accuracy loss. Read the two metrics together: a rank
 correlation of 0.4–0.6 says the ordering of evidence shifts, while the higher
 top-5 overlap says the evidence the prediction actually rests on is stable and
 the instability sits in the low-weight regions.
+
+Label agreement is not uniform: dynamic range changed the predicted class on one
+of the six images, the other two variants on none. With six images no rate should
+be read into that, which is why the counts are given raw.
 
 ### Limits on these claims
 

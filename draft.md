@@ -233,9 +233,9 @@ attributable to the models rather than to sampling.
 
 | variant | mean Spearman ρ | mean top-5 Jaccard | label agreement |
 |---|---|---|---|
-| float16 | 0.599 | 0.833 | 100% |
-| dynamic range | 0.556 | 0.548 | 100% |
-| full integer | 0.407 | 0.627 | 100% |
+| float16 | 0.599 | 0.833 | 100% (6/6) |
+| dynamic range | 0.556 | 0.548 | 83% (5/6) |
+| full integer | 0.407 | 0.627 | 100% (6/6) |
 
 The ordering follows the accuracy loss: the variant that costs least accuracy
 also perturbs the explanation least. Explanation fidelity and predictive accuracy
@@ -245,10 +245,15 @@ The two metrics should be read together. A rank correlation of 0.4–0.6 indicat
 that the ordering of evidence shifts appreciably. The top-5 overlap is much
 higher — under float16, four of the five most influential regions are shared on
 average — which locates the instability in the low-weight regions rather than in
-the evidence the prediction actually rests on. Every compressed variant predicted
-the same class as the baseline on every image tested, so the comparison is
+the evidence the prediction actually rests on.
+
+Label agreement is not uniform, and the exception is worth stating rather than
+rounding away: float16 and full-integer agreed with the baseline on all six
+images, dynamic range on five. So for two of the three variants the comparison is
 between models giving the same answer for possibly different reasons, which is
-the question worth asking.
+the question worth asking; for dynamic range, one image out of six changed answer
+outright. Six images is far too small a sample to put a rate on that, and it is
+reported here as the raw count for exactly that reason.
 
 ---
 

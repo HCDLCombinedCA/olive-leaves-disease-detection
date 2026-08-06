@@ -135,6 +135,8 @@ Baseline for reference: 13.211 MB, 53.55 ms, macro-F1 0.9296.
 
 Baseline for reference: 38.148 MB, 119.58 ms, macro-F1 0.9387.
 
+`gzip (MB)` is the sum of the individually gzipped files, which for a SavedModel directory is marginally larger than one gzip stream over the whole tree (about 0.06% on these artefacts).
+
 Unstructured pruning zeroes weights without changing tensor shapes, so the raw file size is unchanged and the saving appears only in the gzipped column. Reporting both is what makes the pruning result readable.
 
 ---
