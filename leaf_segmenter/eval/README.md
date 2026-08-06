@@ -106,6 +106,24 @@ read). `--gt-dir` is the folder of per-leaf `plantNNN_label.png` maps. Add
 | **FBD** | Dice between the union of predicted masks and the GT foreground — "did it find the plant", regardless of leaf separation |
 | **SBD** | Symmetric Best Dice — mean best-match Dice per leaf, both directions, worse of the two kept. The standard CVPPP leaderboard number |
 
+### Published reference values
+
+Because these are the CVPPP challenge's own metrics, published results are
+directly comparable to what these evaluators print. Useful anchors, from
+[Wang et al. 2024](https://doi.org/10.3390/life14060780) (YOLOv8-seg on CVPPP,
+the reference paper for `models/05_yolo_seg`):
+
+| Method | BestDice ↑ | SBD ↑ | AbsDiffFG ↓ |
+|---|---|---|---|
+| IPK (classic baseline, A1) | — | 74.4 | — |
+| YOLOv8-seg (baseline) | 85.19 | 81.35 | 1.36 |
+| YOLOv8-Ghost (their best) | 86.36 | 81.68 | 1.18 |
+
+Note they report SBD on a 0–100 scale while `evaluate_leaf_segmentation.py`
+prints 0–1, and their figures average A1–A5 on the official challenge split —
+so compare against their **per-subset** numbers (A1: 83.67, A2: 83.30) when
+evaluating a single subset here.
+
 ## Runtime (`evaluate_timings.py`)
 
 Pure stdlib — runs in any env. Reads the `timings.csv` each run script writes

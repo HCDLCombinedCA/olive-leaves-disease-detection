@@ -83,18 +83,6 @@ filters — there is no containment de-duplication step — so overlapping roset
 leaves stay as separate masks instead of collapsing into a single whole-plant
 blob.
 
-## Options that matter on a 6 GB GPU
-
-`--model-size` is the only tuning knob left on the CLI (`tiny`/`small` are safe on
-6 GB; `large` may OOM). The rest are constants at the top of `run_sam2.py`, edit
-there if needed:
-
-| Constant | Default | Notes |
-|---|---|---|
-| `POINTS_PER_SIDE` | `32` | Drop to `16` for less memory / faster, coarser masks. |
-| `MIN_GREEN` | `0.5` | Fraction of green pixels required to keep a mask (set `0` to keep all). |
-| `MIN_AREA` / `MAX_AREA` | `0.0005` / `0.25` | Drop masks below/above this fraction of the image. |
-
 ## Notes
 
 - SAM 2 has no notion of "leaf" — the green/size filter is a cheap heuristic. For
