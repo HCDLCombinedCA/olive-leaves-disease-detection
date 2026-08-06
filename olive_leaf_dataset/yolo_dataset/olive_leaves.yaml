@@ -1,0 +1,5 @@
+path: /home/marvin/shared/olive-leaves-disease-detection/olive_leaf_dataset/yolo_dataset/olive_leaves
+train: images/train
+val: images/val
+names:
+  0: leaf

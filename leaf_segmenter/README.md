@@ -30,7 +30,7 @@ rather than segmenting individual leaves, and out of scope here.)
 | 02 | `models/02_leaf_only_sam` | **Leaf Only SAM** | ✅ zero-shot | SAM v1 + leaf post-processing |
 | 03 | `models/03_hq_sam` | **HQ-SAM** | ✅ zero-shot | sharper edges; `vit_tiny` = Light HQ-SAM |
 | 04 | `models/04_mask_rcnn` | **Mask R-CNN** | ✅ baseline | COCO weights; fine-tune for leaves |
-| 05 | `models/05_yolo_seg` | **YOLOv8/11-seg** | ✅ baseline + train | best accuracy-for-effort once labelled |
+| 05 | `models/05_yolo_seg` | **YOLOv8/11-seg** | ✅ baseline + train | best accuracy-for-effort once labelled; SBD 81.7 on CVPPP ([Wang et al. 2024](https://doi.org/10.3390/life14060780)) |
 | 06 | `models/06_mask2former` | **Mask2Former** | ✅ baseline | SOTA on CVPPP; fine-tune for leaves |
 
 ✅ = pip install + run · ⚠️ = extra setup / training
@@ -62,8 +62,10 @@ model folder (start with `01_sam2`) and follow its README against
 1. **Prototype zero-shot** with SAM 2 (01) or Light HQ-SAM (03) — immediate,
    no labels. Leaf Only SAM (02) if you want the foliage post-processing.
 2. **Need accuracy?** Annotate a small set and **fine-tune YOLO11-seg** (05) —
-   best effort/accuracy trade-off. Mask R-CNN (04) / Mask2Former (06) are
-   alternatives.
+   best effort/accuracy trade-off, and the approach with the closest published
+   CVPPP baseline to compare against ([Wang et al. 2024](https://doi.org/10.3390/life14060780),
+   SBD 81.68 / BestDice 86.36 — see `models/05_yolo_seg/README.md`). Mask R-CNN
+   (04) / Mask2Former (06) are alternatives.
 
 ## Layout
 
