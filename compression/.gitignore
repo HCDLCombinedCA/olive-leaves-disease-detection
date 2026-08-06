@@ -1,9 +1,19 @@
 # Model files and intermediate artefacts: large, and reproducible from source.
 artifacts/
-data/prepared/
 *.tflite
 *.keras
 *.h5
+
+# The prepared images (95 MB) stay out, but the manifests and split statistics
+# that describe them do not: they are a few hundred KB, they are what the
+# integration notebook reads to show the split, and without them a fresh clone
+# cannot even see which images were dropped as leaked without re-running the
+# whole preparation step.
+data/prepared/*
+!data/prepared/manifest_trainval.csv
+!data/prepared/manifest_test.csv
+!data/prepared/removed.csv
+!data/prepared/stats.json
 
 # Results are kept: CSVs and figures are small and feed straight into the report.
 !results/

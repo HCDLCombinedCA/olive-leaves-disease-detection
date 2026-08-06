@@ -1,0 +1,41 @@
+{
+  "seed": 42,
+  "val_fraction": 0.2,
+  "burst_gap_seconds": 10,
+  "duplicate_detection": {
+    "method": "16x16 greyscale thumbnail, mean absolute error < 0.020",
+    "pairs_found": 119,
+    "md5_identical_pairs": 24,
+    "reencoded_pairs": 95
+  },
+  "leaks_removed": {
+    "duplicate_of_test": 114,
+    "burst_near_duplicate": 264,
+    "union": 359
+  },
+  "train_original": {
+    "Healthy": 830,
+    "aculus_olearius": 690,
+    "olive_peacock_spot": 1200
+  },
+  "train_after_dedup": {
+    "Healthy": 723,
+    "aculus_olearius": 684,
+    "olive_peacock_spot": 954
+  },
+  "train_split": {
+    "Healthy": 578,
+    "aculus_olearius": 547,
+    "olive_peacock_spot": 763
+  },
+  "val_split": {
+    "Healthy": 145,
+    "aculus_olearius": 137,
+    "olive_peacock_spot": 191
+  },
+  "test": {
+    "Healthy": 220,
+    "aculus_olearius": 200,
+    "olive_peacock_spot": 260
+  }
+}

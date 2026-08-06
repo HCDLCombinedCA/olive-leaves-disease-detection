@@ -155,12 +155,882 @@
     }
   },
   "decision_tree_rules": "|--- frac_yellow <= 0.16\n|   |--- glcm_homogeneity <= 0.94\n|   |   |--- frac_brown <= 0.00\n|   |   |   |--- class: 1\n|   |   |--- frac_brown >  0.00\n|   |   |   |--- class: 0\n|   |--- glcm_homogeneity >  0.94\n|   |   |--- frac_brown <= 0.00\n|   |   |   |--- class: 0\n|   |   |--- frac_brown >  0.00\n|   |   |   |--- class: 0\n|--- frac_yellow >  0.16\n|   |--- glcm_homogeneity <= 0.93\n|   |   |--- frac_yellow <= 0.48\n|   |   |   |--- class: 1\n|   |   |--- frac_yellow >  0.48\n|   |   |   |--- class: 2\n|   |--- glcm_homogeneity >  0.93\n|   |   |--- frac_green <= 0.68\n|   |   |   |--- class: 2\n|   |   |--- frac_green >  0.68\n|   |   |   |--- class: 2\n",
+  "explanations": {
+    "decision_tree": [
+      {
+        "file": "A15_leaf00.png",
+        "path": "../olive_leaf_dataset/segmented/train/olive_peacock_spot/A15_leaf00.png",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9446981906005213,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.4083,
+          "frac_yellow": 0.3786,
+          "frac_brown": 0.0914,
+          "frac_dark": 0.1959,
+          "frac_gray": 0.0756,
+          "glcm_contrast": 5.1604,
+          "glcm_homogeneity": 0.9619,
+          "glcm_energy": 0.9418,
+          "glcm_correlation": 0.8909
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.1562,
+            "value": 0.3786,
+            "test": "frac_yellow = 0.3786 > 0.1562"
+          },
+          {
+            "leaf": false,
+            "feature": "glcm_homogeneity",
+            "threshold": 0.9298,
+            "value": 0.9619,
+            "test": "glcm_homogeneity = 0.9619 > 0.9298"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_green",
+            "threshold": 0.6763,
+            "value": 0.4083,
+            "test": "frac_green = 0.4083 <= 0.6763"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 10.158516020236087,
+              "aculus_olearius": 5.218973359324236,
+              "olive_peacock_spot": 262.6873614190694
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.3786 > 0.1562",
+            "contribution": 0.879054228397795
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "label": "glcm_homogeneity = 0.9619 > 0.9298",
+            "contribution": 0.5457230900191802
+          },
+          {
+            "feature": "frac_green",
+            "label": "frac_green = 0.4083 <= 0.6763",
+            "contribution": -0.8581282122712898
+          }
+        ]
+      },
+      {
+        "file": "A624_leaf00.png",
+        "path": "../olive_leaf_dataset/segmented/train/Healthy/A624_leaf00.png",
+        "true_class": "Healthy",
+        "predicted_class": "Healthy",
+        "confidence": 0.8428906047362599,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.2463,
+          "frac_yellow": 0.0132,
+          "frac_brown": 0.0066,
+          "frac_dark": 0.0213,
+          "frac_gray": 0.0753,
+          "glcm_contrast": 5.7519,
+          "glcm_homogeneity": 0.9549,
+          "glcm_energy": 0.9265,
+          "glcm_correlation": 0.9481
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.1562,
+            "value": 0.0132,
+            "test": "frac_yellow = 0.0132 <= 0.1562"
+          },
+          {
+            "leaf": false,
+            "feature": "glcm_homogeneity",
+            "threshold": 0.9368,
+            "value": 0.9549,
+            "test": "glcm_homogeneity = 0.9549 > 0.9368"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_brown",
+            "threshold": 0.0003,
+            "value": 0.0066,
+            "test": "frac_brown = 0.0066 > 0.0003"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 248.31928049465952,
+              "aculus_olearius": 19.57115009746589,
+              "olive_peacock_spot": 26.713968957871398
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.0132 <= 0.1562",
+            "contribution": -0.5652192205975032
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "label": "glcm_homogeneity = 0.9549 > 0.9368",
+            "contribution": 0.3077130196058305
+          },
+          {
+            "feature": "frac_brown",
+            "label": "frac_brown = 0.0066 > 0.0003",
+            "contribution": 0.09276983888852468
+          }
+        ]
+      },
+      {
+        "file": "IMG_20190807_143743_leaf00.png",
+        "path": "../olive_leaf_dataset/segmented/train/Healthy/IMG_20190807_143743_leaf00.png",
+        "true_class": "Healthy",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9446981906005213,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.6022,
+          "frac_yellow": 0.3372,
+          "frac_brown": 0.0,
+          "frac_dark": 0.0075,
+          "frac_gray": 0.0431,
+          "glcm_contrast": 6.7302,
+          "glcm_homogeneity": 0.9349,
+          "glcm_energy": 0.8896,
+          "glcm_correlation": 0.9268
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.1562,
+            "value": 0.3372,
+            "test": "frac_yellow = 0.3372 > 0.1562"
+          },
+          {
+            "leaf": false,
+            "feature": "glcm_homogeneity",
+            "threshold": 0.9298,
+            "value": 0.9349,
+            "test": "glcm_homogeneity = 0.9349 > 0.9298"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_green",
+            "threshold": 0.6763,
+            "value": 0.6022,
+            "test": "frac_green = 0.6022 <= 0.6763"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 10.158516020236087,
+              "aculus_olearius": 5.218973359324236,
+              "olive_peacock_spot": 262.6873614190694
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.3372 > 0.1562",
+            "contribution": 0.7154173351618746
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "label": "glcm_homogeneity = 0.9349 > 0.9298",
+            "contribution": 0.08670366850772006
+          },
+          {
+            "feature": "frac_green",
+            "label": "frac_green = 0.6022 <= 0.6763",
+            "contribution": -0.23726604675112914
+          }
+        ]
+      },
+      {
+        "file": "179_leaf01.png",
+        "path": "../olive_leaf_dataset/segmented/train/aculus_olearius/179_leaf01.png",
+        "true_class": "aculus_olearius",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9446981906005213,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.0067,
+          "frac_yellow": 0.9282,
+          "frac_brown": 0.0164,
+          "frac_dark": 0.041,
+          "frac_gray": 0.0212,
+          "glcm_contrast": 8.2831,
+          "glcm_homogeneity": 0.9318,
+          "glcm_energy": 0.9086,
+          "glcm_correlation": 0.9424
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.1562,
+            "value": 0.9282,
+            "test": "frac_yellow = 0.9282 > 0.1562"
+          },
+          {
+            "leaf": false,
+            "feature": "glcm_homogeneity",
+            "threshold": 0.9298,
+            "value": 0.9318,
+            "test": "glcm_homogeneity = 0.9318 > 0.9298"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_green",
+            "threshold": 0.6763,
+            "value": 0.0067,
+            "test": "frac_green = 0.0067 <= 0.6763"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 10.158516020236087,
+              "aculus_olearius": 5.218973359324236,
+              "olive_peacock_spot": 262.6873614190694
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.9282 > 0.1562",
+            "contribution": 3.051393274834073
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "label": "glcm_homogeneity = 0.9318 > 0.9298",
+            "contribution": 0.034001438630478525
+          },
+          {
+            "feature": "frac_green",
+            "label": "frac_green = 0.0067 <= 0.6763",
+            "contribution": -2.1440397423017
+          }
+        ]
+      }
+    ],
+    "logistic_regression": [
+      {
+        "file": "A795_leaf00.png",
+        "path": "../olive_leaf_dataset/segmented/train/olive_peacock_spot/A795_leaf00.png",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9999536050059338,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.0214,
+          "frac_yellow": 0.7754,
+          "frac_brown": 0.1256,
+          "frac_dark": 0.0314,
+          "frac_gray": 0.0528,
+          "glcm_contrast": 3.1938,
+          "glcm_homogeneity": 0.9608,
+          "glcm_energy": 0.9402,
+          "glcm_correlation": 0.9438
+        },
+        "linear_explanation": {
+          "intercept": 0.4201534120232732,
+          "decision_score": 7.117915317403706,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.7754,
+              "standardised_value": 2.315,
+              "coefficient": 1.976,
+              "contribution": 4.575
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 3.1938,
+              "standardised_value": -1.343,
+              "coefficient": -1.054,
+              "contribution": 1.416
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.1256,
+              "standardised_value": 1.384,
+              "coefficient": 0.64,
+              "contribution": 0.885
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.9402,
+              "standardised_value": 0.583,
+              "coefficient": 0.721,
+              "contribution": 0.42
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.9608,
+              "standardised_value": 0.839,
+              "coefficient": -0.363,
+              "contribution": -0.305
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.0528,
+              "standardised_value": -0.541,
+              "coefficient": 0.513,
+              "contribution": -0.278
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9438,
+              "standardised_value": 0.421,
+              "coefficient": 0.28,
+              "contribution": 0.118
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0214,
+              "standardised_value": -1.397,
+              "coefficient": 0.07,
+              "contribution": -0.098
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0314,
+              "standardised_value": -0.503,
+              "coefficient": 0.07,
+              "contribution": -0.035
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "contribution": 4.575
+          },
+          {
+            "feature": "glcm_contrast",
+            "contribution": 1.416
+          },
+          {
+            "feature": "frac_brown",
+            "contribution": 0.885
+          },
+          {
+            "feature": "glcm_energy",
+            "contribution": 0.42
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": -0.305
+          },
+          {
+            "feature": "frac_gray",
+            "contribution": -0.278
+          }
+        ]
+      },
+      {
+        "file": "128_full.png",
+        "path": "../olive_leaf_dataset/segmented/train/aculus_olearius/128_full.png",
+        "true_class": "aculus_olearius",
+        "predicted_class": "aculus_olearius",
+        "confidence": 0.9944026742875192,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.1329,
+          "frac_yellow": 0.0506,
+          "frac_brown": 0.0062,
+          "frac_dark": 0.1032,
+          "frac_gray": 0.7577,
+          "glcm_contrast": 14.2479,
+          "glcm_homogeneity": 0.6686,
+          "glcm_energy": 0.1055,
+          "glcm_correlation": 0.9758
+        },
+        "linear_explanation": {
+          "intercept": -0.09552129707216885,
+          "decision_score": 4.163076432974678,
+          "contributions": [
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.6686,
+              "standardised_value": -4.129,
+              "coefficient": -1.094,
+              "contribution": 4.519
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1055,
+              "standardised_value": -3.202,
+              "coefficient": 0.858,
+              "contribution": -2.749
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 14.2479,
+              "standardised_value": 2.676,
+              "coefficient": 0.717,
+              "contribution": 1.918
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.7577,
+              "standardised_value": 2.2,
+              "coefficient": 0.164,
+              "contribution": 0.362
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0062,
+              "standardised_value": -0.375,
+              "coefficient": -0.942,
+              "contribution": 0.353
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.1329,
+              "standardised_value": -1.04,
+              "coefficient": 0.129,
+              "contribution": -0.135
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9758,
+              "standardised_value": 1.741,
+              "coefficient": -0.059,
+              "contribution": -0.102
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0506,
+              "standardised_value": -0.55,
+              "coefficient": -0.166,
+              "contribution": 0.091
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.1032,
+              "standardised_value": -0.055,
+              "coefficient": -0.007,
+              "contribution": 0.0
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": 4.519
+          },
+          {
+            "feature": "glcm_energy",
+            "contribution": -2.749
+          },
+          {
+            "feature": "glcm_contrast",
+            "contribution": 1.918
+          },
+          {
+            "feature": "frac_gray",
+            "contribution": 0.362
+          },
+          {
+            "feature": "frac_brown",
+            "contribution": 0.353
+          },
+          {
+            "feature": "frac_green",
+            "contribution": -0.135
+          }
+        ]
+      },
+      {
+        "file": "179_leaf01.png",
+        "path": "../olive_leaf_dataset/segmented/train/aculus_olearius/179_leaf01.png",
+        "true_class": "aculus_olearius",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9964587075061135,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.0067,
+          "frac_yellow": 0.9282,
+          "frac_brown": 0.0164,
+          "frac_dark": 0.041,
+          "frac_gray": 0.0212,
+          "glcm_contrast": 8.2831,
+          "glcm_homogeneity": 0.9318,
+          "glcm_energy": 0.9086,
+          "glcm_correlation": 0.9424
+        },
+        "linear_explanation": {
+          "intercept": 0.4201534120232732,
+          "decision_score": 5.329732126597733,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.9282,
+              "standardised_value": 2.918,
+              "coefficient": 1.976,
+              "contribution": 5.768
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 8.2831,
+              "standardised_value": 0.507,
+              "coefficient": -1.054,
+              "contribution": -0.535
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.0212,
+              "standardised_value": -0.664,
+              "coefficient": 0.513,
+              "contribution": -0.341
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.9086,
+              "standardised_value": 0.439,
+              "coefficient": 0.721,
+              "contribution": 0.317
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0164,
+              "standardised_value": -0.225,
+              "coefficient": 0.64,
+              "contribution": -0.144
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.9318,
+              "standardised_value": 0.346,
+              "coefficient": -0.363,
+              "contribution": -0.126
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9424,
+              "standardised_value": 0.364,
+              "coefficient": 0.28,
+              "contribution": 0.102
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0067,
+              "standardised_value": -1.444,
+              "coefficient": 0.07,
+              "contribution": -0.101
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.041,
+              "standardised_value": -0.444,
+              "coefficient": 0.07,
+              "contribution": -0.031
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "contribution": 5.768
+          },
+          {
+            "feature": "glcm_contrast",
+            "contribution": -0.535
+          },
+          {
+            "feature": "frac_gray",
+            "contribution": -0.341
+          },
+          {
+            "feature": "glcm_energy",
+            "contribution": 0.317
+          },
+          {
+            "feature": "frac_brown",
+            "contribution": -0.144
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": -0.126
+          }
+        ],
+        "true_class_explanation": {
+          "intercept": -0.09552129707216885,
+          "decision_score": -0.3191148822026019,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.9282,
+              "standardised_value": 2.918,
+              "coefficient": -0.166,
+              "contribution": -0.483
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.9318,
+              "standardised_value": 0.346,
+              "coefficient": -1.094,
+              "contribution": -0.378
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.9086,
+              "standardised_value": 0.439,
+              "coefficient": 0.858,
+              "contribution": 0.377
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 8.2831,
+              "standardised_value": 0.507,
+              "coefficient": 0.717,
+              "contribution": 0.364
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0164,
+              "standardised_value": -0.225,
+              "coefficient": -0.942,
+              "contribution": 0.212
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0067,
+              "standardised_value": -1.444,
+              "coefficient": 0.129,
+              "contribution": -0.187
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.0212,
+              "standardised_value": -0.664,
+              "coefficient": 0.164,
+              "contribution": -0.109
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9424,
+              "standardised_value": 0.364,
+              "coefficient": -0.059,
+              "contribution": -0.021
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.041,
+              "standardised_value": -0.444,
+              "coefficient": -0.007,
+              "contribution": 0.003
+            }
+          ]
+        }
+      },
+      {
+        "file": "IMG_20190807_144020_leaf00.png",
+        "path": "../olive_leaf_dataset/segmented/train/Healthy/IMG_20190807_144020_leaf00.png",
+        "true_class": "Healthy",
+        "predicted_class": "aculus_olearius",
+        "confidence": 0.9626699134613903,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.4527,
+          "frac_yellow": 0.0071,
+          "frac_brown": 0.0,
+          "frac_dark": 0.029,
+          "frac_gray": 0.2313,
+          "glcm_contrast": 13.3861,
+          "glcm_homogeneity": 0.8365,
+          "glcm_energy": 0.7563,
+          "glcm_correlation": 0.9376
+        },
+        "linear_explanation": {
+          "intercept": -0.09552129707216885,
+          "decision_score": 3.353202673038419,
+          "contributions": [
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 13.3861,
+              "standardised_value": 2.363,
+              "coefficient": 0.717,
+              "contribution": 1.693
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.8365,
+              "standardised_value": -1.275,
+              "coefficient": -1.094,
+              "contribution": 1.395
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0,
+              "standardised_value": -0.466,
+              "coefficient": -0.942,
+              "contribution": 0.439
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.7563,
+              "standardised_value": -0.251,
+              "coefficient": 0.858,
+              "contribution": -0.216
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0071,
+              "standardised_value": -0.722,
+              "coefficient": -0.166,
+              "contribution": 0.12
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.2313,
+              "standardised_value": 0.153,
+              "coefficient": 0.164,
+              "contribution": 0.025
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9376,
+              "standardised_value": 0.164,
+              "coefficient": -0.059,
+              "contribution": -0.01
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.029,
+              "standardised_value": -0.518,
+              "coefficient": -0.007,
+              "contribution": 0.004
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.4527,
+              "standardised_value": -0.016,
+              "coefficient": 0.129,
+              "contribution": -0.002
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "glcm_contrast",
+            "contribution": 1.693
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": 1.395
+          },
+          {
+            "feature": "frac_brown",
+            "contribution": 0.439
+          },
+          {
+            "feature": "glcm_energy",
+            "contribution": -0.216
+          },
+          {
+            "feature": "frac_yellow",
+            "contribution": 0.12
+          },
+          {
+            "feature": "frac_gray",
+            "contribution": 0.025
+          }
+        ],
+        "true_class_explanation": {
+          "intercept": -0.3246321149511444,
+          "decision_score": 0.07355016206381326,
+          "contributions": [
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.8365,
+              "standardised_value": -1.275,
+              "coefficient": 1.458,
+              "contribution": -1.859
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0071,
+              "standardised_value": -0.722,
+              "coefficient": -1.811,
+              "contribution": 1.308
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 13.3861,
+              "standardised_value": 2.363,
+              "coefficient": 0.337,
+              "contribution": 0.797
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.7563,
+              "standardised_value": -0.251,
+              "coefficient": -1.58,
+              "contribution": 0.397
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0,
+              "standardised_value": -0.466,
+              "coefficient": 0.303,
+              "contribution": -0.141
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.2313,
+              "standardised_value": 0.153,
+              "coefficient": -0.677,
+              "contribution": -0.103
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9376,
+              "standardised_value": 0.164,
+              "coefficient": -0.221,
+              "contribution": -0.036
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.029,
+              "standardised_value": -0.518,
+              "coefficient": -0.063,
+              "contribution": 0.033
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.4527,
+              "standardised_value": -0.016,
+              "coefficient": -0.2,
+              "contribution": 0.003
+            }
+          ]
+        }
+      }
+    ]
+  },
   "split": {
+    "protocol": "segmented",
     "train": 2008,
     "test": 995,
     "grouped_by": "source photograph",
     "shared_groups": 0,
-    "n_splits": 3
+    "n_splits": 3,
+    "note": "StratifiedGroupKFold on the source photograph"
   },
   "features": [
     "frac_green",

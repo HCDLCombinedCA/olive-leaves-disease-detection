@@ -1,0 +1,1046 @@
+{
+  "decision_tree": {
+    "macro_f1": 0.6674478971829587,
+    "accuracy": 0.6838235294117647,
+    "confusion_matrix": [
+      [
+        141,
+        68,
+        11
+      ],
+      [
+        53,
+        103,
+        44
+      ],
+      [
+        22,
+        17,
+        221
+      ]
+    ],
+    "report": {
+      "Healthy": {
+        "precision": 0.6527777777777778,
+        "recall": 0.6409090909090909,
+        "f1-score": 0.646788990825688,
+        "support": 220
+      },
+      "aculus_olearius": {
+        "precision": 0.5478723404255319,
+        "recall": 0.515,
+        "f1-score": 0.5309278350515465,
+        "support": 200
+      },
+      "olive_peacock_spot": {
+        "precision": 0.8007246376811594,
+        "recall": 0.85,
+        "f1-score": 0.8246268656716418,
+        "support": 260
+      },
+      "accuracy": 0.6838235294117647,
+      "macro avg": {
+        "precision": 0.6671249186281564,
+        "recall": 0.6686363636363636,
+        "f1-score": 0.6674478971829587,
+        "support": 680
+      },
+      "weighted avg": {
+        "precision": 0.6784911544019396,
+        "recall": 0.6838235294117647,
+        "f1-score": 0.6807090148038051,
+        "support": 680
+      }
+    }
+  },
+  "logistic_regression": {
+    "macro_f1": 0.5999130082006796,
+    "accuracy": 0.6205882352941177,
+    "confusion_matrix": [
+      [
+        98,
+        25,
+        97
+      ],
+      [
+        45,
+        99,
+        56
+      ],
+      [
+        16,
+        19,
+        225
+      ]
+    ],
+    "report": {
+      "Healthy": {
+        "precision": 0.6163522012578616,
+        "recall": 0.44545454545454544,
+        "f1-score": 0.5171503957783641,
+        "support": 220
+      },
+      "aculus_olearius": {
+        "precision": 0.6923076923076923,
+        "recall": 0.495,
+        "f1-score": 0.577259475218659,
+        "support": 200
+      },
+      "olive_peacock_spot": {
+        "precision": 0.5952380952380952,
+        "recall": 0.8653846153846154,
+        "f1-score": 0.7053291536050157,
+        "support": 260
+      },
+      "accuracy": 0.6205882352941177,
+      "macro avg": {
+        "precision": 0.6346326629345498,
+        "recall": 0.6019463869463869,
+        "f1-score": 0.5999130082006796,
+        "support": 680
+      },
+      "weighted avg": {
+        "precision": 0.6306190110296659,
+        "recall": 0.6205882352941177,
+        "f1-score": 0.6067802383121706,
+        "support": 680
+      }
+    }
+  },
+  "logistic_regression_coefficients": {
+    "frac_green": {
+      "Healthy": 0.506,
+      "aculus_olearius": 0.808,
+      "olive_peacock_spot": -1.314
+    },
+    "frac_yellow": {
+      "Healthy": -1.305,
+      "aculus_olearius": 0.242,
+      "olive_peacock_spot": 1.063
+    },
+    "frac_brown": {
+      "Healthy": 0.234,
+      "aculus_olearius": -0.511,
+      "olive_peacock_spot": 0.277
+    },
+    "frac_dark": {
+      "Healthy": 0.126,
+      "aculus_olearius": -0.267,
+      "olive_peacock_spot": 0.141
+    },
+    "frac_gray": {
+      "Healthy": -0.514,
+      "aculus_olearius": 0.489,
+      "olive_peacock_spot": 0.025
+    },
+    "glcm_contrast": {
+      "Healthy": -0.293,
+      "aculus_olearius": 0.229,
+      "olive_peacock_spot": 0.064
+    },
+    "glcm_homogeneity": {
+      "Healthy": -0.075,
+      "aculus_olearius": -0.349,
+      "olive_peacock_spot": 0.424
+    },
+    "glcm_energy": {
+      "Healthy": 0.295,
+      "aculus_olearius": -0.087,
+      "olive_peacock_spot": -0.208
+    },
+    "glcm_correlation": {
+      "Healthy": 0.001,
+      "aculus_olearius": -0.169,
+      "olive_peacock_spot": 0.168
+    }
+  },
+  "decision_tree_rules": "|--- frac_yellow <= 0.01\n|   |--- frac_brown <= 0.00\n|   |   |--- glcm_energy <= 0.14\n|   |   |   |--- class: 2\n|   |   |--- glcm_energy >  0.14\n|   |   |   |--- class: 1\n|   |--- frac_brown >  0.00\n|   |   |--- frac_gray <= 0.82\n|   |   |   |--- class: 0\n|   |   |--- frac_gray >  0.82\n|   |   |   |--- class: 0\n|--- frac_yellow >  0.01\n|   |--- glcm_contrast <= 4.00\n|   |   |--- frac_green <= 0.11\n|   |   |   |--- class: 2\n|   |   |--- frac_green >  0.11\n|   |   |   |--- class: 0\n|   |--- glcm_contrast >  4.00\n|   |   |--- frac_green <= 0.09\n|   |   |   |--- class: 2\n|   |   |--- frac_green >  0.09\n|   |   |   |--- class: 1\n",
+  "explanations": {
+    "decision_tree": [
+      {
+        "file": "test/Healthy/B-711.jpg",
+        "path": "../compression/data/prepared/images/test/Healthy/B-711.jpg",
+        "true_class": "Healthy",
+        "predicted_class": "Healthy",
+        "confidence": 0.914835760334844,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.213,
+          "frac_yellow": 0.0041,
+          "frac_brown": 0.0103,
+          "frac_dark": 0.066,
+          "frac_gray": 0.7523,
+          "glcm_contrast": 5.1198,
+          "glcm_homogeneity": 0.7126,
+          "glcm_energy": 0.156,
+          "glcm_correlation": 0.9876
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0134,
+            "value": 0.0041,
+            "test": "frac_yellow = 0.0041 <= 0.0134"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_brown",
+            "threshold": 0.0001,
+            "value": 0.0103,
+            "test": "frac_brown = 0.0103 > 0.0001"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_gray",
+            "threshold": 0.8232,
+            "value": 0.7523,
+            "test": "frac_gray = 0.7523 <= 0.8232"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 334.1756569847856,
+              "aculus_olearius": 19.55994152046784,
+              "olive_peacock_spot": 11.549266247379453
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.0041 <= 0.0134",
+            "contribution": -0.248646286701772
+          },
+          {
+            "feature": "frac_brown",
+            "label": "frac_brown = 0.0103 > 0.0001",
+            "contribution": 0.4652397127542973
+          },
+          {
+            "feature": "frac_gray",
+            "label": "frac_gray = 0.7523 <= 0.8232",
+            "contribution": -0.2877027027851172
+          }
+        ]
+      },
+      {
+        "file": "test/olive_peacock_spot/DSC_0083.JPG",
+        "path": "../compression/data/prepared/images/test/olive_peacock_spot/DSC_0083.JPG",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.8882034844714255,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.0076,
+          "frac_yellow": 0.2253,
+          "frac_brown": 0.0033,
+          "frac_dark": 0.004,
+          "frac_gray": 0.6606,
+          "glcm_contrast": 2.6926,
+          "glcm_homogeneity": 0.7735,
+          "glcm_energy": 0.1683,
+          "glcm_correlation": 0.9823
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0134,
+            "value": 0.2253,
+            "test": "frac_yellow = 0.2253 > 0.0134"
+          },
+          {
+            "leaf": false,
+            "feature": "glcm_contrast",
+            "threshold": 3.9989,
+            "value": 2.6926,
+            "test": "glcm_contrast = 2.6926 <= 3.9989"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_green",
+            "threshold": 0.1126,
+            "value": 0.0076,
+            "test": "frac_green = 0.0076 <= 0.1126"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 16.327800829875518,
+              "aculus_olearius": 39.11988304093567,
+              "olive_peacock_spot": 440.52201257861975
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.2253 > 0.0134",
+            "contribution": 5.665392274419945
+          },
+          {
+            "feature": "glcm_contrast",
+            "label": "glcm_contrast = 2.6926 <= 3.9989",
+            "contribution": -0.6472372091399607
+          },
+          {
+            "feature": "frac_green",
+            "label": "frac_green = 0.0076 <= 0.1126",
+            "contribution": -1.2506761752378304
+          }
+        ]
+      },
+      {
+        "file": "test/aculus_olearius/DSC_0072.JPG",
+        "path": "../compression/data/prepared/images/test/aculus_olearius/DSC_0072.JPG",
+        "true_class": "aculus_olearius",
+        "predicted_class": "Healthy",
+        "confidence": 0.914835760334844,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.1511,
+          "frac_yellow": 0.0128,
+          "frac_brown": 0.0302,
+          "frac_dark": 0.0065,
+          "frac_gray": 0.5725,
+          "glcm_contrast": 5.2305,
+          "glcm_homogeneity": 0.7179,
+          "glcm_energy": 0.1827,
+          "glcm_correlation": 0.9709
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0134,
+            "value": 0.0128,
+            "test": "frac_yellow = 0.0128 <= 0.0134"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_brown",
+            "threshold": 0.0001,
+            "value": 0.0302,
+            "test": "frac_brown = 0.0302 > 0.0001"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_gray",
+            "threshold": 0.8232,
+            "value": 0.5725,
+            "test": "frac_gray = 0.5725 <= 0.8232"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 334.1756569847856,
+              "aculus_olearius": 19.55994152046784,
+              "olive_peacock_spot": 11.549266247379453
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.0128 <= 0.0134",
+            "contribution": -0.016041695916243354
+          },
+          {
+            "feature": "frac_brown",
+            "label": "frac_brown = 0.0302 > 0.0001",
+            "contribution": 1.3729132699906226
+          },
+          {
+            "feature": "frac_gray",
+            "label": "frac_gray = 0.5725 <= 0.8232",
+            "contribution": -1.0173070181696588
+          }
+        ]
+      },
+      {
+        "file": "test/olive_peacock_spot/IMG_20190729_194907.jpg",
+        "path": "../compression/data/prepared/images/test/olive_peacock_spot/IMG_20190729_194907.jpg",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "Healthy",
+        "confidence": 0.914835760334844,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.0692,
+          "frac_yellow": 0.0062,
+          "frac_brown": 0.0576,
+          "frac_dark": 0.0,
+          "frac_gray": 0.8185,
+          "glcm_contrast": 2.5269,
+          "glcm_homogeneity": 0.6837,
+          "glcm_energy": 0.153,
+          "glcm_correlation": 0.9857
+        },
+        "decision_path": [
+          {
+            "leaf": false,
+            "feature": "frac_yellow",
+            "threshold": 0.0134,
+            "value": 0.0062,
+            "test": "frac_yellow = 0.0062 <= 0.0134"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_brown",
+            "threshold": 0.0001,
+            "value": 0.0576,
+            "test": "frac_brown = 0.0576 > 0.0001"
+          },
+          {
+            "leaf": false,
+            "feature": "frac_gray",
+            "threshold": 0.8232,
+            "value": 0.8185,
+            "test": "frac_gray = 0.8185 <= 0.8232"
+          },
+          {
+            "leaf": true,
+            "class_distribution": {
+              "Healthy": 334.1756569847856,
+              "aculus_olearius": 19.55994152046784,
+              "olive_peacock_spot": 11.549266247379453
+            }
+          }
+        ],
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "label": "frac_yellow = 0.0062 <= 0.0134",
+            "contribution": -0.1925003509949203
+          },
+          {
+            "feature": "frac_brown",
+            "label": "frac_brown = 0.0576 > 0.0001",
+            "contribution": 2.6226748513109897
+          },
+          {
+            "feature": "frac_gray",
+            "label": "frac_gray = 0.8185 <= 0.8232",
+            "contribution": -0.019071970424401414
+          }
+        ]
+      }
+    ],
+    "logistic_regression": [
+      {
+        "file": "test/olive_peacock_spot/DSC_0083.JPG",
+        "path": "../compression/data/prepared/images/test/olive_peacock_spot/DSC_0083.JPG",
+        "true_class": "olive_peacock_spot",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9985172549917155,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.0076,
+          "frac_yellow": 0.2253,
+          "frac_brown": 0.0033,
+          "frac_dark": 0.004,
+          "frac_gray": 0.6606,
+          "glcm_contrast": 2.6926,
+          "glcm_homogeneity": 0.7735,
+          "glcm_energy": 0.1683,
+          "glcm_correlation": 0.9823
+        },
+        "linear_explanation": {
+          "intercept": 0.034863933005231273,
+          "decision_score": 6.950655651581652,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.2253,
+              "standardised_value": 5.287,
+              "coefficient": 1.063,
+              "contribution": 5.619
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0076,
+              "standardised_value": -0.905,
+              "coefficient": -1.314,
+              "contribution": 1.189
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9823,
+              "standardised_value": 0.807,
+              "coefficient": 0.168,
+              "contribution": 0.136
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1683,
+              "standardised_value": -0.433,
+              "coefficient": -0.208,
+              "contribution": 0.09
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7735,
+              "standardised_value": 0.187,
+              "coefficient": 0.424,
+              "contribution": 0.079
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0033,
+              "standardised_value": -0.258,
+              "coefficient": 0.277,
+              "contribution": -0.071
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.004,
+              "standardised_value": -0.491,
+              "coefficient": 0.141,
+              "contribution": -0.069
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 2.6926,
+              "standardised_value": -0.716,
+              "coefficient": 0.064,
+              "contribution": -0.046
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.6606,
+              "standardised_value": -0.449,
+              "coefficient": 0.025,
+              "contribution": -0.011
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "contribution": 5.619
+          },
+          {
+            "feature": "frac_green",
+            "contribution": 1.189
+          },
+          {
+            "feature": "glcm_correlation",
+            "contribution": 0.136
+          },
+          {
+            "feature": "glcm_energy",
+            "contribution": 0.09
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": 0.079
+          },
+          {
+            "feature": "frac_brown",
+            "contribution": -0.071
+          }
+        ]
+      },
+      {
+        "file": "test/aculus_olearius/A62.JPG",
+        "path": "../compression/data/prepared/images/test/aculus_olearius/A62.JPG",
+        "true_class": "aculus_olearius",
+        "predicted_class": "aculus_olearius",
+        "confidence": 0.9840318949108345,
+        "correct": true,
+        "feature_values": {
+          "frac_green": 0.3739,
+          "frac_yellow": 0.1209,
+          "frac_brown": 0.0105,
+          "frac_dark": 0.0694,
+          "frac_gray": 0.4657,
+          "glcm_contrast": 8.1102,
+          "glcm_homogeneity": 0.6944,
+          "glcm_energy": 0.1745,
+          "glcm_correlation": 0.9807
+        },
+        "linear_explanation": {
+          "intercept": 0.17376774036636133,
+          "decision_score": 3.2343510603346854,
+          "contributions": [
+            {
+              "feature": "frac_green",
+              "raw_value": 0.3739,
+              "standardised_value": 3.459,
+              "coefficient": 0.808,
+              "contribution": 2.793
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.4657,
+              "standardised_value": -1.24,
+              "coefficient": 0.489,
+              "contribution": -0.606
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.1209,
+              "standardised_value": 2.497,
+              "coefficient": 0.242,
+              "contribution": 0.604
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0694,
+              "standardised_value": 2.142,
+              "coefficient": -0.267,
+              "contribution": -0.573
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.6944,
+              "standardised_value": -1.482,
+              "coefficient": -0.349,
+              "contribution": 0.517
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 8.1102,
+              "standardised_value": 1.968,
+              "coefficient": 0.229,
+              "contribution": 0.451
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9807,
+              "standardised_value": 0.676,
+              "coefficient": -0.169,
+              "contribution": -0.115
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0105,
+              "standardised_value": 0.072,
+              "coefficient": -0.511,
+              "contribution": -0.037
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1745,
+              "standardised_value": -0.296,
+              "coefficient": -0.087,
+              "contribution": 0.026
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_green",
+            "contribution": 2.793
+          },
+          {
+            "feature": "frac_gray",
+            "contribution": -0.606
+          },
+          {
+            "feature": "frac_yellow",
+            "contribution": 0.604
+          },
+          {
+            "feature": "frac_dark",
+            "contribution": -0.573
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": 0.517
+          },
+          {
+            "feature": "glcm_contrast",
+            "contribution": 0.451
+          }
+        ]
+      },
+      {
+        "file": "test/aculus_olearius/DSC_0086.JPG",
+        "path": "../compression/data/prepared/images/test/aculus_olearius/DSC_0086.JPG",
+        "true_class": "aculus_olearius",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.9976142054210948,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.1075,
+          "frac_yellow": 0.304,
+          "frac_brown": 0.0023,
+          "frac_dark": 0.0571,
+          "frac_gray": 0.2508,
+          "glcm_contrast": 9.49,
+          "glcm_homogeneity": 0.7345,
+          "glcm_energy": 0.1729,
+          "glcm_correlation": 0.9792
+        },
+        "linear_explanation": {
+          "intercept": 0.034863933005231273,
+          "decision_score": 7.6746393665952715,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.304,
+              "standardised_value": 7.392,
+              "coefficient": 1.063,
+              "contribution": 7.856
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.1075,
+              "standardised_value": 0.285,
+              "coefficient": -1.314,
+              "contribution": -0.375
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7345,
+              "standardised_value": -0.635,
+              "coefficient": 0.424,
+              "contribution": -0.269
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0571,
+              "standardised_value": 1.648,
+              "coefficient": 0.141,
+              "contribution": 0.232
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 9.49,
+              "standardised_value": 2.652,
+              "coefficient": 0.064,
+              "contribution": 0.17
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9792,
+              "standardised_value": 0.551,
+              "coefficient": 0.168,
+              "contribution": 0.093
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0023,
+              "standardised_value": -0.303,
+              "coefficient": 0.277,
+              "contribution": -0.084
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1729,
+              "standardised_value": -0.331,
+              "coefficient": -0.208,
+              "contribution": 0.069
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.2508,
+              "standardised_value": -2.112,
+              "coefficient": 0.025,
+              "contribution": -0.053
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_yellow",
+            "contribution": 7.856
+          },
+          {
+            "feature": "frac_green",
+            "contribution": -0.375
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": -0.269
+          },
+          {
+            "feature": "frac_dark",
+            "contribution": 0.232
+          },
+          {
+            "feature": "glcm_contrast",
+            "contribution": 0.17
+          },
+          {
+            "feature": "glcm_correlation",
+            "contribution": 0.093
+          }
+        ],
+        "true_class_explanation": {
+          "intercept": 0.17376774036636133,
+          "decision_score": 1.6387874393372188,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.304,
+              "standardised_value": 7.392,
+              "coefficient": 0.242,
+              "contribution": 1.789
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.2508,
+              "standardised_value": -2.112,
+              "coefficient": 0.489,
+              "contribution": -1.032
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 9.49,
+              "standardised_value": 2.652,
+              "coefficient": 0.229,
+              "contribution": 0.607
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.0571,
+              "standardised_value": 1.648,
+              "coefficient": -0.267,
+              "contribution": -0.441
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.1075,
+              "standardised_value": 0.285,
+              "coefficient": 0.808,
+              "contribution": 0.23
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7345,
+              "standardised_value": -0.635,
+              "coefficient": -0.349,
+              "contribution": 0.221
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0023,
+              "standardised_value": -0.303,
+              "coefficient": -0.511,
+              "contribution": 0.155
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9792,
+              "standardised_value": 0.551,
+              "coefficient": -0.169,
+              "contribution": -0.093
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1729,
+              "standardised_value": -0.331,
+              "coefficient": -0.087,
+              "contribution": 0.029
+            }
+          ]
+        }
+      },
+      {
+        "file": "test/Healthy/IMG_20190729_170233.jpg",
+        "path": "../compression/data/prepared/images/test/Healthy/IMG_20190729_170233.jpg",
+        "true_class": "Healthy",
+        "predicted_class": "olive_peacock_spot",
+        "confidence": 0.8038512363525482,
+        "correct": false,
+        "feature_values": {
+          "frac_green": 0.0077,
+          "frac_yellow": 0.0004,
+          "frac_brown": 0.0,
+          "frac_dark": 0.1048,
+          "frac_gray": 0.9458,
+          "glcm_contrast": 4.9788,
+          "glcm_homogeneity": 0.7904,
+          "glcm_energy": 0.1472,
+          "glcm_correlation": 0.9879
+        },
+        "linear_explanation": {
+          "intercept": 0.034863933005231273,
+          "decision_score": 1.5176370709262788,
+          "contributions": [
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0077,
+              "standardised_value": -0.904,
+              "coefficient": -1.314,
+              "contribution": 1.188
+            },
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0004,
+              "standardised_value": -0.726,
+              "coefficient": 1.063,
+              "contribution": -0.771
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.1048,
+              "standardised_value": 3.566,
+              "coefficient": 0.141,
+              "contribution": 0.503
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7904,
+              "standardised_value": 0.545,
+              "coefficient": 0.424,
+              "contribution": 0.231
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9879,
+              "standardised_value": 1.276,
+              "coefficient": 0.168,
+              "contribution": 0.215
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1472,
+              "standardised_value": -0.896,
+              "coefficient": -0.208,
+              "contribution": 0.186
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0,
+              "standardised_value": -0.408,
+              "coefficient": 0.277,
+              "contribution": -0.113
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 4.9788,
+              "standardised_value": 0.417,
+              "coefficient": 0.064,
+              "contribution": 0.027
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.9458,
+              "standardised_value": 0.708,
+              "coefficient": 0.025,
+              "contribution": 0.018
+            }
+          ]
+        },
+        "top_contributions": [
+          {
+            "feature": "frac_green",
+            "contribution": 1.188
+          },
+          {
+            "feature": "frac_yellow",
+            "contribution": -0.771
+          },
+          {
+            "feature": "frac_dark",
+            "contribution": 0.503
+          },
+          {
+            "feature": "glcm_homogeneity",
+            "contribution": 0.231
+          },
+          {
+            "feature": "glcm_correlation",
+            "contribution": 0.215
+          },
+          {
+            "feature": "glcm_energy",
+            "contribution": 0.186
+          }
+        ],
+        "true_class_explanation": {
+          "intercept": -0.20863167337158603,
+          "decision_score": -0.15393293716152281,
+          "contributions": [
+            {
+              "feature": "frac_yellow",
+              "raw_value": 0.0004,
+              "standardised_value": -0.726,
+              "coefficient": -1.305,
+              "contribution": 0.947
+            },
+            {
+              "feature": "frac_green",
+              "raw_value": 0.0077,
+              "standardised_value": -0.904,
+              "coefficient": 0.506,
+              "contribution": -0.458
+            },
+            {
+              "feature": "frac_dark",
+              "raw_value": 0.1048,
+              "standardised_value": 3.566,
+              "coefficient": 0.126,
+              "contribution": 0.451
+            },
+            {
+              "feature": "frac_gray",
+              "raw_value": 0.9458,
+              "standardised_value": 0.708,
+              "coefficient": -0.514,
+              "contribution": -0.364
+            },
+            {
+              "feature": "glcm_energy",
+              "raw_value": 0.1472,
+              "standardised_value": -0.896,
+              "coefficient": 0.295,
+              "contribution": -0.264
+            },
+            {
+              "feature": "glcm_contrast",
+              "raw_value": 4.9788,
+              "standardised_value": 0.417,
+              "coefficient": -0.293,
+              "contribution": -0.122
+            },
+            {
+              "feature": "frac_brown",
+              "raw_value": 0.0,
+              "standardised_value": -0.408,
+              "coefficient": 0.234,
+              "contribution": -0.095
+            },
+            {
+              "feature": "glcm_homogeneity",
+              "raw_value": 0.7904,
+              "standardised_value": 0.545,
+              "coefficient": -0.075,
+              "contribution": -0.041
+            },
+            {
+              "feature": "glcm_correlation",
+              "raw_value": 0.9879,
+              "standardised_value": 1.276,
+              "coefficient": 0.001,
+              "contribution": 0.001
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "split": {
+    "protocol": "common",
+    "train": 2361,
+    "test": 680,
+    "grouped_by": "source photograph",
+    "shared_groups": 0,
+    "n_splits": null,
+    "note": "official test split from compression/data/prepared manifests"
+  },
+  "features": [
+    "frac_green",
+    "frac_yellow",
+    "frac_brown",
+    "frac_dark",
+    "frac_gray",
+    "glcm_contrast",
+    "glcm_homogeneity",
+    "glcm_energy",
+    "glcm_correlation"
+  ]
+}
